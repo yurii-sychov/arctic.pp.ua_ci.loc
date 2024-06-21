@@ -214,12 +214,12 @@ class Resources extends CI_Controller
 			$this->materials_price_model->update_field($this->input->post('field'), $this->input->post('value'), $this->input->post('id'));
 			$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!'], JSON_UNESCAPED_UNICODE));
 			return;
-		} else if ($this->input->post('table') === 'worker_prices') {
+		} else if ($this->input->post('table') === 'workers_prices') {
 			$this->workers_price_model->update_field($this->input->post('field'), $this->input->post('value'), $this->input->post('id'));
 			$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!'], JSON_UNESCAPED_UNICODE));
 			return;
-		} else if ($this->input->post('table') === 'technic_prices') {
-			$this->techics_price_model->update_field($this->input->post('field'), $this->input->post('value'), $this->input->post('id'));
+		} else if ($this->input->post('table') === 'technics_prices') {
+			$this->technics_price_model->update_field($this->input->post('field'), $this->input->post('value'), $this->input->post('id'));
 			$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!'], JSON_UNESCAPED_UNICODE));
 			return;
 		} else {

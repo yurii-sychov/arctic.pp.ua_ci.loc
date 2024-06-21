@@ -33,7 +33,7 @@
 				<div class="row my-2">
 					<div class="col-md-12 text-end d-grid gap-2 d-lg-block">
 						<?php if ($this->session->user->group === 'admin') : ?>
-							<a class="btn btn-warning my-1" href="/resources/add_resources_next_year" id="addResourceNextYear">Додати ресурси на <?php echo (date('Y') + 1); ?> рік</a>
+							<a class="btn btn-danger my-1" href="/resources/add_resources_next_year" id="addResourceNextYear">Додати ресурси на <strong><?php echo (date('Y') + 1); ?></strong> рік</a>
 						<?php endif; ?>
 						<button class="btn btn-success my-1" id="activeDeactiveForm" onClick="activeForm(event)">Активувати форму</button>
 						<a href="/resources/create/" class="btn btn-primary my-1 disabled" id="addResource">Додати ресурс</a>

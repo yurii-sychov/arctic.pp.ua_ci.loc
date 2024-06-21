@@ -101,7 +101,7 @@ function deleteMaterial(event) {
 	// 	return;
 	// }
 	let result = prompt('Введіть пин-код для видалення даних');
-	if (result == 0910) {
+	if (result == '0910') {
 		location.href = '/resources/delete_material/' + $(event.currentTarget).parents('tr').data('id');
 	} else {
 		return;
@@ -117,7 +117,7 @@ function deleteWorker(event) {
 	// 	return;
 	// }
 	let result = prompt('Введіть пин-код для видалення даних');
-	if (result == 0910) {
+	if (result == '0910') {
 		location.href = '/resources/delete_worker/' + $(event.currentTarget).parents('tr').data('id');
 	} else {
 		return;
@@ -133,7 +133,7 @@ function deleteTechnic(event) {
 	// 	return;
 	// }
 	let result = prompt('Введіть пин-код для видалення даних');
-	if (result == 0910) {
+	if (result == '0910') {
 		location.href = '/resources/delete_technic/' + $(event.currentTarget).parents('tr').data('id');
 	} else {
 		return;
