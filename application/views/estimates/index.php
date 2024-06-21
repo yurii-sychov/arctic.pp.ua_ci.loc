@@ -22,9 +22,18 @@
 				</select>
 			</div>
 			<div class="col-lg-1">
-				<select class="form-select my-1" id="FilterYear" onchange="document.location=this.options[this.selectedIndex].value" <?php echo ($this->uri->segment(3) && $this->uri->segment(4)) ? NULL : 'disabled'; ?>>
+				<select class="form-select my-1 bg-warning" id="FilterYear" onchange="document.location=this.options[this.selectedIndex].value" <?php echo ($this->uri->segment(3) && $this->uri->segment(4)) ? NULL : 'disabled'; ?>>
 					<?php for ($i = 2024; $i < 2036; $i++) : ?>
-						<option value="/estimates/index/<?php echo $this->uri->segment(3); ?>/<?php echo $this->uri->segment(4); ?>/<?php echo $i;  ?>" <?php echo ($i == $this->uri->segment(5) || $i == (date('Y') + 1)) ? 'selected' : NULL; ?>><?php echo $i; ?> рік</option>
+						<?php
+						if (!$this->uri->segment(5) && $i == (date('Y') + 1)) {
+							$selected = 'selected';
+						} elseif ($i == $this->uri->segment(5)) {
+							$selected = 'selected';
+						} else {
+							$selected = NULL;
+						}
+						?>
+						<option value="/estimates/index/<?php echo $this->uri->segment(3); ?>/<?php echo $this->uri->segment(4); ?>/<?php echo $i;  ?>" <?php echo $selected; ?>><?php echo $i; ?> рік</option>
 					<?php endfor; ?>
 				</select>
 			</div>

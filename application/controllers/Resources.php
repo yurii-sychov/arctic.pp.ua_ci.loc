@@ -23,17 +23,24 @@ class Resources extends CI_Controller
 			show_404();
 		}
 		// $this->load->model('cipher_model');
-		// $this->load->model('ciphers_material_model');
+		$this->load->model('ciphers_material_model');
+		$this->load->model('ciphers_technic_model');
+		$this->load->model('ciphers_worker_model');
+
 		// $this->load->model('type_service_model');
+
 		$this->load->model('material_model');
 		$this->load->model('worker_model');
 		$this->load->model('technic_model');
+
 		$this->load->model('materials_price_model');
+		$this->load->model('technics_price_model');
+		$this->load->model('workers_price_model');
 	}
 
 	public function index()
 	{
-		show_404();
+		// show_404();
 		$data = [];
 		$data['export_to_pdf'] = TRUE;
 		$data['export_to_word'] = TRUE;
@@ -219,5 +226,54 @@ class Resources extends CI_Controller
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Fucking chert!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}
+	}
+
+	public function add_resources_next_year()
+	{
+		show_404();
+		if ($this->session->user->group !== 'admin') {
+			show_404();
+		}
+		$donor_materials = $this->ciphers_material_model->get_material_ids();
+		$donor_technics = $this->ciphers_technic_model->get_technic_ids();
+		$donor_workers = $this->ciphers_worker_model->get_worker_ids();
+
+		foreach ($donor_materials as $item) {
+			$data = [];
+			$data['price'] = 0;
+			$data['price_year'] = (date('Y') + 1);
+			$data['material_id'] = $item->material_id;
+			$data['created_by'] = $this->session->user->id;
+			$data['updated_by'] = $this->session->user->id;
+			$data['created_at'] = date('Y-m-d H:i:s');
+			$data['updated_at'] = date('Y-m-d H:i:s');
+			$this->materials_price_model->insert($data);
+		}
+
+		foreach ($donor_technics as $item) {
+			$data = [];
+			$data['price'] = 0;
+			$data['price_year'] = (date('Y') + 1);
+			$data['technic_id'] = $item->technic_id;
+			$data['created_by'] = $this->session->user->id;
+			$data['updated_by'] = $this->session->user->id;
+			$data['created_at'] = date('Y-m-d H:i:s');
+			$data['updated_at'] = date('Y-m-d H:i:s');
+			$this->technics_price_model->insert($data);
+		}
+
+		foreach ($donor_workers as $item) {
+			$data = [];
+			$data['price'] = 0;
+			$data['price_year'] = (date('Y') + 1);
+			$data['worker_id'] = $item->worker_id;
+			$data['created_by'] = $this->session->user->id;
+			$data['updated_by'] = $this->session->user->id;
+			$data['created_at'] = date('Y-m-d H:i:s');
+			$data['updated_at'] = date('Y-m-d H:i:s');
+			$this->workers_price_model->insert($data);
+		}
+
+		redirect('/resources');
 	}
 }

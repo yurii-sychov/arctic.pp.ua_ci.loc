@@ -96,14 +96,15 @@
 						<table id="SubdivisionsTable" class="datatable table table-bordered table-hover table-striped d-none" data-order='[[ 0, "asc" ]]' data-page-length="5" data-state-save="1" data-paging-type="full_numbers" data-auto-width="0">
 							<thead class="thead-light">
 								<tr>
-									<th class="align-middle text-center" style="width:5%;"><?php echo "ID"; ?></th>
-									<th class="align-middle text-center" style="width:10%;"><?php echo "ДНО"; ?></th>
-									<th class="align-middle text-center" style="width:10%;"><?php echo "Місце"; ?></th>
-									<th class="align-middle text-center" style="width:20%;"><?php echo "Тип"; ?></th>
-									<th class="align-middle text-center" style="width:15%;"><?php echo "Короткий тип"; ?></th>
-									<th class="align-middle text-center" style="width:10%;"><?php echo "Зав. №"; ?></th>
-									<th class="align-middle text-center" style="width:10%;"><?php echo "Дата виготовлення"; ?></th>
-									<th class="align-middle text-center" style="width:10%;"><?php echo "Рік вводу"; ?></th>
+									<th class="align-middle text-center" style="width:5%;">ID</th>
+									<th class="align-middle text-center" style="width:10%;">ДНО</th>
+									<th class="align-middle text-center" style="width:10%;">Місце</th>
+									<th class="align-middle text-center" style="width:17%;">Тип</th>
+									<th class="align-middle text-center" style="width:13%;">Короткий тип</th>
+									<th class="align-middle text-center" style="width:10%;">Зав. №</th>
+									<th class="align-middle text-center" style="width:10%;">Дата виготовлення</th>
+									<th class="align-middle text-center" style="width:10%;">Рік вводу</th>
+									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="isBlock">IsBlock</th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="more"><i class="fas fa-eye text-secondary"></i></th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="delete"><i class="fas fa-trash text-secondary"></i></th>
 									<th data-visible="false" data-data="insulation_type">Вид ізоляції</th>
@@ -131,6 +132,12 @@
 										<td class="align-middle text-center"><?php echo $item->production_date; ?></td>
 										<td class="align-middle text-center" data-field_name="commissioning_year" data-field_title="Рік вводу" data-search="<?php echo $item->commissioning_year; ?>" data-order="<?php echo $item->commissioning_year; ?>">
 											<input type="text" name="commissioning_year[]" class="form-control text-center" value="<?php echo $item->commissioning_year; ?>" maxlength="4" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
+										</td>
+										<td class="align-middle text-center">
+											<div class="custom-control custom-switch">
+												<input type="checkbox" class="custom-control-input" id="switch<?php echo $item->id; ?>" <?php echo $item->is_block ? 'checked' : NULL; ?> disabled />
+												<label class="custom-control-label" for="switch<?php echo $item->id; ?>" title="Деблокувати/Блокувати" style="cursor: pointer;"></label>
+											</div>
 										</td>
 										<td class="align-middle text-center">
 											<a class="dt-control" href="javascript:void(0);" tabindex="-1">

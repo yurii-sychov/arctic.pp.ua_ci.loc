@@ -30,13 +30,13 @@ class Material_Model extends CI_Model
 	public function get_data_with_price($price_year)
 	{
 		$this->db->select('materials.*');
-		// $this->db->select('materials_prices.id as materials_prices_id');
-		// $this->db->select('materials_prices.price');
-		// $this->db->where('materials.id = materials_prices.material_id');
-		// $this->db->where('price_year', $price_year);
+		$this->db->select('materials_prices.id as materials_prices_id');
+		$this->db->select('materials_prices.price');
+		$this->db->where('materials.id = materials_prices.material_id');
+		$this->db->where('price_year', $price_year);
 		$this->db->from('materials');
-		// $this->db->from('materials_prices');
-		// $this->db->order_by('name', 'ASC');
+		$this->db->from('materials_prices');
+		$this->db->order_by('name', 'ASC');
 		$query = $this->db->get();
 		return $query->result();
 	}

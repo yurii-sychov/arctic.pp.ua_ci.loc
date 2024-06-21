@@ -65,4 +65,13 @@ class Ciphers_worker_Model extends CI_Model
 		$query = $this->db->update('ciphers_workers');
 		return $query;
 	}
+
+	public function get_worker_ids()
+	{
+		$this->db->distinct();
+		$this->db->select('ciphers_workers.worker_id as worker_id');
+		$this->db->from('ciphers_workers');
+		$query = $this->db->get();
+		return $query->result();
+	}
 }

@@ -32,6 +32,9 @@
 				</nav>
 				<div class="row my-2">
 					<div class="col-md-12 text-end d-grid gap-2 d-lg-block">
+						<?php if ($this->session->user->group === 'admin') : ?>
+							<a class="btn btn-warning my-1" href="/resources/add_resources_next_year" id="addResourceNextYear">Додати ресурси на <?php echo (date('Y') + 1); ?> рік</a>
+						<?php endif; ?>
 						<button class="btn btn-success my-1" id="activeDeactiveForm" onClick="activeForm(event)">Активувати форму</button>
 						<a href="/resources/create/" class="btn btn-primary my-1 disabled" id="addResource">Додати ресурс</a>
 					</div>
@@ -69,8 +72,8 @@
 												<td class="r3_id input text-center" data-search="<?php echo $item->r3_id; ?>" data-order="<?php echo $item->r3_id; ?>" data-field_name="Номер R3" data-field="r3_id" data-table="materials" data-id="<?php echo $item->id; ?>">
 													<input type="text" class="form-control text-center" value="<?php echo $item->r3_id; ?>" maxlength="8" onChange="editValue(event);" />
 												</td>
-												<td class="price input text-center" data-search="<?php echo isset($item->price) && $item->price; ?>" data-order="<?php echo isset($item->price) && $item->price; ?>" data-field_name="Ціна" data-field="price" data-table="materials_prices" data-id="<?php echo isset($item->materials_prices_id) && $item->materials_prices_id; ?>">
-													<input type="text" class="form-control text-center" value="<?php echo isset($item->price) && $item->price; ?>" maxlength="11" onChange="editValue(event);" onkeyup="changePrice(event);" />
+												<td class="price input text-center" data-search="<?php echo $item->price; ?>" data-order="<?php echo $item->price; ?>" data-field_name="Ціна" data-field="price" data-table="materials_prices" data-id="<?php echo $item->materials_prices_id; ?>">
+													<input type="text" class="form-control text-center" value="<?php echo $item->price; ?>" maxlength="11" onChange="editValue(event);" onkeyup="changePrice(event);" />
 												</td>
 												<td class="photo text-center">
 													<a href="javascript:void(0);" title="Подивитися фото<br />(<?php echo $item->name; ?>)<br />Функція в розробці" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-html="true" data-bs-placement="left" data-bs-custom-class="custom-tooltip"><i class="bi bi-image text-warning"></i></a>

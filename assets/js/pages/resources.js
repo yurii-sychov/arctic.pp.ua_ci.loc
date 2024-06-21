@@ -207,14 +207,14 @@ tabElements.each(function (index, el) {
 		$('#activeDeactiveForm').removeClass('btn-warning').addClass('btn-success').text('Активувати форму');
 		localStorage.setItem('resources_activeTab', event.target.id);
 	});
-})
+});
 
 let activeTabEl = document.querySelector(localStorage.getItem('resources_activeTab') ? '#' + localStorage.getItem('resources_activeTab') : '#materials-tab');
 let activeTab = new bootstrap.Tab(activeTabEl);
 
 if (Object.getOwnPropertyNames(activeTab).length) activeTab.show();
 
-var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-	return new bootstrap.Tooltip(tooltipTriggerEl)
+	return new bootstrap.Tooltip(tooltipTriggerEl);
 });

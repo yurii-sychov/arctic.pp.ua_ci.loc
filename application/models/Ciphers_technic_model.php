@@ -55,4 +55,13 @@ class Ciphers_technic_Model extends CI_Model
 		$query = $this->db->update('ciphers_technics');
 		return $query;
 	}
+
+	public function get_technic_ids()
+	{
+		$this->db->distinct();
+		$this->db->select('ciphers_technics.technic_id as technic_id');
+		$this->db->from('ciphers_technics');
+		$query = $this->db->get();
+		return $query->result();
+	}
 }

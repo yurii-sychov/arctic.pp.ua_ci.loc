@@ -56,4 +56,13 @@ class Ciphers_material_Model extends CI_Model
 		$query = $this->db->update('ciphers_materials');
 		return $query;
 	}
+
+	public function get_material_ids()
+	{
+		$this->db->distinct();
+		$this->db->select('ciphers_materials.material_id as material_id');
+		$this->db->from('ciphers_materials');
+		$query = $this->db->get();
+		return $query->result();
+	}
 }
