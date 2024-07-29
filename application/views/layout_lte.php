@@ -300,6 +300,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
 								</p>
 							</a>
 						</li>
+						<li class="nav-item">
+							<a href="/sp_instructions" class="nav-link <?php if ($page === 'sp_instructions') echo 'active'; ?>">
+								<i class="nav-icon fas fa-file"></i>
+								<p>
+									Інструкції з ОП
+									<span class="right badge badge-warning">New</span>
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="/fs_instructions" class="nav-link <?php if ($page === 'fs_instructions') echo 'active'; ?>">
+								<i class="nav-icon fas fa-file"></i>
+								<p>
+									Інструкції з ПБ
+									<span class="right badge badge-success">New</span>
+								</p>
+							</a>
+						</li>
 					</ul>
 				</nav>
 				<!-- /.sidebar-menu -->

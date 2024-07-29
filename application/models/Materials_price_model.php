@@ -26,4 +26,11 @@ class Materials_price_Model extends CI_Model
 		$query = $this->db->insert_id();
 		return $query;
 	}
+
+	public function delete($id)
+	{
+		$this->db->where('id', $id);
+		$query = $this->db->delete('materials_prices');
+		return $query;
+	}
 }

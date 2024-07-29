@@ -216,7 +216,7 @@ class Schedules extends CI_Controller
 		foreach ($id_specific_renovation_objects as $row) {
 			$id_schedules = $this->schedule_model->get_id_for_specific_renovation_object($row->id);
 
-			// ыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыы
+			// Видаляємо дані з таблиць ресурсів
 			foreach ($id_schedules as $schedule_id) {
 				// Видаляємо з таблиці materials_for_schedule записи по полю is_extra, що дорівнюює нулю
 				$this->schedule_material_model->delete_materials_for_schedule($schedule_id->id, (date('Y') + 1));
@@ -267,6 +267,13 @@ class Schedules extends CI_Controller
 				}
 
 				$workers = $this->ciphers_worker_model->get_data($row->cipher_id, (date('Y') + 1));
+
+				// echo "<pre>";
+				// print_r($workers);
+				// echo "</pre>";
+				// exit;
+
+				$i = 1;
 				foreach ($workers as $worker) {
 					$data_worker = [
 						'schedule_id' => $row->id,
@@ -274,14 +281,16 @@ class Schedules extends CI_Controller
 						'quantity' => $worker->quantity * $row->amount,
 						'year_service' => (date('Y') + 1),
 						'is_extra' => 0,
+						'count' => $i,
 						'created_by' => $this->session->user->id,
 						'updated_by' => $this->session->user->id,
 						'created_at' => date('Y-m-d H:i:s'),
 						'updated_at' => date('Y-m-d H:i:s')
 					];
-					if (!$this->schedule_worker_model->get_is_worker($row->id, $worker->worker_id, (date('Y') + 1))) {
+					if (!$this->schedule_worker_model->get_is_worker($row->id, $worker->worker_id, (date('Y') + 1), $i)) {
 						$this->schedule_worker_model->insert($data_worker);
 					}
+					$i++;
 				}
 
 				$technics = $this->ciphers_technic_model->get_data($row->cipher_id, (date('Y') + 1));
@@ -320,9 +329,7 @@ class Schedules extends CI_Controller
 			// 	}
 			// }
 			// -----------------------------------------------------------------------------------------------------------------
-			// echo "<pre>";
-			// print_r($row);
-			// echo "</pre>";
+
 			if ($row->type_service_id != 1 && $this->schedule_model->get_row_kr($row->specific_renovation_object_id) && $row->will_add == 0) {
 				// $this->schedule_model->update(['is_repair' => 0], $row->id);
 				$this->schedule_material_model->delete_for_schedule_id_and_year($row->id, (date('Y') + 1));
@@ -445,7 +452,7 @@ class Schedules extends CI_Controller
 			return;
 		}
 
-		$this->schedule_worker_model->change_quantity('quantity', $this->input->post('value'), $this->input->post('schedule_id'), $this->input->post('worker_id'), $this->input->post('year_service'));
+		$this->schedule_worker_model->change_quantity('quantity', $this->input->post('value'), $this->input->post('schedule_id'), $this->input->post('worker_id'), $this->input->post('year_service'), $this->input->post('count'));
 		$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!'], JSON_UNESCAPED_UNICODE));
 		return;
 	}
@@ -542,7 +549,7 @@ class Schedules extends CI_Controller
 			return;
 		}
 
-		$this->schedule_worker_model->delete_worker($this->input->post('schedule_id'), $this->input->post('worker_id'), $this->input->post('year_service'));
+		$this->schedule_worker_model->delete_worker($this->input->post('schedule_id'), $this->input->post('worker_id'), $this->input->post('year_service'), $this->input->post('count'));
 		$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані видалено!'], JSON_UNESCAPED_UNICODE));
 		return;
 	}
@@ -795,9 +802,9 @@ class Schedules extends CI_Controller
 			$active_sheet->setCellValue('B' . (6 + $i), 'Всього по роботам');
 			$active_sheet->setCellValue('F' . (6 + $i), 'шт');
 			//************************************************************************************************* 2024-04-16 Зміна 5 на 6 в формулі СУММ */
-			$active_sheet->setCellValue('G' . (6 + $i), '=SUM(G7:G' . (6 + $i) . ')');
+			$active_sheet->setCellValue('G' . (6 + $i), '=SUM(G7:G' . (6 + $i - 1) . ')');
 			for ($column = 'I'; $column < 'Z'; $column++) {
-				$active_sheet->setCellValue($column . (6 + $i), '=SUM(' . $column . '7:' . $column . (6 + $i) . ')');
+				$active_sheet->setCellValue($column . (6 + $i), '=SUM(' . $column . '7:' . $column . (6 + $i - 1) . ')');
 			}
 
 			$active_sheet->getStyle('A' . (6 + $i) . ':Y' . (6 + $i))->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setRGB('FFFFFF');
@@ -2536,7 +2543,7 @@ class Schedules extends CI_Controller
 
 		// echo "<pre>";
 		// print_r($results);
-		// print_r($group_array);
+		// print_r($group_array['ВД-1_1']);
 		// echo count($group_array);
 		// print_r($workers);
 		// echo "</pre>";

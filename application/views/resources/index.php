@@ -1,4 +1,4 @@
-<div class="card text-dark bg-light">
+<div class="card text-dark bg-light mb-2">
 	<div class="card-header mb-2">
 		<h5><?php echo $title_heading_card; ?></h5>
 	</div>
@@ -200,6 +200,26 @@
 					</div>
 
 				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="card text-dark bg-light mb-2">
+	<div class="card-header mb-2">
+		<h5>Реєстр матеріалів</h5>
+	</div>
+	<div class="card-body">
+		<div class="container-fluid">
+			<div class="row">
+				<?php foreach ($materials_all as $item) : ?>
+					<div class="col-sm-4">
+						<div class="form-check">
+							<input type="checkbox" class="form-check-input" data-material_id="<?php echo $item->id; ?>" data-id="<?php echo $item->materials_prices_id; ?>" id="<?php echo 'id_' . $item->id; ?>" <?php echo $item->checked ? 'checked' : NULL; ?> <?php echo ($item->disabled || $item->is_cipher_material || ($item->price > 0)) ? 'disabled' : NULL ?> <?php echo (!$item->handler && !$item->is_cipher_material) ? 'onClick="addDeleteCustomMaterial(event);"' : NULL ?>>
+							<label for="<?php echo 'id_' . $item->id ?>"><strong class="<?php echo $item->is_cipher_material ? 'text-primary' : NULL; ?>"><?php echo $item->name; ?></strong></label>
+						</div>
+					</div>
+				<?php endforeach; ?>
 			</div>
 		</div>
 	</div>

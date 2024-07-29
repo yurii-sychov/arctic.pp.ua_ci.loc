@@ -88,8 +88,45 @@ async function editValue(event) {
 	} catch (error) {
 		toastr.error(error);
 	}
+}
 
+async function addDeleteCustomMaterial(event) {
+	const material_id = $(event.target).data("material_id");
+	const id = $(event.target).data("id");
+	// event.target.removeAttribute("data-id");
 
+	// if (!event.target.checked) {
+	// 	return;
+	// }
+
+	const handler = event.target.checked ? 'add_custom_material_ajax' : 'delete_custom_material_ajax';
+
+	let form = new FormData();
+	form.set('material_id', material_id);
+	form.set('id', id);
+
+	try {
+		const response = await fetch('/resources/' + handler, {
+			method: 'POST',
+			headers: {
+				"X-Requested-With": "XMLHttpRequest"
+			},
+			body: form
+		});
+		const result = await response.json();
+		if (event.target.checked) {
+			event.target.disabled = true;
+			event.target.setAttribute("data-id", result.id);
+		}
+		if (result.status === 'SUCCESS') {
+			toastr.success(result.message, "Успіх");
+		}
+		else {
+			toastr.error(result.message, "Помилка");
+		}
+	} catch (error) {
+		toastr.error(error);
+	}
 }
 
 function deleteMaterial(event) {

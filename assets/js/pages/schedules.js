@@ -156,11 +156,12 @@ function deleteWorker(event) {
 		const schedule_id = $(event.target).closest("tr").data("schedule_id");
 		const worker_id = $(event.target).closest("tr").data("worker_id");
 		const year_service = $(event.target).closest("tr").data("year_service");
+		const count = $(event.target).closest("tr").data("count");
 
 		$.ajax({
 			method: "POST",
 			url: "/schedules/delete_worker_ajax",
-			data: { schedule_id, worker_id, year_service },
+			data: { schedule_id, worker_id, year_service, count },
 		}).done(function (data) {
 			if (data.status === "SUCCESS") {
 				toastr.success(data.message, "Успіх");
@@ -240,12 +241,13 @@ function editWorkerQuantity(event) {
 	const schedule_id = $(event.target).closest("tr").data("schedule_id");
 	const worker_id = $(event.target).closest("tr").data("worker_id");
 	const year_service = $(event.target).closest("tr").data("year_service");
+	const count = $(event.target).closest("tr").data("count");
 	const value = event.target.value;
 
 	$.ajax({
 		method: "POST",
 		url: "/schedules/edit_worker_quantity_ajax",
-		data: { schedule_id, worker_id, year_service, value },
+		data: { schedule_id, worker_id, year_service, count, value },
 	}).done(function (data) {
 		if (data.status === "SUCCESS") {
 			toastr.success(data.message, "Успіх");
@@ -305,7 +307,7 @@ let myCollapsibles = $("table .collapse");
 
 myCollapsibles.each(function (index, el) {
 	el.addEventListener("show.bs.collapse", function (event) {
-		myCollapsibles.removeClass("show")
+		myCollapsibles.removeClass("show");
 	});
 	el.addEventListener("shown.bs.collapse", function (event) {
 		localStorage.setItem("showCollapse", event.target.id);
@@ -384,7 +386,7 @@ $(document).ready(function () {
 						"data-bs-toggle": "tooltip"
 					},
 					init: function (e, dt, node, config) {
-						dt.removeClass('btn-secondary')
+						dt.removeClass('btn-secondary');
 					}
 				},
 				{
@@ -400,7 +402,7 @@ $(document).ready(function () {
 						"data-bs-toggle": "tooltip"
 					},
 					init: function (e, dt, node, config) {
-						dt.removeClass('btn-secondary')
+						dt.removeClass('btn-secondary');
 					}
 				},
 				// {
@@ -456,7 +458,7 @@ $(document).ready(function () {
 						"data-bs-toggle": "tooltip"
 					},
 					init: function (e, dt, node, config) {
-						dt.removeClass('btn-secondary')
+						dt.removeClass('btn-secondary');
 					}
 				},
 				{
@@ -469,7 +471,7 @@ $(document).ready(function () {
 						"data-bs-toggle": "tooltip"
 					},
 					init: function (e, dt, node, config) {
-						dt.removeClass('btn-secondary')
+						dt.removeClass('btn-secondary');
 					},
 					// autoPrint: false,
 					exportOptions: {
@@ -816,7 +818,7 @@ async function format(d) {
 				<i class="bi bi-trash text-secondary" title="Видалити" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual"></i>
 			</a>`;
 			workers_html +=
-				`<tr style="background:#20c997;" class="align-middle text-center" data-schedule_id="${v.schedule_id}" data-worker_id="${v.worker_id}" data-year_service="${v.year_service}">
+				`<tr style="background:#20c997;" class="align-middle text-center" data-schedule_id="${v.schedule_id}" data-worker_id="${v.worker_id}" data-year_service="${v.year_service}" data-count=${v.count}>
 				<td class="text-center number">${n}</td>
 				<td class="text-start worker ${(v.is_extra == 1) ? 'text-danger' : ''}">${v.name}${(v.is_extra == 1) ? '*' : ''}</td>
 				<td class="text-start unit">${v.unit}</td>
@@ -938,7 +940,7 @@ async function editAvrPrice(event) {
 		} else {
 			toastr.error(data.message, "Помилка");
 		}
-		console.log(data)
+		console.log(data);
 	} catch (error) {
 		console.log(error);
 	}

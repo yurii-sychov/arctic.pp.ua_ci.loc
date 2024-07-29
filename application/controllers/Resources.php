@@ -53,12 +53,50 @@ class Resources extends CI_Controller
 		$data['title_heading'] = 'Перелік ресурсів для виконання РП';
 		$data['title_heading_card'] = $this->uri->segment(3) ? 'Перелік ресурсів для виконання ремонтної програми на ' . $this->uri->segment(3) . ' рік' : 'Перелік ресурсів для виконання ремонтної програми на ' . (date('Y') + 1) . ' рік';
 		$price_year = $this->uri->segment(3) ? $this->uri->segment(3) : (date('Y') + 1);
-		$data['materials'] = $this->material_model->get_data_with_price($price_year);
+
+		$materials_all = $this->material_model->get_data();
+
+		$materials = $this->material_model->get_data_with_price($price_year);
+
 		$data['workers'] = $this->worker_model->get_data_with_price($price_year);
 		$data['technics'] = $this->technic_model->get_data_with_price($price_year);
+
+		$cipher_materials = $this->ciphers_material_model->get_material_ids();
+		foreach ($materials_all as $material) {
+
+			$material->is_cipher_material = false;
+			foreach ($cipher_materials as $cipher_material) {
+				if ($material->id == $cipher_material->material_id) {
+					$material->is_cipher_material = true;
+				}
+			}
+
+			$material->disabled = false;
+			$material->handler = false;
+			if ($this->uri->segment(3) && ((date('Y') + 1) != $this->uri->segment(3))) {
+				$material->disabled = true;
+				$material->handler = true;
+			}
+
+			$material->checked = 0;
+			$material->materials_prices_id = 0;
+			$material->price = 0.00;
+			foreach ($materials as $item) {
+				if ($material->id == $item->id) {
+					$material->checked = 1;
+					$material->materials_prices_id = $item->materials_prices_id;
+					$material->price = $item->price;
+				}
+			}
+		}
+
+		$data['materials'] = $materials;
+		$data['materials_all'] = $materials_all;
+
 		// echo "<pre>";
-		// print_r($data['materials']);
+		// print_r($materials_all);
 		// echo "</pre>";
+
 		$this->load->view('layout', $data);
 	}
 
@@ -126,10 +164,82 @@ class Resources extends CI_Controller
 	{
 		$this->load->library('user_agent');
 		if ($this->session->user->group === 'admin' || $this->session->user->group === 'engineer') {
-			$this->material_model->delete($id);
+			// $this->material_model->delete($id);
 			redirect($this->agent->referrer());
 		} else {
 			redirect($this->agent->referrer());
+		}
+	}
+
+	public function add_custom_material_ajax()
+	{
+		$this->output->set_content_type('application/json');
+
+		$this->load->library('form_validation');
+
+		if (!$this->input->is_ajax_request()) {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не Ajax запрос!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		if (!$this->input->post()) {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не POST запрос!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		if ($this->session->user->group !== 'admin' && $this->session->user->group !== 'engineer') {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Вам не дозволена ця операція!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		$data['material_id'] = $this->input->post('material_id');
+		$data['price'] = 0;
+		$data['price_year'] = (date('Y') + 1);
+		$data['created_by'] = $this->session->user->id;
+		$data['updated_by'] = $this->session->user->id;
+		$data['created_at'] = date('Y-m-d H:i:s');
+		$data['updated_at'] = date('Y-m-d H:i:s');
+
+		$result = $this->materials_price_model->insert($data);
+		if ($result) {
+			$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!', 'id' => $result], JSON_UNESCAPED_UNICODE));
+			return;
+		} else {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Fucking chert!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+	}
+
+	public function delete_custom_material_ajax()
+	{
+		$this->output->set_content_type('application/json');
+
+		$this->load->library('form_validation');
+
+		if (!$this->input->is_ajax_request()) {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не Ajax запрос!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		if (!$this->input->post()) {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не POST запрос!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		if ($this->session->user->group !== 'admin' && $this->session->user->group !== 'engineer') {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Вам не дозволена ця операція!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+		// print_r($this->input->post());
+		// exit;
+
+		$result = $this->materials_price_model->delete($this->input->post('id'));
+		if ($result) {
+			$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані видалено!'], JSON_UNESCAPED_UNICODE));
+			return;
+		} else {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Fucking chert!'], JSON_UNESCAPED_UNICODE));
+			return;
 		}
 	}
 

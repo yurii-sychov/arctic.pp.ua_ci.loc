@@ -145,6 +145,8 @@ class Schedule_material_Model extends CI_Model
 		$this->db->where('specific_renovation_objects.voltage_class_id = voltage_class.id');
 		$this->db->where('materials.id = materials_prices.material_id');
 		$this->db->where('schedules_materials.year_service', (date('Y') + 1));
+		$this->db->where('schedules_years.year_service', (date('Y') + 1));
+		$this->db->where('materials_prices.price_year', (date('Y') + 1));
 		if ($type_service_id) {
 			$this->db->where('schedules.type_service_id', $type_service_id);
 		}
@@ -169,13 +171,15 @@ class Schedule_material_Model extends CI_Model
 		$this->db->where('schedules_materials.material_id = materials.id');
 		$this->db->where('schedules_materials.schedule_id = schedules.id');
 		$this->db->where('schedules.specific_renovation_object_id = specific_renovation_objects.id');
-		$this->db->where('schedules_materials.schedule_id = schedules_years.schedule_id');
+		// $this->db->where('schedules_materials.schedule_id = schedules_years.schedule_id');
+		// $this->db->where('schedules_years.year_service', (date('Y') + 1));
 		$this->db->group_by('schedules_materials.material_id');
 		$this->db->group_by('schedules.type_service_id');
 		$this->db->order_by('materials.name', 'ASC');
 		$this->db->order_by('schedules.type_service_id', 'ASC');
 		$this->db->order_by('specific_renovation_objects.subdivision_id', 'ASC');
-		$this->db->from('schedules_materials, materials, schedules, specific_renovation_objects, schedules_years');
+		$this->db->from('schedules_materials, materials, schedules, specific_renovation_objects');
+		// $this->db->from('schedules_materials, materials, schedules, specific_renovation_objects, schedules_years');
 		$query = $this->db->get();
 		return $query->result();
 	}

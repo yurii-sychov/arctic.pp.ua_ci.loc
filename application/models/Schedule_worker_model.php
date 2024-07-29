@@ -56,12 +56,13 @@ class Schedule_worker_Model extends CI_Model
 		return $query->row('count');
 	}
 
-	public function get_is_worker($schedule_id, $worker_id, $year_service)
+	public function get_is_worker($schedule_id, $worker_id, $year_service, $count)
 	{
 		$this->db->select('schedules_workers.*');
 		$this->db->where('schedules_workers.schedule_id', $schedule_id);
 		$this->db->where('schedules_workers.worker_id', $worker_id);
 		$this->db->where('schedules_workers.year_service', $year_service);
+		$this->db->where('schedules_workers.count', $count);
 		$this->db->from('schedules_workers');
 		$query = $this->db->get();
 		return $query->row();
@@ -85,16 +86,17 @@ class Schedule_worker_Model extends CI_Model
 		return $query;
 	}
 
-	public function delete_worker($schedule_id, $worker_id, $year_service)
+	public function delete_worker($schedule_id, $worker_id, $year_service, $count)
 	{
 		$this->db->where('schedule_id', $schedule_id);
 		$this->db->where('worker_id', $worker_id);
 		$this->db->where('year_service', $year_service);
+		$this->db->where('count', $count);
 		$query = $this->db->delete('schedules_workers');
 		return $query;
 	}
 
-	public function change_quantity($field, $value, $schedule_id, $worker_id, $year_service)
+	public function change_quantity($field, $value, $schedule_id, $worker_id, $year_service, $count)
 	{
 		$this->db->set('is_extra', 1);
 		$this->db->set($field, $value === '' ? 0 : $value);
@@ -103,6 +105,7 @@ class Schedule_worker_Model extends CI_Model
 		$this->db->where('schedule_id', $schedule_id);
 		$this->db->where('worker_id', $worker_id);
 		$this->db->where('year_service', $year_service);
+		$this->db->where('count', $count);
 		$query = $this->db->update('schedules_workers');
 		return $query;
 	}
@@ -119,14 +122,14 @@ class Schedule_worker_Model extends CI_Model
 		$this->db->select('equipments.name as equipment');
 		$this->db->select('(voltage_class.voltage / 1000) as voltage');
 
-// 		$this->db->select('ciphers.cipher');
-        $this->db->select('(SELECT `cipher` FROM `ciphers` WHERE `id` = `schedules`.`cipher_id`) as cipher');
+		// 		$this->db->select('ciphers.cipher');
+		$this->db->select('(SELECT `cipher` FROM `ciphers` WHERE `id` = `schedules`.`cipher_id`) as cipher');
 
 		// $this->db->select('passports.short_type as type');
 		$this->db->select('(SELECT GROUP_CONCAT(`type` SEPARATOR "; ") FROM `passports` WHERE `specific_renovation_object_id` = `specific_renovation_objects`.`id`) as type');
 		$this->db->select('(SELECT GROUP_CONCAT(`short_type` SEPARATOR "; ") FROM `passports` WHERE `specific_renovation_object_id` = `specific_renovation_objects`.`id`) as short_type');
 		$this->db->select('(SELECT COUNT(`id`) FROM `passports` WHERE `specific_renovation_object_id` = `specific_renovation_objects`.`id`) as quantity_equipment');
-// 		$this->db->where('schedules.cipher_id = ciphers.id');
+		// 		$this->db->where('schedules.cipher_id = ciphers.id');
 		$this->db->where('schedules_workers.worker_id = workers.id');
 		$this->db->where('schedules_workers.schedule_id = schedules.id');
 		$this->db->where('schedules_years.schedule_id = schedules_workers.schedule_id');
@@ -139,6 +142,7 @@ class Schedule_worker_Model extends CI_Model
 		$this->db->where('specific_renovation_objects.voltage_class_id = voltage_class.id');
 		// $this->db->where('workers.id = workers_prices.worker_id');
 		$this->db->where('schedules_workers.year_service', (date('Y') + 1));
+		$this->db->where('schedules_years.year_service', (date('Y') + 1));
 		if ($type_service_id) {
 			$this->db->where('schedules.type_service_id', $type_service_id);
 		}
@@ -152,8 +156,8 @@ class Schedule_worker_Model extends CI_Model
 		$this->db->order_by('specific_renovation_objects.name', 'ASC');
 
 		$query = $this->db->get();
-// 		echo count($query->result());
-// 		exit;
+		// echo count($query->result());
+		// exit;
 		return $query->result();
 	}
 
