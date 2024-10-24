@@ -882,10 +882,10 @@ class Schedules extends CI_Controller
 			$active_sheet->setCellValue('C' . (11 + $i), 'тис.грн');
 			$active_sheet->setCellValue('C' . (12 + $i), 'тис.грн');
 
-
 			$materials_summa = $this->schedule_material_model->get_summa($stantion_id, $type_service_id) / 1000;
 			$workers_summa = $this->schedule_worker_model->get_summa($stantion_id, $type_service_id) / 1000;
 			$technics_summa = $this->schedule_technic_model->get_summa($stantion_id, $type_service_id) / 1000;
+
 			$active_sheet->setCellValue('I' . (9 + $i), $materials_summa);
 			$active_sheet->setCellValue('I' . (10 + $i), $workers_summa);
 			$active_sheet->setCellValue('I' . (11 + $i), $technics_summa);

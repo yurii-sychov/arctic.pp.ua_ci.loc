@@ -83,7 +83,7 @@ class Schedule_year_Model extends CI_Model
 		$this->db->select('equipments.name as equipment');
 		$this->db->select('(voltage_class.voltage / 1000) as voltage');
 		$this->db->select('(SELECT SUM(`quantity`) FROM `schedules_workers` WHERE `schedule_id` = `schedules`.`id` AND `year_service` = ' . (date('Y') + 1) . ') AS `workers`');
-		$this->db->select('(SELECT SUM(`materials_prices`.`price` * `schedules_materials`.`quantity`) / 1000 FROM `schedules_materials`, `materials_prices` WHERE `schedules_materials`.`material_id` = `materials_prices`.`material_id` AND `schedule_id` = `schedules`.`id` AND `year_service` = ' . (date('Y') + 1) . ') AS `materials`');
+		$this->db->select('(SELECT SUM(`materials_prices`.`price` * `schedules_materials`.`quantity`) / 1000 FROM `schedules_materials`, `materials_prices` WHERE `schedules_materials`.`material_id` = `materials_prices`.`material_id` AND `schedule_id` = `schedules`.`id` AND `schedules_materials`.`year_service` = ' . (date('Y') + 1) . ' AND `materials_prices`.`price_year` = ' . (date('Y') + 1) . ' ) AS `materials`');
 		// $this->db->select('schedules_years.month_service as month');
 		// $this->db->where('schedules_materials.material_id = materials.id');
 		// $this->db->where('schedules_materials.schedule_id = schedules.id');
@@ -113,13 +113,16 @@ class Schedule_year_Model extends CI_Model
 		$this->db->select('equipments.name as oborud');
 		$this->db->select('(IF(`complete_renovation_objects`.`id` > 24, \'35\', \'150\')) as class_voltage');
 		$this->db->select('schedules_years.month_service as month');
-		$this->db->select('(SELECT `note` FROM `schedules_notes` WHERE `schedule_id` =  schedules_years.schedule_id) AS `note_for_contract`');
+		$this->db->select('(SELECT `note` FROM `schedules_notes` WHERE `schedule_id` =  schedules_years.schedule_id AND `year_service` = (date(\'Y\') + 1) LIMIT 1) AS `note_for_contract`');
 		$this->db->select('schedules_materials.quantity as quantity');
 		$this->db->select('materials_prices.price as price');
 		$this->db->select('(`schedules_materials`.`quantity` * `materials_prices`.`price`) as `price_total_no_vat`');
 		$this->db->select('complete_renovation_objects.r3_id as inventar_number');
 
+		$this->db->where('schedules_materials.year_service', (date('Y') + 1));
 		$this->db->where('schedules_years.year_service', (date('Y') + 1));
+		$this->db->where('schedules_years.year_service', (date('Y') + 1));
+		$this->db->where('schedules_materials.year_service', (date('Y') + 1));
 		$this->db->where('materials_prices.price_year', (date('Y') + 1));
 		$this->db->where('schedules.type_service_id != 3');
 		$this->db->where('schedules_years.schedule_id = schedules_materials.schedule_id');
