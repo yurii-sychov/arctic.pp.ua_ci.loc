@@ -447,4 +447,11 @@ class Passport_Model extends CI_Model
 
 		return $query->result();
 	}
+
+	public function update_field($id, $data)
+	{
+		$this->db->where('id', $id);
+		$query = $this->db->update('passports', $data);
+		return $query;
+	}
 }

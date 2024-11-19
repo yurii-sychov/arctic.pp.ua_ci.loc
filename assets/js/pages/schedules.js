@@ -66,8 +66,10 @@ function addRowMaterial(event) {
 				<select/>
 			</td>
 			<td class="unit"></td>
+			<td class="text-center price">???</td>
 			<td class="quantity"><input type="text" class="form-control form-control-sm text-center" name="quantity[]" value="0.00" /></td>
-			<td class="delete">
+			<td class="is_do"></td>
+			<td class="text-center delete">
 				<a href="javascript:void(0);" onclick="deleteExtraMaterial(event);">
 					<i class="bi bi-trash text-info" title="Видалити" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual"></i>
 				</a>

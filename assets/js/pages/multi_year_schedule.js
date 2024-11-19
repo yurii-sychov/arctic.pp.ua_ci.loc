@@ -356,7 +356,7 @@ $(document).ready(function () {
 							? data
 							: `<input type="text" class="form-control form-control-sm text-center" value="${data ? data : ""
 							}" tabindex="${meta.col}" maxlength="255" onchange="changeDisp(event);"  ${is_disabled} />`;
-						return back
+						return back;
 					},
 				},
 				{
@@ -422,12 +422,12 @@ $(document).ready(function () {
 
 						let options = `<option value="">Оберіть шифр</option>`;
 						row.DT_RowData.ciphers.forEach(el => {
-							options += `<option value="${el.id}" ${data == el.id ? 'selected' : ''}>${'ID_' + el.id + ' (' + el.cipher + '_' + el.name + ')'}</option>`
+							options += `<option value="${el.id}" ${data == el.id ? 'selected' : ''}>${'ID_' + el.id + ' (' + el.cipher + '_' + el.name + ')'}</option>`;
 						});
 
 						const back = (row.DT_RowData.user_group === 'master')
 							? data
-							: `<select class="form-select select2" onchange="changeCipher(event);">${options}</select>`
+							: `<select class="form-select select2" onchange="changeCipher(event);">${options}</select>`;
 						// : `<input type="text" class="form-control form-control-sm text-left" value="${data ? data : ""}" tabindex="${meta.col}" maxlength="10" onchange="changeCipher(event);" />`;
 						return back;
 					},
@@ -438,7 +438,7 @@ $(document).ready(function () {
 					name: "Шифр ремонту",
 					orderable: true,
 					searchable: true,
-					visible: true,
+					visible: false,
 					width: "8%",
 					className: "cipher_id",
 					render: function (data, type, row, meta) {
@@ -448,7 +448,7 @@ $(document).ready(function () {
 
 						let options = `<option value="">Оберіть шифр</option>`;
 						row.DT_RowData.ciphers.forEach(el => {
-							options += `<option value="${el.id}" ${data == el.id ? 'selected' : ''}>${'ID_' + el.id + ' (' + el.cipher + '_' + el.name + ')'}</option>`
+							options += `<option value="${el.id}" ${data == el.id ? 'selected' : ''}>${'ID_' + el.id + ' (' + el.cipher + '_' + el.name + ')'}</option>`;
 						});
 
 						const back = (row.DT_RowData.user_group === 'master')
@@ -496,7 +496,7 @@ $(document).ready(function () {
 					name: "Рік вводу",
 					orderable: true,
 					searchable: true,
-					visible: false,
+					visible: true,
 					width: "5%",
 					className: "year_commissioning text-center",
 					render: function (data, type, row, meta) {
@@ -608,7 +608,7 @@ $(document).ready(function () {
 		});
 
 	table.on('requestChild.dt', function (e, row) {
-		console.log('row', row)
+		console.log('row', row);
 		row.child(format(row.data())).show();
 	});
 
