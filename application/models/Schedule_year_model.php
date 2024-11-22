@@ -131,6 +131,7 @@ class Schedule_year_Model extends CI_Model
 		$this->db->where('specific_renovation_objects.complete_renovation_object_id = complete_renovation_objects.id');
 		$this->db->where('schedules_materials.material_id = materials_prices.material_id');
 		$this->db->where('specific_renovation_objects.equipment_id = equipments.id');
+		$this->db->where('schedules_materials.is_repair = 1');
 
 		$this->db->order_by('repair_method', 'ASC');
 		$this->db->order_by('repair_type', 'ASC');

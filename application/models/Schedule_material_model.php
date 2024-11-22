@@ -269,4 +269,18 @@ class Schedule_material_Model extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
+
+	public function change_is_repair($field, $value, $schedule_id, $year_service, $resource_id)
+	{
+		$this->db->set($field, $value === '' ? NULL : $value);
+		if ($this->session->user->group !== 'admin') {
+			$this->db->set('updated_by', $this->session->user->id);
+			$this->db->set('updated_at', date('Y-m-d H:i:s'));
+		}
+		$this->db->where('schedule_id', $schedule_id);
+		$this->db->where('year_service', $year_service);
+		$this->db->where('material_id', $resource_id);
+		$query = $this->db->update('schedules_materials');
+		return $query;
+	}
 }

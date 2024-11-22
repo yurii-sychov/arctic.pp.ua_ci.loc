@@ -582,9 +582,9 @@ class Schedules extends CI_Controller
 	{
 		$stantion = $this->complete_renovation_object_model->get_row($stantion_id);
 
-		header('Content-Type: application/vnd.ms-excel');
-		header('Content-Disposition: attachment;filename="Відомість дефектів та витрат на ' . (date('Y') + 1) . ' для ' . $stantion->name . '.xlsx"');
-		header('Cache-Control: max-age=0');
+		// header('Content-Type: application/vnd.ms-excel');
+		// header('Content-Disposition: attachment;filename="Відомість дефектів та витрат на ' . (date('Y') + 1) . ' для ' . $stantion->name . '.xlsx"');
+		// header('Cache-Control: max-age=0');
 
 		$spreadsheet = new Spreadsheet();
 
@@ -3314,12 +3314,29 @@ class Schedules extends CI_Controller
 			return;
 		}
 
-		if ($this->session->user->group !== 'admin') {
+		if ($this->session->user->group !== 'admin' && $this->session->user->group !== 'engineer') {
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Вам не дозволена ця операція!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}
 
-		$this->passport_model->change_value('is_repair', $this->input->post('value'), $this->input->post('id'));
+		$_POST['year_service'] = (date('Y') + 1);
+
+		// print_r($this->input->post());
+		// exit;
+
+		if ($this->input->post('resource') === 'material') {
+			$this->schedule_material_model->change_is_repair('is_repair', $this->input->post('value'), $this->input->post('schedule_id'), $this->input->post('year_service'), $this->input->post('resource_id'));
+		}
+
+		if ($this->input->post('resource') === 'worker') {
+			$this->schedule_worker_model->change_is_repair('is_repair', $this->input->post('value'), $this->input->post('schedule_id'), $this->input->post('year_service'), $this->input->post('resource_id'));
+		}
+
+		if ($this->input->post('resource') === 'technic') {
+			$this->schedule_technic_model->change_is_repair('is_repair', $this->input->post('value'), $this->input->post('schedule_id'), $this->input->post('year_service'), $this->input->post('resource_id'));
+		}
+
+		// $this->passport_model->change_value('is_repair', $this->input->post('value'), $this->input->post('id'));
 		$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!'], JSON_UNESCAPED_UNICODE));
 		return;
 	}

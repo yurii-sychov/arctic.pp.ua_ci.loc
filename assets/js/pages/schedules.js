@@ -799,7 +799,7 @@ async function format(d) {
 				<td class="text-start unit">${v.unit}</td>
 				<td class="text-center price">???</td>
 				<td class="text-center quantity">${quantity}</td>
-				<td class="text-center is_do"><input type="checkbox" class="form-check-input" title="${v.is_repair == 1 ? 'Не ставити в ремонт' : 'Ставити в ремонт'}" ${v.is_repair == 0 ? 'checked' : ''} style="cursor: pointer;" onClick="changeIsRepair(event, 'material');" disabled></td>
+				<td class="text-center is_do"><input type="checkbox" class="form-check-input" title="${v.is_repair == 1 ? 'Планувати в ремонт' : 'Не планувати в ремонт'}" ${v.is_repair == 0 ? 'checked' : ''} style="cursor: pointer;" onClick="changeIsRepair(event, 'material');" disable></td>
 				<td class="text-center delete">${del}</td>
 			</tr>`;
 			n++;
@@ -826,7 +826,7 @@ async function format(d) {
 				<td class="text-start unit">${v.unit}</td>
 				<td class="text-center price">???</td>
 				<td class="text-center quantity">${quantity}</td>
-				<td class="text-center is_do"><input type="checkbox" class="form-check-input" title="${v.is_repair == 1 ? 'Не ставити в ремонт' : 'Ставити в ремонт'}" style="cursor: pointer;" onClick="changeIsRepair(event, 'worker');" disabled></td>
+				<td class="text-center is_do"><input type="checkbox" class="form-check-input" title="${v.is_repair == 1 ? 'Планувати в ремонт' : 'Не планувати в ремонт'}" ${v.is_repair == 0 ? 'checked' : ''} style="cursor: pointer;" onClick="changeIsRepair(event, 'worker');" disable></td>
 				<td class="text-center delete">${del}</td>
 			</tr>`;
 			n++;
@@ -853,7 +853,7 @@ async function format(d) {
 				<td class="text-start unit">${v.unit}</td>
 				<td class="text-center price">???</td>
 				<td class="text-center quantity">${quantity}</td>
-				<td class="text-center is_do"><input type="checkbox" class="form-check-input" title="${v.is_repair == 1 ? 'Не ставити в ремонт' : 'Ставити в ремонт'}" style="cursor: pointer;" onClick="changeIsRepair(event, 'technic');" disabled></td>
+				<td class="text-center is_do"><input type="checkbox" class="form-check-input" title="${v.is_repair == 1 ? 'Планувати в ремонт' : 'Не планувати в ремонт'}" ${v.is_repair == 0 ? 'checked' : ''} style="cursor: pointer;" onClick="changeIsRepair(event, 'technic');" disable></td>
 				<td class="text-center delete">${del}</td>
 			</tr>`;
 			n++;
@@ -950,7 +950,9 @@ async function editAvrPrice(event) {
 
 function changeIsRepair(event, resource) {
 	const schedule_id = $(event.target).parents("tr").data("schedule_id");
+
 	let resource_id = 0;
+
 	if (resource === 'material') {
 		resource_id = $(event.target).parents("tr").data("material_id");
 	}
@@ -971,17 +973,17 @@ function changeIsRepair(event, resource) {
 	console.log('schedule_id', schedule_id);
 	console.log('resource_id', resource_id);
 	console.log('value', value);
-	// $.ajax({
-	// 	method: "POST",
-	// 	url: "/schedules/change_is_repair_ajax",
-	// 	data: { schedule_id, resource_id, value },
-	// }).done(function (data) {
-	// 	if (data.status === "SUCCESS") {
-	// 		toastr.success(data.message, "Успіх");
-	// 	} else {
-	// 		toastr.error(data.message, "Помилка");
-	// 	}
-	// });
+	$.ajax({
+		method: "POST",
+		url: "/schedules/change_is_repair_ajax",
+		data: { resource, schedule_id, resource_id, value },
+	}).done(function (data) {
+		if (data.status === "SUCCESS") {
+			toastr.success(data.message, "Успіх");
+		} else {
+			toastr.error(data.message, "Помилка");
+		}
+	});
 }
 
 
