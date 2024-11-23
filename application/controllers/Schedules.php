@@ -582,9 +582,9 @@ class Schedules extends CI_Controller
 	{
 		$stantion = $this->complete_renovation_object_model->get_row($stantion_id);
 
-		// header('Content-Type: application/vnd.ms-excel');
-		// header('Content-Disposition: attachment;filename="Відомість дефектів та витрат на ' . (date('Y') + 1) . ' для ' . $stantion->name . '.xlsx"');
-		// header('Cache-Control: max-age=0');
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="Відомість дефектів та витрат на ' . (date('Y') + 1) . ' для ' . $stantion->name . '.xlsx"');
+		header('Cache-Control: max-age=0');
 
 		$spreadsheet = new Spreadsheet();
 
@@ -3340,11 +3340,6 @@ class Schedules extends CI_Controller
 		$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!'], JSON_UNESCAPED_UNICODE));
 		return;
 	}
-
-
-
-
-
 
 	public function clear_data()
 	{

@@ -61,6 +61,7 @@ class Schedule_material_Model extends CI_Model
 		$this->db->where('schedules_materials.year_service', (date('Y') + 1));
 		$this->db->where('materials_prices.price_year', (date('Y') + 1));
 		$this->db->from('schedules_materials, materials_prices');
+		$this->db->where('schedules_materials.is_repair = 1');
 		$query = $this->db->get();
 		return $query->row('total_price');
 	}
@@ -148,6 +149,7 @@ class Schedule_material_Model extends CI_Model
 		$this->db->where('schedules_materials.year_service', (date('Y') + 1));
 		$this->db->where('schedules_years.year_service', (date('Y') + 1));
 		$this->db->where('materials_prices.price_year', (date('Y') + 1));
+		$this->db->where('schedules_materials.is_repair = 1');
 		if ($type_service_id) {
 			$this->db->where('schedules.type_service_id', $type_service_id);
 		}
@@ -215,6 +217,7 @@ class Schedule_material_Model extends CI_Model
 		$this->db->where('schedules_materials.material_id = materials_prices.material_id');
 		$this->db->where('schedules_materials.year_service', (date('Y') + 1));
 		$this->db->where('materials_prices.price_year', (date('Y') + 1));
+
 		if ($quarter == 1) {
 			$this->db->where('schedules.month BETWEEN 1 AND 3');
 		}

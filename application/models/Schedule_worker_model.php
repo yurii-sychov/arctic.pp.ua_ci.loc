@@ -143,6 +143,7 @@ class Schedule_worker_Model extends CI_Model
 		// $this->db->where('workers.id = workers_prices.worker_id');
 		$this->db->where('schedules_workers.year_service', (date('Y') + 1));
 		$this->db->where('schedules_years.year_service', (date('Y') + 1));
+		$this->db->where('schedules_workers.is_repair = 1');
 		if ($type_service_id) {
 			$this->db->where('schedules.type_service_id', $type_service_id);
 		}

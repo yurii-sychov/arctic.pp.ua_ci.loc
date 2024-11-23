@@ -124,6 +124,8 @@ class Schedule_technic_Model extends CI_Model
 		$this->db->where('specific_renovation_objects.voltage_class_id = voltage_class.id');
 		$this->db->where('technics.id = technics_prices.technic_id');
 		$this->db->where('schedules_technics.year_service', (date('Y') + 1));
+		$this->db->where('schedules_years.year_service', (date('Y') + 1));
+		$this->db->where('schedules_technics.is_repair = 1');
 		if ($type_service_id) {
 			$this->db->where('schedules.type_service_id', $type_service_id);
 		}
