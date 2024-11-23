@@ -1217,6 +1217,11 @@ class Schedules extends CI_Controller
 
 		$data = $this->schedule_year_model->get_data_for_simple_year($stantion_id, $current_year);
 
+		// echo "<pre>";
+		// print_r($data);
+		// echo "</pre>";
+		// exit;
+
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment;filename="Річний план-графік для майстрів на ' . (date('Y') + 1) . ' для ' . $stantion->name . '.xlsx"');
 		header('Cache-Control: max-age=0');
@@ -1259,9 +1264,9 @@ class Schedules extends CI_Controller
 		$active_sheet->getStyle('A1:G6')->getFont()->setSize(12)->setBold(true);
 		$active_sheet->getStyle('A1:G6')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT);
 		$active_sheet->mergeCells('A1:G1')->setCellValue('A1', '"Затверджую"');
-		$active_sheet->mergeCells('A2:G2')->setCellValue('A2', 'Начальник СП');
-		$active_sheet->mergeCells('A3:G3')->setCellValue('A3', '_________________ Юрій СИЧОВ');
-		$active_sheet->mergeCells('A4:G4')->setCellValue('A4', '" ____ " ___________ 20 ____ року');
+		$active_sheet->mergeCells('A2:G2')->setCellValue('A2', 'Директор технічний');
+		$active_sheet->mergeCells('A3:G3')->setCellValue('A3', '_____________ Валерій ЗАПОРОЖЕЦЬ');
+		$active_sheet->mergeCells('A4:G4')->setCellValue('A4', '" ____ " _________________ 20 ____ року');
 
 		$active_sheet->getRowDimension('6')->setRowHeight(20);
 		$active_sheet->mergeCells('A6:G6')->setCellValue('A6', 'РІЧНИЙ ПЛАН-ГРАФІК')->getStyle('A6')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
@@ -1296,6 +1301,11 @@ class Schedules extends CI_Controller
 		$i = 1;
 		$row = 11;
 		foreach ($data as $item) {
+			if ($item->note) {
+				$active_sheet->getRowDimension($row)->setRowHeight(26);
+			} else {
+				$active_sheet->getRowDimension($row)->setRowHeight(13);
+			}
 			$active_sheet->getStyle('A' . $row)->getFont()->setSize(12)->setBold(false);
 			$active_sheet->getStyle('A' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 			$active_sheet->getStyle('E' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
@@ -1304,7 +1314,7 @@ class Schedules extends CI_Controller
 			$active_sheet->getStyle('A' . $row . ':G' . $row)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
 			$active_sheet->mergeCells('A' . $row)->setCellValue('A' . $row, $i);
-			$active_sheet->mergeCells('B' . $row)->setCellValue('B' . $row, $item->oborud . ' ' . round($item->voltage, 0) . ' кВ');
+			$active_sheet->mergeCells('B' . $row)->setCellValue('B' . $row, $item->note ? $item->oborud . ' ' . round($item->voltage, 0) . ' кВ' . "\n" . '(' . $item->note . ')' : $item->oborud . ' ' . round($item->voltage, 0) . ' кВ');
 			$active_sheet->mergeCells('C' . $row)->setCellValue('C' . $row, $item->disp);
 			$active_sheet->mergeCells('D' . $row)->setCellValue('D' . $row, $item->type);
 			$active_sheet->mergeCells('E' . $row)->setCellValue('E' . $row, $item->type_service);
@@ -1314,6 +1324,10 @@ class Schedules extends CI_Controller
 			$i++;
 			$row++;
 		}
+
+		$active_sheet->mergeCells('A' . ($row + 3) . ':Y' . ($row + 3))->setCellValue('A' . ($row + 3), '                        Начальник СП ________________ Юрій СИЧОВ');
+		// $active_sheet->mergeCells('A' . ($row + 3 + 3) . ':Y' . ($row + 3 + 3))->setCellValue('A' . ($row + 3 + 3), 'План склав ______________');
+		// $active_sheet->mergeCells('A' . ($row + 3 + 3 + 3) . ':Y' . ($row + 3 + 3 + 3))->setCellValue('A' . ($row + 3 + 3 + 3), 'Файл створено за допомогою АПроСТОР v1.0');
 
 		$active_sheet->getStyle('A6');
 

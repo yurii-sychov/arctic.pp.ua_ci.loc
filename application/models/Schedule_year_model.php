@@ -149,9 +149,10 @@ class Schedule_year_Model extends CI_Model
 		$this->db->select('(voltage_class.voltage / 1000) as voltage');
 		$this->db->select('specific_renovation_objects.name as disp');
 		$this->db->select('(SELECT GROUP_CONCAT(`type`) from `passports` WHERE `passports`.`specific_renovation_object_id` = `specific_renovation_objects`.`id`) as `type`');
-		$this->db->select('(CASE WHEN `schedules`.`type_service_id` = 1 THEN "КР" WHEN `schedules`.`type_service_id` = 2 THEN "ПР" WHEN `schedules`.`type_service_id` = 3 THEN "ТО" END) as type_service');
+		$this->db->select('(CASE WHEN `schedules`.`type_service_id` = 1 THEN "КР" WHEN `schedules`.`type_service_id` = 2 THEN "ПР" WHEN `schedules`.`type_service_id` = 3 THEN "ТО" END) as `type_service`');
 		$this->db->select('schedules_years.month_service as month');
 		$this->db->select('schedules_years.date_service_actual as date_service_actual');
+		$this->db->select('(SELECT `schedules_notes`.`note` FROM `schedules_notes` WHERE `schedules_notes`.`schedule_id` = `schedules_years`.`schedule_id` AND `schedules_notes`.`year_service` = ' . (date('Y') + 1) . ') as `note`');
 
 		$this->db->where('schedules_years.year_service', $current_year ? date('Y') : (date('Y') + 1));
 		$this->db->where('specific_renovation_objects.complete_renovation_object_id', $stantion_id);
