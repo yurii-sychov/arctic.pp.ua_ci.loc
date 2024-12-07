@@ -92,15 +92,15 @@
 							<thead class="thead-light">
 								<tr>
 									<th class="align-middle text-center" style="width:5%;"><?php echo "ID"; ?></th>
-									<th class="align-middle text-center" style="width:35%;"><?php echo "Диспетчерське найменування об\'єкта"; ?></th>
-									<th class="align-middle text-center" style="width:20%;" data-class-name="equipment-id"><?php echo "Вид обладнання"; ?></th>
+									<th data-visible="false" data-data="subdivision">Піпрозділ</th>
+									<th data-visible="false" data-data="complete_renovation_object">Енергетичний об'єкт</th>
+									<th class="align-middle text-center" style="width:20%;"><?php echo "ДНО"; ?></th>
+									<th class="align-middle text-center" style="width:35%;" data-class-name="equipment-id"><?php echo "Вид обладнання"; ?></th>
 									<th class="align-middle text-center" style="width:10%;"><?php echo "Рік вводу"; ?></th>
 									<th class="align-middle text-center" style="width:10%;"><?php echo "Рік ІП (факт)"; ?></th>
 									<th class="align-middle text-center" style="width:10%;"><?php echo "Рік ІП (план)"; ?></th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="more"><i class="fas fa-eye text-secondary"></i></th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="delete"><i class="fas fa-trash text-secondary"></i></th>
-									<th data-visible="false" data-data="subdivision">Піпрозділ</th>
-									<th data-visible="false" data-data="complete_renovation_object">Енергетичний об'єкт</th>
 									<th data-visible="false" data-data="created_by">Запис створив</th>
 									<th data-visible="false" data-data="updated_by">Запис змінив</th>
 									<th data-visible="false" data-data="created_at">Дата створення запису</th>
@@ -111,7 +111,9 @@
 								<?php foreach ($results as $item) : ?>
 									<tr id="<?php echo $item->id; ?>" data-id="<?php echo $item->id; ?>">
 										<td class="align-middle text-center"><?php echo $item->id; ?></td>
-										<td class="align-middle" data-field_name="name" data-field_title="Диспетчерське найменування об\'єкта" data-search="<?php echo $item->name; ?>" data-order="<?php echo $item->name; ?>">
+										<td><?php echo $item->subdivision; ?></td>
+										<td><?php echo $item->complete_renovation_object; ?></td>
+										<td class="align-middle" data-field_name="name" data-field_title="ДНО" data-search="<?php echo $item->name; ?>" data-order="<?php echo $item->name; ?>">
 											<input type="text" name="name[]" class="form-control text-left" value="<?php echo $item->name; ?>" maxlength="255" tabindex="1" onChange="updateFieldAjax(event, 'specific_renovation_objects', 'update_field_ajax');" disabled />
 										</td>
 										<td class="align-middle text-left"><?php echo $item->equipment . ' ' . $item->voltage_class; ?></td>
@@ -134,8 +136,6 @@
 												<i class="fas fa-trash text-danger"></i>
 											</a>
 										</td>
-										<td><?php echo $item->subdivision; ?></td>
-										<td><?php echo $item->complete_renovation_object; ?></td>
 										<td><?php echo $item->created_by; ?></td>
 										<td><?php echo $item->updated_by; ?></td>
 										<td><?php echo $item->created_at; ?></td>
