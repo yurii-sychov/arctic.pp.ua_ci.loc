@@ -21,10 +21,12 @@ class Specific_renovation_object_Model extends CI_Model
 
 	public function get_all_for_complete_renovation_object($subdivision_id, $complete_renovation_object_id)
 	{
-		$this->db->select('*');
+		$this->db->select('specific_renovation_objects.*');
+		$this->db->from('specific_renovation_objects, users_complete_renovation_objects');
 		$this->db->where('subdivision_id', $subdivision_id);
 		$this->db->where('complete_renovation_object_id', $complete_renovation_object_id);
-		$this->db->from('specific_renovation_objects');
+		$this->db->where('specific_renovation_objects.complete_renovation_object_id = users_complete_renovation_objects.object_id');
+		$this->db->where('users_complete_renovation_objects.user_id', $this->session->user->id);
 		$this->db->order_by('name', 'asc');
 		$query = $this->db->get();
 		return $query->result();

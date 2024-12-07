@@ -23,9 +23,11 @@ class Passport_Model extends CI_Model
 	public function get_data_for_specific_renovation_object($subdivision_id, $complete_renovation_object_id)
 	{
 		$this->db->select('passports.*');
+		$this->db->from('passports, users_complete_renovation_objects');
 		$this->db->where('subdivision_id', $subdivision_id);
 		$this->db->where('complete_renovation_object_id', $complete_renovation_object_id);
-		$this->db->from('passports');
+		$this->db->where('passports.complete_renovation_object_id = users_complete_renovation_objects.object_id');
+		$this->db->where('users_complete_renovation_objects.user_id', $this->session->user->id);
 		$query = $this->db->get();
 		return $query->result();
 	}

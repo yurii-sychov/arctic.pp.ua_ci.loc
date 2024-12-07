@@ -192,7 +192,7 @@ class Passports extends CI_Controller
 			return;
 		}
 
-		if ($this->session->user->group !== 'admin') {
+		if ($this->session->user->group !== 'admin' && $this->session->user->group !== 'engineer') {
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Вам не дозволена ця операція!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}

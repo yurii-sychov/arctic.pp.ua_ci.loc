@@ -73,6 +73,7 @@ class Specific_renovation_objects extends CI_Controller
 			$data['equipments'] = $equipments;
 			$voltage_class = $this->voltage_class_model->get_data();
 			$users = $this->user_model->get_data();
+
 			foreach ($specific_renovation_objects as $key => $specific_renovation_object) {
 				foreach ($subdivisions as $subdivision) {
 					if ($specific_renovation_object->subdivision_id == $subdivision->id) {
@@ -145,7 +146,7 @@ class Specific_renovation_objects extends CI_Controller
 			return;
 		}
 
-		if ($this->session->user->group !== 'admin') {
+		if ($this->session->user->group !== 'admin' && $this->session->user->group !== 'engineer') {
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Вам не дозволена ця операція!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}
