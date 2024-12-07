@@ -1748,9 +1748,6 @@ class Passports extends CI_Controller
 		}
 	}
 
-
-
-
 	// Trash ----------------------------------------------------------------------------------------------------
 	public function gen_passport_object($id)
 	{
@@ -1809,8 +1806,6 @@ class Passports extends CI_Controller
 
 		$this->load->view('layout', $data);
 	}
-
-
 
 	// Trash ----------------------------------------------------------------------------------------------------
 	public function gen_operating_list_object($id)

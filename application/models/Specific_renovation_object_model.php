@@ -163,4 +163,11 @@ class Specific_renovation_object_Model extends CI_Model
 		$query = $this->db->get();
 		return $query->result_array();
 	}
+
+	public function update_field($id, $data)
+	{
+		$this->db->where('id', $id);
+		$query = $this->db->update('specific_renovation_objects', $data);
+		return $query;
+	}
 }
