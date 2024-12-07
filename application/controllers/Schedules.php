@@ -1313,8 +1313,10 @@ class Schedules extends CI_Controller
 			$active_sheet->getStyle('G' . $row)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 			$active_sheet->getStyle('A' . $row . ':G' . $row)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
+			$voltage = $item->voltage >= 1 ? round($item->voltage, 0) : round($item->voltage, 2);
+
 			$active_sheet->mergeCells('A' . $row)->setCellValue('A' . $row, $i);
-			$active_sheet->mergeCells('B' . $row)->setCellValue('B' . $row, $item->note ? $item->oborud . ' ' . round($item->voltage, 0) . ' кВ' . "\n" . '(' . $item->note . ')' : $item->oborud . ' ' . round($item->voltage, 0) . ' кВ');
+			$active_sheet->mergeCells('B' . $row)->setCellValue('B' . $row, $item->note ? $item->oborud . ' ' . str_replace(".", ",", $voltage) . ' кВ' . "\n" . '(' . $item->note . ')' : $item->oborud . ' ' . str_replace(".", ",", $voltage) . ' кВ');
 			$active_sheet->mergeCells('C' . $row)->setCellValue('C' . $row, $item->disp);
 			$active_sheet->mergeCells('D' . $row)->setCellValue('D' . $row, $item->type);
 			$active_sheet->mergeCells('E' . $row)->setCellValue('E' . $row, $item->type_service);
@@ -2494,7 +2496,9 @@ class Schedules extends CI_Controller
 						$row->type_service = 'Технічне обслуговування';
 					}
 
-					$new_array['oborud_with_voltage'] = $row->equipment . ' ' . round($row->voltage, 0) . ' кВ';
+					$voltage = $row->voltage >= 1 ? round($row->voltage, 0) : round($row->voltage, 2);
+
+					$new_array['oborud_with_voltage'] = $row->equipment . ' ' . str_replace(".", ",", $voltage) . ' кВ';
 					$new_array['disp'] = $row->disp;
 					$new_array['list_works'] = $row->type ? $row->type_service . ' ' . $row->type : $row->type_service . ' ' . $row->short_type;
 					$new_array['cipher'] = $row->cipher;
@@ -2607,8 +2611,10 @@ class Schedules extends CI_Controller
 				$new_array['quantity_month_11'] = [];
 				$new_array['quantity_month_12'] = [];
 				foreach ($data as $row) {
+					$voltage = $row->voltage >= 1 ? round($row->voltage, 0) : round($row->voltage, 2);
+
 					$new_array['number'] = $i;
-					$new_array['equipment'] = $row->equipment . ' ' . round($row->voltage, 0) . ' кВ';
+					$new_array['equipment'] = $row->equipment . ' ' . str_replace(".", ",", $voltage) . ' кВ';
 					$new_array['equipment_quantity_temp'][$row->schedule_id] = $row->equipment;
 					$new_array['equipment_quantity'] = count($new_array['equipment_quantity_temp']) * $row->amount . ' шт';
 					$new_array['material'][$row->name] = $row->name;
@@ -2757,8 +2763,10 @@ class Schedules extends CI_Controller
 		$i = 1;
 		$new_array = [];
 		foreach ($results as $k => $row) {
+			$voltage = $row->voltage >= 1 ? round($row->voltage, 0) : round($row->voltage, 2);
+
 			$new_array[$row->disp . ' ' . $row->type_service]['count'] = $i;
-			$new_array[$row->disp . ' ' . $row->type_service]['oborud_with_voltage'] = $row->equipment . ' ' . round($row->voltage, 0) . ' кВ';
+			$new_array[$row->disp . ' ' . $row->type_service]['oborud_with_voltage'] = $row->equipment . ' ' . str_replace(".", ",", $voltage) . ' кВ';
 			$new_array[$row->disp . ' ' . $row->type_service]['disp'] = $row->disp;
 			$new_array[$row->disp . ' ' . $row->type_service]['year_commissioning'] = $row->year_commissioning;
 			$new_array[$row->disp . ' ' . $row->type_service]['repair_type'] = $row->type_service;

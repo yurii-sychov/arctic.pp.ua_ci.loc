@@ -97,6 +97,12 @@ class Schedule_year_Model extends CI_Model
 			$this->db->where('schedules.type_service_id', $type_service_id);
 		}
 		$this->db->where('specific_renovation_objects.complete_renovation_object_id', $complete_renovation_object_id);
+
+		$this->db->order_by('type_service', 'ASC');
+		$this->db->order_by('equipment', 'ASC');
+		$this->db->order_by('disp', 'ASC');
+		$this->db->order_by('voltage', 'ASC');
+
 		$this->db->from('schedules_years, schedules, specific_renovation_objects, equipments, voltage_class');
 		// $this->db->order_by('schedules_materials.is_extra', 'DESC');
 		// $this->db->order_by('materials.name', 'ASC');
@@ -161,12 +167,10 @@ class Schedule_year_Model extends CI_Model
 		$this->db->where('specific_renovation_objects.equipment_id = equipments.id');
 		$this->db->where('specific_renovation_objects.voltage_class_id = voltage_class.id');
 
-
-		// $this->db->order_by('repair_method', 'ASC');
-		$this->db->order_by('voltage', 'ASC');
 		$this->db->order_by('type_service', 'ASC');
-		// $this->db->order_by('class_voltage', 'ASC');
+		$this->db->order_by('oborud', 'ASC');
 		$this->db->order_by('disp', 'ASC');
+		$this->db->order_by('voltage', 'ASC');
 
 		$this->db->from('schedules_years, schedules, specific_renovation_objects, equipments, voltage_class');
 		$query = $this->db->get();
