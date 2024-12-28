@@ -22,7 +22,7 @@ class Passport_Model extends CI_Model
 
 	public function get_data_for_specific_renovation_object($subdivision_id, $complete_renovation_object_id)
 	{
-		$this->db->select('passports.*, specific_renovation_objects.name as specific_renovation_object, equipments.name as equipment, (voltage_class.voltage/1000) as voltage');
+		$this->db->select('passports.*, specific_renovation_objects.name as specific_renovation_object, equipments.name as equipment, voltage_class.voltage as voltage');
 		$this->db->from('passports, users_complete_renovation_objects, specific_renovation_objects, equipments, voltage_class');
 		$this->db->where('passports.subdivision_id', $subdivision_id);
 		$this->db->where('passports.complete_renovation_object_id', $complete_renovation_object_id);

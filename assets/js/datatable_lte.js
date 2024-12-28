@@ -34,7 +34,7 @@ $(document).ready(function () {
 				"<'row'<'table-responsive'<'col-sm-12'tr>>>" +
 				"<'row'<'col-sm-12 col-md-5 my-1'i><'col-sm-12 col-md-7 my-1'p>>",
 			lengthMenu: [
-				[5, 10, 20, 50, 100, 200, -1],
+				[5, 10, 20, 50, 100, 200, 300, -1],
 				[
 					"Показати 5 записів",
 					"Показати 10 записів",
@@ -42,6 +42,7 @@ $(document).ready(function () {
 					"Показати 50 записів",
 					"Показати 100 записів",
 					"Показати 200 записів",
+					"Показати 300 записів",
 					"Показати всі записи",
 				],
 			],
@@ -92,7 +93,7 @@ $(document).ready(function () {
 							dt.removeClass("btn-secondary");
 						},
 						orientation: "landscape",
-						pageSize: "A4",
+						pageSize: "A2",
 						download: "open",
 					},
 					{

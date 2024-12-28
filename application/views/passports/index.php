@@ -119,7 +119,7 @@
 								<?php foreach ($results as $item) : ?>
 									<tr id="<?php echo $item->id; ?>" data-id="<?php echo $item->id; ?>">
 										<td class="align-middle text-center"><?php echo $item->id; ?></td>
-										<td class="align-middle text-center"><a href="/specific_renovation_objects/index/<?php echo $item->subdivision_id; ?>/<?php echo $item->complete_renovation_object_id; ?>" title="На сторінку ДНО"><?php echo $item->specific_renovation_object; ?></a></td>
+										<td class="align-middle text-center"><?php echo $item->specific_renovation_object; ?></td>
 										<td class="align-middle text-center"><?php echo $item->place; ?></td>
 										<td class="align-middle" data-field_name="type" data-field_title="Тип" data-search="<?php echo $item->type; ?>" data-order="<?php echo $item->type; ?>">
 											<input type="text" name="type[]" class="form-control text-left" value="<?php echo $item->type; ?>" maxlength="255" tabindex="1" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />

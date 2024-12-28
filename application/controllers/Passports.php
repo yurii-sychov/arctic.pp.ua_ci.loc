@@ -116,6 +116,7 @@ class Passports extends CI_Controller
 				// 		$passports[$key]->specific_renovation_object = $specific_renovation_object->name;
 				// 	}
 				// }
+				$passports[$key]->voltage = ($passport->voltage / 1000);
 				foreach ($places as $place) {
 					if ($passport->place_id == $place->id) {
 						$passports[$key]->place = $place->name;
