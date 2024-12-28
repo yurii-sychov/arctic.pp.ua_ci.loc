@@ -4,7 +4,7 @@ async function updateFieldAjax(event, name_controller = 'controller', name_publi
 	form.set('field_title', field_title ? field_title : event.target.closest("td").dataset.field_title);
 	form.set('id', id ? id : event.target.closest("tr").dataset.id);
 	form.set('value', event.target.value);
-
+	console.log(form.get('field'));
 	try {
 		const response = await fetch(`/${name_controller}/${name_public_method_controller}`, {
 			method: 'POST',

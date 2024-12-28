@@ -88,12 +88,10 @@
 						<div class="text-center loading">
 							<div class="spinner-border text-primary" role="status"></div>
 						</div>
-						<table id="SubdivisionsTable" class="datatable table table-bordered table-hover table-striped d-none" data-order='[[ 0, "asc" ]]' data-page-length="5" data-state-save="1" data-paging-type="full_numbers" data-auto-width="0">
+						<table id="SpecificRenovationObjectsTable" class="datatable table table-bordered table-hover table-striped d-none" data-order='[[ 0, "asc" ]]' data-page-length="5" data-state-save="1" data-paging-type="full_numbers" data-auto-width="0">
 							<thead class="thead-light">
 								<tr>
 									<th class="align-middle text-center" style="width:5%;"><?php echo "ID"; ?></th>
-									<th data-visible="false" data-data="subdivision">Піпрозділ</th>
-									<th data-visible="false" data-data="complete_renovation_object">Енергетичний об'єкт</th>
 									<th class="align-middle text-center" style="width:20%;"><?php echo "ДНО"; ?></th>
 									<th class="align-middle text-center" style="width:35%;" data-class-name="equipment-id"><?php echo "Вид обладнання"; ?></th>
 									<th class="align-middle text-center" style="width:10%;"><?php echo "Рік вводу"; ?></th>
@@ -111,12 +109,10 @@
 								<?php foreach ($results as $item) : ?>
 									<tr id="<?php echo $item->id; ?>" data-id="<?php echo $item->id; ?>">
 										<td class="align-middle text-center"><?php echo $item->id; ?></td>
-										<td><?php echo $item->subdivision; ?></td>
-										<td><?php echo $item->complete_renovation_object; ?></td>
 										<td class="align-middle" data-field_name="name" data-field_title="ДНО" data-search="<?php echo $item->name; ?>" data-order="<?php echo $item->name; ?>">
 											<input type="text" name="name[]" class="form-control text-left" value="<?php echo $item->name; ?>" maxlength="255" tabindex="1" onChange="updateFieldAjax(event, 'specific_renovation_objects', 'update_field_ajax');" disabled />
 										</td>
-										<td class="align-middle text-left"><?php echo $item->equipment . ' ' . $item->voltage_class; ?></td>
+										<td class="align-middle text-left"><?php echo $item->equipment . ' ' . $item->voltage . ' кВ'; ?></td>
 										<td class="align-middle text-center" data-field_name="year_commissioning" data-field_title="Рік вводу" data-search="<?php echo $item->year_commissioning; ?>" data-order="<?php echo $item->year_commissioning; ?>">
 											<input type="text" name="year_commissioning[]" class="form-control text-center" value="<?php echo $item->year_commissioning; ?>" maxlength="4" tabindex="2" onChange="updateFieldAjax(event, 'specific_renovation_objects', 'update_field_ajax');" disabled />
 										</td>

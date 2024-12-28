@@ -1258,8 +1258,9 @@ function fillSelect(data, id) {
 
 function getSubdivisions() {
 	return new Promise((resolve, reject) => {
-		let request = $.get("/subdivisions/get_subdivisions_ajax");
+		let request = $.get("/subdivisions/get_subdivisions_ajax", { val: 0 });
 		request.done(function (data, textStatus, jqXHR) {
+			console.log(jqXHR);
 			resolve(data.subdivisions);
 			$('#idSubdivisionMove').find('option:not(:first)').remove();
 		});

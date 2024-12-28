@@ -105,16 +105,17 @@ class Passports extends CI_Controller
 
 		if ($subdivision_id && $complete_renovation_object_id) {
 			$passports = $this->passport_model->get_data_for_specific_renovation_object($subdivision_id, $complete_renovation_object_id);
-			$specific_renovation_objects = $this->specific_renovation_object_model->get_all_for_complete_renovation_object($subdivision_id, $complete_renovation_object_id);
+
+			// $specific_renovation_objects = $this->specific_renovation_object_model->get_all_for_complete_renovation_object($subdivision_id, $complete_renovation_object_id);
 			$places = $this->place_model->get_data();
 			$insulation_types = $this->insulation_type_model->get_data();
 			$users = $this->user_model->get_data();
 			foreach ($passports as $key => $passport) {
-				foreach ($specific_renovation_objects as $specific_renovation_object) {
-					if ($passport->specific_renovation_object_id == $specific_renovation_object->id) {
-						$passports[$key]->specific_renovation_object = $specific_renovation_object->name;
-					}
-				}
+				// foreach ($specific_renovation_objects as $specific_renovation_object) {
+				// 	if ($passport->specific_renovation_object_id == $specific_renovation_object->id) {
+				// 		$passports[$key]->specific_renovation_object = $specific_renovation_object->name;
+				// 	}
+				// }
 				foreach ($places as $place) {
 					if ($passport->place_id == $place->id) {
 						$passports[$key]->place = $place->name;
@@ -149,6 +150,10 @@ class Passports extends CI_Controller
 			// exit;
 
 			$data['results'] = $passports;
+			// echo "<pre>";
+			// print_r(count($passports_group));
+			// print_r($passports);
+			// echo "</pre>";
 		}
 
 		$this->load->view('layout_lte', $data);

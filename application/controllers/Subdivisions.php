@@ -134,6 +134,7 @@ class Subdivisions extends CI_Controller
 			return;
 		}
 
+
 		if (!$this->input->get()) {
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не GET запрос!'], JSON_UNESCAPED_UNICODE));
 			return;

@@ -93,20 +93,21 @@
 						<div class="text-center loading">
 							<div class="spinner-border text-primary" role="status"></div>
 						</div>
-						<table id="SubdivisionsTable" class="datatable table table-bordered table-hover table-striped d-none" data-order='[[ 0, "asc" ]]' data-page-length="5" data-state-save="1" data-paging-type="full_numbers" data-auto-width="0">
+						<table id="PassportsTable" class="datatable table table-bordered table-hover table-striped d-none" data-order='[[ 0, "asc" ]]' data-page-length="5" data-state-save="1" data-paging-type="full_numbers" data-auto-width="0">
 							<thead class="thead-light">
 								<tr>
 									<th class="align-middle text-center" style="width:5%;">ID</th>
 									<th class="align-middle text-center" style="width:10%;">ДНО</th>
 									<th class="align-middle text-center" style="width:10%;">Місце</th>
-									<th class="align-middle text-center" style="width:17%;">Тип</th>
+									<th class="align-middle text-center" style="width:17%;">Тип обладнання</th>
 									<th class="align-middle text-center" style="width:13%;">Короткий тип</th>
 									<th class="align-middle text-center" style="width:10%;">Зав. №</th>
 									<th class="align-middle text-center" style="width:10%;">Дата виготовлення</th>
 									<th class="align-middle text-center" style="width:10%;">Рік вводу</th>
-									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="isBlock">IsBlock</th>
+									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="isBlock">IsBlock?</th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="more"><i class="fas fa-eye text-secondary"></i></th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="delete"><i class="fas fa-trash text-secondary"></i></th>
+									<th data-visible="false" data-data="equipment">Вид обладнання</th>
 									<th data-visible="false" data-data="insulation_type">Вид ізоляції</th>
 									<th data-visible="false" data-data="created_by">Запис створив</th>
 									<th data-visible="false" data-data="updated_by">Запис змінив</th>
@@ -118,24 +119,24 @@
 								<?php foreach ($results as $item) : ?>
 									<tr id="<?php echo $item->id; ?>" data-id="<?php echo $item->id; ?>">
 										<td class="align-middle text-center"><?php echo $item->id; ?></td>
-										<td class="align-middle text-center"><?php echo $item->specific_renovation_object; ?></td>
+										<td class="align-middle text-center"><a href="/specific_renovation_objects/index/<?php echo $item->subdivision_id; ?>/<?php echo $item->complete_renovation_object_id; ?>" title="На сторінку ДНО"><?php echo $item->specific_renovation_object; ?></a></td>
 										<td class="align-middle text-center"><?php echo $item->place; ?></td>
 										<td class="align-middle" data-field_name="type" data-field_title="Тип" data-search="<?php echo $item->type; ?>" data-order="<?php echo $item->type; ?>">
-											<input type="text" name="type[]" class="form-control text-left" value="<?php echo $item->type; ?>" maxlength="255" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
+											<input type="text" name="type[]" class="form-control text-left" value="<?php echo $item->type; ?>" maxlength="255" tabindex="1" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
 										</td>
 										<td class="align-middle" data-field_name="short_type" data-field_title="Короткий тип" data-search="<?php echo $item->short_type; ?>" data-order="<?php echo $item->short_type; ?>">
-											<input type="text" name="short_type[]" class="form-control text-left" value="<?php echo $item->short_type; ?>" maxlength="15" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
+											<input type="text" name="short_type[]" class="form-control text-left" value="<?php echo $item->short_type; ?>" maxlength="15" tabindex="2" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
 										</td>
 										<td class="align-middle" data-field_name="number" data-field_title="Зав. №" data-search="<?php echo $item->number; ?>" data-order="<?php echo $item->number; ?>">
-											<input type="text" name="number[]" class="form-control text-left" value="<?php echo $item->number; ?>" maxlength="30" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
+											<input type="text" name="number[]" class="form-control text-left" value="<?php echo $item->number; ?>" maxlength="30" tabindex="3" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
 										</td>
 										<td class="align-middle text-center"><?php echo $item->production_date; ?></td>
 										<td class="align-middle text-center" data-field_name="commissioning_year" data-field_title="Рік вводу" data-search="<?php echo $item->commissioning_year; ?>" data-order="<?php echo $item->commissioning_year; ?>">
-											<input type="text" name="commissioning_year[]" class="form-control text-center" value="<?php echo $item->commissioning_year; ?>" maxlength="4" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
+											<input type="text" name="commissioning_year[]" class="form-control text-center" value="<?php echo $item->commissioning_year; ?>" maxlength="4" tabindex="4" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
 										</td>
 										<td class="align-middle text-center">
 											<div class="custom-control custom-switch">
-												<input type="checkbox" class="custom-control-input" id="switch<?php echo $item->id; ?>" <?php echo $item->is_block ? 'checked' : NULL; ?> disabled />
+												<input type="checkbox" class="custom-control-input" data-field_name="is_block" data-field_title="Деблокувати/Блокувати" id="switch<?php echo $item->id; ?>" <?php echo $item->is_block ? 'checked' : NULL; ?> disabled />
 												<label class="custom-control-label" for="switch<?php echo $item->id; ?>" title="Деблокувати/Блокувати" style="cursor: pointer;"></label>
 											</div>
 										</td>
@@ -149,6 +150,7 @@
 												<i class="fas fa-trash text-danger"></i>
 											</a>
 										</td>
+										<td><?php echo $item->equipment . ' ' . $item->voltage . ' кВ'; ?></td>
 										<td><?php echo $item->insulation_type; ?></td>
 										<td><?php echo $item->created_by; ?></td>
 										<td><?php echo $item->updated_by; ?></td>

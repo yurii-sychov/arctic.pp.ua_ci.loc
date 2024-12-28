@@ -92,7 +92,7 @@ class Specific_renovation_objects extends CI_Controller
 				}
 				foreach ($voltage_class as $voltage) {
 					if ($specific_renovation_object->voltage_class_id == $voltage->id) {
-						$specific_renovation_objects[$key]->voltage_class = ($voltage->voltage / 1000) . ' кВ';
+						$specific_renovation_objects[$key]->voltage = ($voltage->voltage / 1000);
 					}
 				}
 				foreach ($users as $user) {
@@ -112,6 +112,10 @@ class Specific_renovation_objects extends CI_Controller
 			}
 
 			$data['results'] = $specific_renovation_objects;
+
+			// echo "<pre>";
+			// print_r($specific_renovation_objects);
+			// echo "</pre>";
 		}
 
 		$this->load->view('layout_lte', $data);
