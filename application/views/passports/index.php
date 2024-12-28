@@ -134,9 +134,9 @@
 										<td class="align-middle text-center" data-field_name="commissioning_year" data-field_title="Рік вводу" data-search="<?php echo $item->commissioning_year; ?>" data-order="<?php echo $item->commissioning_year; ?>">
 											<input type="text" name="commissioning_year[]" class="form-control text-center" value="<?php echo $item->commissioning_year; ?>" maxlength="4" tabindex="4" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
 										</td>
-										<td class="align-middle text-center">
+										<td class="align-middle text-center" data-field_name="is_block" data-field_title="Блокування">
 											<div class="custom-control custom-switch">
-												<input type="checkbox" class="custom-control-input" data-field_name="is_block" data-field_title="Деблокувати/Блокувати" id="switch<?php echo $item->id; ?>" <?php echo $item->is_block ? 'checked' : NULL; ?> disabled />
+												<input type="checkbox" class="custom-control-input" data-field_name="is_block" data-field_title="Деблокувати/Блокувати" id="switch<?php echo $item->id; ?>" <?php echo $item->is_block ? 'checked' : NULL; ?> alue="<?php echo $item->is_block; ?>" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
 												<label class="custom-control-label" for="switch<?php echo $item->id; ?>" title="Деблокувати/Блокувати" style="cursor: pointer;"></label>
 											</div>
 										</td>

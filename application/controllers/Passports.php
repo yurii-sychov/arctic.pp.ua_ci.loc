@@ -105,6 +105,8 @@ class Passports extends CI_Controller
 
 		if ($subdivision_id && $complete_renovation_object_id) {
 			$passports = $this->passport_model->get_data_for_specific_renovation_object($subdivision_id, $complete_renovation_object_id);
+			$complete_renovation_object = $this->complete_renovation_object_model->get_row($complete_renovation_object_id);
+			$data['title'] = 'Паспорти ' . str_replace("/", "_", $complete_renovation_object->name);
 
 			// $specific_renovation_objects = $this->specific_renovation_object_model->get_all_for_complete_renovation_object($subdivision_id, $complete_renovation_object_id);
 			$places = $this->place_model->get_data();
@@ -129,10 +131,10 @@ class Passports extends CI_Controller
 				}
 				foreach ($users as $user) {
 					if ($passport->created_by == $user->id) {
-						$passports[$key]->created_by = $user->name . ' ' . $user->surname;
+						$passports[$key]->created_by = $user->name . ' ' . mb_strtoupper($user->surname);
 					}
 					if ($passport->updated_by == $user->id) {
-						$passports[$key]->updated_by = $user->name . ' ' . $user->surname;
+						$passports[$key]->updated_by = $user->name . ' ' . mb_strtoupper($user->surname);
 					}
 				}
 				$passports_group[$passport->specific_renovation_object_id][] = $passport;
