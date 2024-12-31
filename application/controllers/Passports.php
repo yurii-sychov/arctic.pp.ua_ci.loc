@@ -110,6 +110,8 @@ class Passports extends CI_Controller
 
 			// $specific_renovation_objects = $this->specific_renovation_object_model->get_all_for_complete_renovation_object($subdivision_id, $complete_renovation_object_id);
 			$places = $this->place_model->get_data();
+			$data['places'] = $places;
+
 			$insulation_types = $this->insulation_type_model->get_data();
 			$users = $this->user_model->get_data();
 			foreach ($passports as $key => $passport) {
@@ -158,6 +160,21 @@ class Passports extends CI_Controller
 			// print_r($passports);
 			// echo "</pre>";
 		}
+
+		$this->load->view('layout_lte', $data);
+	}
+
+	public function create()
+	{
+		$data = [];
+		$data['title'] = 'Створення паспортів електрообладнання';
+		$data['content'] = 'passports/form';
+		$data['page'] = 'passports';
+		$data['page_js'] = 'passports';
+		$data['title_heading'] = 'Створення паспортів електрообладнання';
+		$data['title_heading_card'] = 'Форма Створення паспортів електрообладнання';
+		$data['datatables'] = FALSE;
+		$data['forms'] = TRUE;
 
 		$this->load->view('layout_lte', $data);
 	}
@@ -1294,13 +1311,14 @@ class Passports extends CI_Controller
 
 	public function get_data_excel($subdivision_id = NULL, $complete_renovation_object_id = NULL)
 	{
-		if ((!$subdivision_id || !is_numeric($subdivision_id)) || (!$complete_renovation_object_id || !is_numeric($complete_renovation_object_id))) {
+		if ((!$subdivision_id || !is_numeric($subdivision_id))) {
 			show_404();
 		}
 
 		$passports = $this->passport_model->get_data_for_excel($subdivision_id, $complete_renovation_object_id);
 
 		foreach ($passports as $k => $row) {
+			$subdivision = $row->subdivision;
 			$complete_renovation_object = $row->complete_renovation_object;
 			$group = 'Підрозділ (' . $row->subdivision . ')_Об\'єкт (' . $row->complete_renovation_object . ')_ДНО (' . $row->specific_renovation_object . ')';
 			$group_passports[$group]['num'] = null;
@@ -1482,7 +1500,12 @@ class Passports extends CI_Controller
 		$sheet->getStyle('A1');
 
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="Паспортні дані по ' . $complete_renovation_object . '.xlsx"');
+		if ($complete_renovation_object_id) {
+			header('Content-Disposition: attachment;filename="Паспортні дані по ' . $complete_renovation_object . '.xlsx"');
+		} else {
+			header('Content-Disposition: attachment;filename="Паспортні дані по ' . $subdivision . '.xlsx"');
+		}
+
 		header('Cache-Control: max-age=0');
 
 		$writer = new Xlsx($spreadsheet);

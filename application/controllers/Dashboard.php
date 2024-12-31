@@ -18,6 +18,7 @@ class Dashboard extends CI_Controller
 			redirect('authentication/signin');
 		}
 
+		$this->load->model('user_model');
 		// $this->load->model('equipment_model');
 		// $this->load->model('property_model');
 		// $this->load->model('passport_property_model');
@@ -33,6 +34,13 @@ class Dashboard extends CI_Controller
 		$data['page_js'] = 'dashboard';
 		$data['datatables'] = FALSE;
 		$data['title_heading'] = 'Статистика';
+
+		$data['db_version'] = $this->db->version();
+		$data['tables'] = count($this->db->list_tables());
+		$data['users_count'] = $this->user_model->get_count();
+		$data['db_platform'] = $this->db->platform();
+
+
 
 		$this->load->view('layout_lte', $data);
 	}

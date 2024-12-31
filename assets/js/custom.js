@@ -4,13 +4,8 @@ async function updateFieldAjax(event, name_controller = 'controller', name_publi
 	form.set('field_title', field_title ? field_title : event.target.closest("td").dataset.field_title);
 	form.set('id', id ? id : event.target.closest("tr").dataset.id);
 	form.set('value', event.target.value);
-	// console.log(form.get('field'));
-	// console.log(form.get('field_title'));
-	// console.log(form.get('id'));
-	// console.log(event.target.type);
 	// ________________________________________________________________________________________
 	if (event.target.type == 'checkbox') {
-		console.log(form.get('value'));
 		if (event.target.checked == false) {
 			form.set('value', 0);
 		}
@@ -19,7 +14,6 @@ async function updateFieldAjax(event, name_controller = 'controller', name_publi
 		}
 	}
 	// ________________________________________________________________________________________
-	// console.log(form.get('value'));
 	try {
 		const response = await fetch(`/${name_controller}/${name_public_method_controller}`, {
 			method: 'POST',
@@ -48,4 +42,8 @@ async function getAllDataAjax(event, name_controller = 'controller', name_public
 
 async function getRowDataAjax(event, name_controller = 'controller', name_public_method_controller = 'method', id = null) {
 
+}
+
+async function development(text) {
+	alert(text);
 }

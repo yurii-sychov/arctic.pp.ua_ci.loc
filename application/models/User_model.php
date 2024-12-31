@@ -34,4 +34,9 @@ class User_Model extends CI_Model
 		$query = $this->db->update('users', $data);
 		return $query;
 	}
+
+	public function get_count()
+	{
+		return $this->db->count_all('users');
+	}
 }

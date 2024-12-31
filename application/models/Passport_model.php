@@ -446,7 +446,10 @@ class Passport_Model extends CI_Model
 		$this->db->where('passports.insulation_type_id = insulation_type.id');
 
 		$this->db->where('passports.subdivision_id', $subdivision_id);
-		$this->db->where('passports.complete_renovation_object_id', $complete_renovation_object_id);
+		if ($complete_renovation_object_id) {
+			$this->db->where('passports.complete_renovation_object_id', $complete_renovation_object_id);
+		}
+
 		$this->db->order_by('equipment, equipment_voltage, place, complete_renovation_object, specific_renovation_object', 'ASC');
 		$query = $this->db->get();
 

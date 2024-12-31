@@ -60,7 +60,19 @@ $(document).ready(function () {
 						exportOptions: {
 							format: {
 								body: function (data, row, col, node) {
-									return ($(node).find('input').val() || $(node).find('input').val() === '') ? $(node).find('input').val() : data;
+									let result;
+									if ($(node).find('input').val() || $(node).find('input').val() === '') {
+										result = $(node).find('input').val();
+									}
+									else if ($(node).find('select').val() || $(node).find('select').val() === '') {
+										result = $(node).find('select :selected').text();
+									}
+									else {
+										result = data;
+									}
+									return result;
+
+									// return ($(node).find('input').val() || $(node).find('input').val() === '') ? $(node).find('input').val() : data;
 								},
 							},
 							columns: ':not(".more, .delete, .word")',
@@ -80,7 +92,19 @@ $(document).ready(function () {
 						exportOptions: {
 							format: {
 								body: function (data, row, col, node) {
-									return ($(node).find('input').val() || $(node).find('input').val() === '') ? $(node).find('input').val() : data;
+									let result;
+									if ($(node).find('input').val() || $(node).find('input').val() === '') {
+										result = $(node).find('input').val();
+									}
+									else if ($(node).find('select').val() || $(node).find('select').val() === '') {
+										result = $(node).find('select :selected').text();
+									}
+									else {
+										result = data;
+									}
+									return result;
+
+									// return ($(node).find('input').val() || $(node).find('input').val() === '') ? $(node).find('input').val() : data;
 								},
 							},
 							columns: ':not(".more, .delete, .word")',
@@ -93,7 +117,7 @@ $(document).ready(function () {
 							dt.removeClass("btn-secondary");
 						},
 						orientation: "landscape",
-						pageSize: "A2",
+						pageSize: "A1",
 						download: "open",
 					},
 					{
@@ -121,6 +145,20 @@ $(document).ready(function () {
 				],
 			},
 			// DataTables - Callbacks
+			// drawCallback: function (settings) {
+			// 	$("#datatables_length")
+			// 		.removeClass("dataTables_length")
+			// 		.addClass("d-grid gap-2 d-md-flex")
+			// 		.find("select")
+			// 		.removeClass("form-select-sm");
+			// 	$("#datatables_length").parent().removeClass("d-none");
+			// 	$("#datatables_filter")
+			// 		.removeClass("dataTables_filter")
+			// 		.addClass("d-grid gap-2 d-md-flex justify-content-md-end")
+			// 		.find("input")
+			// 		.removeClass("form-control-sm");
+			// 	$("#datatables_filter").parent().removeClass("d-none");
+			// },
 			headerCallback: function (thead, data, start, end, display) {
 				$(thead).find('th').each(function (k, v) {
 					if ($(this).text()) {
@@ -195,4 +233,6 @@ $(document).ready(function () {
 			$(row.child()).addClass("bg-info");
 		}
 	});
+
+
 });

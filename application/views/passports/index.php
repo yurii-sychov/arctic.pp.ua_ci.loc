@@ -6,8 +6,13 @@
 					<h3 class="card-title">Фільтр</h3>
 					<div class="card-tools">
 						<?php if ($this->uri->segment(3) && $this->uri->segment(4)) : ?>
-							<a href="/passports/get_data_excel/<?php echo $this->uri->segment(3); ?>/<?php echo $this->uri->segment(4); ?>" class="btn btn-outline-success btn-sm" id="ButtonExportExcel">
-								<i class="fas fa-file-excel"></i> Експортувати в Excel
+							<a href="/passports/get_data_excel/<?php echo $this->uri->segment(3); ?>/<?php echo $this->uri->segment(4); ?>" title="Експортувати в Excel енергетичний об`єкт" class="btn btn-outline-success btn-sm" id="ButtonExportExcel">
+								<i class="fas fa-file-excel"></i>
+							</a>
+						<?php endif; ?>
+						<?php if ($this->uri->segment(3)) : ?>
+							<a href="/passports/get_data_excel/<?php echo $this->uri->segment(3); ?>" title="<?php echo $this->uri->segment(3) == 1 ? 'Експортувати в Excel весь підрозділ' : 'Експортувати в Excel всю ЕМ'; ?>" class="btn btn-outline-primary btn-sm" id="ButtonExportExcelAll">
+								<i class="fas fa-file-excel"></i>
 							</a>
 						<?php endif; ?>
 						<button type="button" class="btn btn-tool" data-card-widget="maximize">
@@ -120,7 +125,13 @@
 									<tr id="<?php echo $item->id; ?>" data-id="<?php echo $item->id; ?>">
 										<td class="align-middle text-center"><?php echo $item->id; ?></td>
 										<td class="align-middle text-center"><?php echo $item->specific_renovation_object; ?></td>
-										<td class="align-middle text-center"><?php echo $item->place; ?></td>
+										<td class="align-middle text-center" data-field_name="place_id" data-field_title="Місце встановлення">
+											<select class="custom-select" name="place_id" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled>
+												<?php foreach ($places as $place): ?>
+													<option value="<?php echo $place->id; ?>" <?php echo $place->id === $item->place_id ? 'selected' : NULL; ?>><?php echo $place->name; ?></option>
+												<?php endforeach; ?>
+											</select>
+										</td>
 										<td class="align-middle" data-field_name="type" data-field_title="Тип" data-search="<?php echo $item->type; ?>" data-order="<?php echo $item->type; ?>">
 											<input type="text" name="type[]" class="form-control text-left" value="<?php echo $item->type; ?>" maxlength="255" tabindex="1" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
 										</td>
@@ -136,7 +147,7 @@
 										</td>
 										<td class="align-middle text-center" data-field_name="is_block" data-field_title="Блокування">
 											<div class="custom-control custom-switch">
-												<input type="checkbox" class="custom-control-input" data-field_name="is_block" data-field_title="Деблокувати/Блокувати" id="switch<?php echo $item->id; ?>" <?php echo $item->is_block ? 'checked' : NULL; ?> alue="<?php echo $item->is_block; ?>" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
+												<input type="checkbox" class="custom-control-input" data-field_name="is_block" data-field_title="Деблокувати/Блокувати" id="switch<?php echo $item->id; ?>" <?php echo $item->is_block ? 'checked' : NULL; ?> value="<?php echo $item->is_block; ?>" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
 												<label class="custom-control-label" for="switch<?php echo $item->id; ?>" title="Деблокувати/Блокувати" style="cursor: pointer;"></label>
 											</div>
 										</td>

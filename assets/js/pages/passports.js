@@ -1,11 +1,11 @@
 function createRow(event) {
-	location.href = '/specific_renovation_objects/create';
+	location.href = '/passports/create';
 }
 
 function deleteRow(event) {
 	let result = confirm("Ви впевнені?");
 	if (result) {
-		location.href = '/specific_renovation_objects/delete_row/' + $(event.currentTarget).parents('tr').data('id');
+		location.href = '/passports/delete_row/' + $(event.currentTarget).parents('tr').data('id');
 	} else {
 		return;
 	}
