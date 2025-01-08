@@ -92,8 +92,9 @@
 							<thead class="thead-light">
 								<tr>
 									<th class="align-middle text-center" style="width:5%;"><?php echo "ID"; ?></th>
-									<th class="align-middle text-center" style="width:20%;"><?php echo "ДНО"; ?></th>
-									<th class="align-middle text-center" style="width:35%;" data-class-name="equipment-id"><?php echo "Вид обладнання"; ?></th>
+									<th class="align-middle text-center" style="width:15%;"><?php echo "ДНО"; ?></th>
+									<th class="align-middle text-center" style="width:30%;" data-class-name="equipment-id"><?php echo "Вид обладнання"; ?></th>
+									<th class="align-middle text-center" style="width:10%;" data-class-name="voltage-class-id"><?php echo "Клас напруги"; ?></th>
 									<th class="align-middle text-center" style="width:10%;"><?php echo "Рік вводу"; ?></th>
 									<th class="align-middle text-center" style="width:10%;"><?php echo "Рік ІП (факт)"; ?></th>
 									<th class="align-middle text-center" style="width:10%;"><?php echo "Рік ІП (план)"; ?></th>
@@ -113,6 +114,14 @@
 											<input type="text" name="name[]" class="form-control text-left" value="<?php echo $item->name; ?>" maxlength="255" tabindex="1" onChange="updateFieldAjax(event, 'specific_renovation_objects', 'update_field_ajax');" disabled />
 										</td>
 										<td class="align-middle text-left"><?php echo $item->equipment . ' ' . $item->voltage . ' кВ'; ?></td>
+										<td class="align-middle text-left" data-field_name="voltage_class_id" data-field_title="Клас напруги">
+											<select class="custom-select" name="voltage_class_id[]" onChange="updateFieldAjax(event, 'specific_renovation_objects', 'update_field_ajax');" disabled>
+												<option value="">Оберіть клас напруги</option>
+												<?php foreach ($voltage_class as $voltage): ?>
+													<option value="<?php echo $voltage->id; ?>" <?php echo ($voltage->voltage / 1000) == $item->voltage ? 'selected' : NULL; ?>><?php echo ($voltage->voltage / 1000); ?></option>
+												<?php endforeach; ?>
+											</select>
+										</td>
 										<td class="align-middle text-center" data-field_name="year_commissioning" data-field_title="Рік вводу" data-search="<?php echo $item->year_commissioning; ?>" data-order="<?php echo $item->year_commissioning; ?>">
 											<input type="text" name="year_commissioning[]" class="form-control text-center" value="<?php echo $item->year_commissioning; ?>" maxlength="4" tabindex="2" onChange="updateFieldAjax(event, 'specific_renovation_objects', 'update_field_ajax');" disabled />
 										</td>

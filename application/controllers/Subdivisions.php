@@ -93,7 +93,7 @@ class Subdivisions extends CI_Controller
 		$this->load->library('form_validation');
 
 		$rules = ($this->input->post('field') === 'sort') ? 'required|numeric' : 'required';
-		$this->form_validation->set_rules('value', '<strong>' . $this->input->post('field_name') . '</strong>', $rules);
+		$this->form_validation->set_rules('value', '<strong>' . $this->input->post('field_title') . '</strong>', $rules);
 
 		if ($this->form_validation->run() == FALSE) {
 			$this->form_validation->set_error_delimiters('', '');

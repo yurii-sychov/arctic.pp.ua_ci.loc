@@ -18,7 +18,7 @@
 			<!-- small box -->
 			<div class="small-box bg-danger">
 				<div class="inner">
-					<h3>PHP</h3>
+					<h3>PHP & JavaScript</h3>
 					<p>Мова прграмування</p>
 				</div>
 				<div class="icon">

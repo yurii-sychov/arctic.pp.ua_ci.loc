@@ -26,9 +26,11 @@ async function updateFieldAjax(event, name_controller = 'controller', name_publi
 		const result = await response.json();
 
 		if (result.status === 'SUCCESS') {
+			event.target.classList.remove('is-invalid');
 			toastr.success(result.message, "Успіх");
 		}
 		else {
+			event.target.classList.add('is-invalid');
 			toastr.error(result.message, "Помилка");
 		}
 	} catch (error) {

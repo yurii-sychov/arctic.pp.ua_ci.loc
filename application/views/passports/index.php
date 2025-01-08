@@ -103,9 +103,9 @@
 								<tr>
 									<th class="align-middle text-center" style="width:5%;">ID</th>
 									<th class="align-middle text-center" style="width:10%;">ДНО</th>
-									<th class="align-middle text-center" style="width:10%;">Місце</th>
+									<th class="align-middle text-center" style="width:12%;">Місце</th>
 									<th class="align-middle text-center" style="width:17%;">Тип обладнання</th>
-									<th class="align-middle text-center" style="width:13%;">Короткий тип</th>
+									<th class="align-middle text-center" style="width:11%;">Короткий тип</th>
 									<th class="align-middle text-center" style="width:10%;">Зав. №</th>
 									<th class="align-middle text-center" style="width:10%;">Дата виготовлення</th>
 									<th class="align-middle text-center" style="width:10%;">Рік вводу</th>
@@ -125,14 +125,15 @@
 									<tr id="<?php echo $item->id; ?>" data-id="<?php echo $item->id; ?>">
 										<td class="align-middle text-center"><?php echo $item->id; ?></td>
 										<td class="align-middle text-center"><?php echo $item->specific_renovation_object; ?></td>
-										<td class="align-middle text-center" data-field_name="place_id" data-field_title="Місце встановлення">
+										<td class="align-middle text-center" data-field_name="place_id" data-field_title="Місце">
 											<select class="custom-select" name="place_id" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled>
+												<option value="">Оберіть місце</option>
 												<?php foreach ($places as $place): ?>
 													<option value="<?php echo $place->id; ?>" <?php echo $place->id === $item->place_id ? 'selected' : NULL; ?>><?php echo $place->name; ?></option>
 												<?php endforeach; ?>
 											</select>
 										</td>
-										<td class="align-middle" data-field_name="type" data-field_title="Тип" data-search="<?php echo $item->type; ?>" data-order="<?php echo $item->type; ?>">
+										<td class="align-middle" data-field_name="type" data-field_title="Тип обладнання" data-search="<?php echo $item->type; ?>" data-order="<?php echo $item->type; ?>">
 											<input type="text" name="type[]" class="form-control text-left" value="<?php echo $item->type; ?>" maxlength="255" tabindex="1" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
 										</td>
 										<td class="align-middle" data-field_name="short_type" data-field_title="Короткий тип" data-search="<?php echo $item->short_type; ?>" data-order="<?php echo $item->short_type; ?>">

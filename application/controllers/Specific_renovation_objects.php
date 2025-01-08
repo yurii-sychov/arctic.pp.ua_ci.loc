@@ -72,6 +72,7 @@ class Specific_renovation_objects extends CI_Controller
 			$equipments = $this->equipment_model->get_data();
 			$data['equipments'] = $equipments;
 			$voltage_class = $this->voltage_class_model->get_data();
+			$data['voltage_class'] = $voltage_class;
 			$users = $this->user_model->get_data();
 
 			foreach ($specific_renovation_objects as $key => $specific_renovation_object) {
@@ -157,8 +158,8 @@ class Specific_renovation_objects extends CI_Controller
 
 		$this->load->library('form_validation');
 
-		$rules = ($this->input->post('field') === 'sort') ? 'required|numeric' : 'required';
-		$this->form_validation->set_rules('value', '<strong>' . $this->input->post('field_name') . '</strong>', $rules);
+		$rules = ($this->input->post('field') === 'name' || $this->input->post('field') === 'voltage_class_id') ? 'required' : 'required|numeric|min_length[4]|max_length[4]|integer';
+		$this->form_validation->set_rules('value', '<strong>' . $this->input->post('field_title') . '</strong>', $rules);
 
 		if ($this->form_validation->run() == FALSE) {
 			$this->form_validation->set_error_delimiters('', '');
