@@ -92,6 +92,8 @@
 							<thead class="thead-light">
 								<tr>
 									<th class="align-middle text-center" style="width:5%;"><?php echo "ID"; ?></th>
+									<th data-searchable="false" data-visible="false" data-data="subdivision">Підрозділ</th>
+									<th data-searchable="false" data-visible="false" data-data="complete_renovation_object">Об`єкт</th>
 									<th class="align-middle text-center" style="width:15%;"><?php echo "ДНО"; ?></th>
 									<th class="align-middle text-center" style="width:30%;" data-class-name="equipment-id"><?php echo "Вид обладнання"; ?></th>
 									<th class="align-middle text-center" style="width:10%;" data-class-name="voltage-class-id"><?php echo "Клас напруги"; ?></th>
@@ -110,6 +112,8 @@
 								<?php foreach ($results as $item) : ?>
 									<tr id="<?php echo $item->id; ?>" data-id="<?php echo $item->id; ?>">
 										<td class="align-middle text-center"><?php echo $item->id; ?></td>
+										<td><?php echo $item->subdivision; ?></td>
+										<td><?php echo $item->complete_renovation_object; ?></td>
 										<td class="align-middle" data-field_name="name" data-field_title="ДНО" data-search="<?php echo $item->name; ?>" data-order="<?php echo $item->name; ?>">
 											<input type="text" name="name[]" class="form-control text-left" value="<?php echo $item->name; ?>" maxlength="255" tabindex="1" onChange="updateFieldAjax(event, 'specific_renovation_objects', 'update_field_ajax');" disabled />
 										</td>

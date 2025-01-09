@@ -233,6 +233,4 @@ $(document).ready(function () {
 			$(row.child()).addClass("bg-info");
 		}
 	});
-
-
 });
