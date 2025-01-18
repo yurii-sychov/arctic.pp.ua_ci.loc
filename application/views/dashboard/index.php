@@ -48,7 +48,7 @@
 			<div class="small-box bg-warning">
 				<div class="inner">
 					<h3><?php echo $users_count; ?></h3>
-					<p>Зареєстрованих користувачів</p>
+					<p>Користувачів в системі</p>
 				</div>
 				<div class="icon">
 					<i class="ion ion-person-add"></i>

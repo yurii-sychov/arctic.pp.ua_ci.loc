@@ -92,7 +92,16 @@ class Subdivisions extends CI_Controller
 
 		$this->load->library('form_validation');
 
-		$rules = ($this->input->post('field') === 'sort') ? 'required|numeric' : 'required';
+		if ($this->input->post('field') === 'name') {
+			$rules = 'required';
+		}
+		if ($this->input->post('field') === 'founding_year') {
+			$rules = 'numeric|exact_length[4]|greater_than_equal_to[1901]|less_than_equal_to[2155]';
+		}
+		if ($this->input->post('field') === 'sort') {
+			$rules = 'required|numeric';
+		}
+
 		$this->form_validation->set_rules('value', '<strong>' . $this->input->post('field_title') . '</strong>', $rules);
 
 		if ($this->form_validation->run() == FALSE) {

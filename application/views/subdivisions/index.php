@@ -24,7 +24,8 @@
 						<thead class="thead-light">
 							<tr>
 								<th class="align-middle text-center" style="width:5%;"><?php echo "ID"; ?></th>
-								<th class="align-middle text-center" style="width:75%;"><?php echo "Назва підрозділу" ?></th>
+								<th class="align-middle text-center" style="width:50%;"><?php echo "Назва підрозділу" ?></th>
+								<th class="align-middle text-center" style="width:25%;"><?php echo "Рік заснування" ?></th>
 								<th class="align-middle text-center" style="width:10%;"><?php echo "Сортування"; ?></th>
 								<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="more"><i class="fas fa-eye text-secondary"></i></th>
 								<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="delete"><i class="fas fa-trash text-secondary"></i></th>
@@ -41,8 +42,11 @@
 									<td class="align-middle" data-field_name="name" data-field_title="Назва підрозділу" data-search="<?php echo $item->name; ?>" data-order="<?php echo $item->name; ?>">
 										<input type="text" name="name[]" class="form-control text-left" value="<?php echo $item->name; ?>" maxlength="255" tabindex="1" onChange="updateFieldAjax(event, 'subdivisions', 'update_field_ajax');" disabled />
 									</td>
+									<td class="align-middle" data-field_name="founding_year" data-field_title="Рік заснування" data-search="<?php echo $item->founding_year; ?>" data-order="<?php echo $item->founding_year; ?>">
+										<input type="text" name="founding_year[]" class="form-control text-left" value="<?php echo $item->founding_year == 0000 ? '' : $item->founding_year; ?>" placeholder="NULL" maxlength="4" minlength="4" tabindex="2" onChange="updateFieldAjax(event, 'subdivisions', 'update_field_ajax');" disabled />
+									</td>
 									<td class="align-middle text-center" data-field_name="sort" data-field_title="Сортування" data-search="<?php echo $item->sort; ?>" data-order="<?php echo $item->sort; ?>">
-										<input type="text" name="sort[]" class="form-control text-center" value="<?php echo $item->sort; ?>" maxlength="2" tabindex="2" onChange="updateFieldAjax(event, 'subdivisions', 'update_field_ajax');" disabled />
+										<input type="text" name="sort[]" class="form-control text-center" value="<?php echo $item->sort; ?>" maxlength="2" tabindex="3" onChange="updateFieldAjax(event, 'subdivisions', 'update_field_ajax');" disabled />
 									</td>
 									<td class="align-middle text-center">
 										<a class="dt-control" href="javascript:void(0);" tabindex="-1">

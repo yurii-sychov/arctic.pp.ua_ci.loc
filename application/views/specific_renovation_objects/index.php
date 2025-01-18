@@ -93,7 +93,7 @@
 								<tr>
 									<th class="align-middle text-center" style="width:5%;"><?php echo "ID"; ?></th>
 									<th data-searchable="false" data-visible="false" data-data="subdivision">Підрозділ</th>
-									<th data-searchable="false" data-visible="false" data-data="complete_renovation_object">Об`єкт</th>
+									<th data-searchable="false" data-visible="false" data-data="complete_renovation_object" data-class-name="complete_renovation_object">Об`єкт</th>
 									<th class="align-middle text-center" style="width:15%;"><?php echo "ДНО"; ?></th>
 									<th class="align-middle text-center" style="width:30%;" data-class-name="equipment-id"><?php echo "Вид обладнання"; ?></th>
 									<th class="align-middle text-center" style="width:10%;" data-class-name="voltage-class-id"><?php echo "Клас напруги"; ?></th>

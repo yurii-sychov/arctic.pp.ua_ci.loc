@@ -17,6 +17,8 @@ function format(d) {
 	<dl class="row">
 		<dt class="col-sm-3">Вид ізоляції</dt>
 		<dd class="col-sm-9">${d.insulation_type}</dd>
+		<dt class="col-sm-3">Під_номер R3</dt>
+		<dd class="col-sm-9">${d.sub_number_r3}</dd>
 		<dt class="col-sm-3">Запис створив</dt>
 		<dd class="col-sm-9">${d.created_by}</dd>
 		<dt class="col-sm-3">Запис змінив</dt>

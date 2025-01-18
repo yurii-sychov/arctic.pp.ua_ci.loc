@@ -32,3 +32,7 @@ function format(d) {
 
 	return html;
 }
+
+// function table_api(table) {
+// console.log(table.column('.complete_renovation_object').search(false));
+// }

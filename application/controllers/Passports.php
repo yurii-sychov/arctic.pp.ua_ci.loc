@@ -157,7 +157,7 @@ class Passports extends CI_Controller
 			$data['results'] = $passports;
 			// echo "<pre>";
 			// print_r(count($passports_group));
-			// print_r($passports);
+			// print_r($passports[0]);
 			// echo "</pre>";
 		}
 
@@ -1337,7 +1337,7 @@ class Passports extends CI_Controller
 			$group_passports[$group]['insulation_type']['place_' . $row->place_id] = $row->insulation_type;
 			$group_passports[$group]['production_date']['place_' . $row->place_id] = date('Y', strtotime($row->production_date));
 			$group_passports[$group]['commissioning_year']['place_' . $row->place_id] = $row->commissioning_year;
-			$group_passports[$group]['properties'][] = implode("\n", explode("|", $row->properties));
+			$group_passports[$group]['properties'][] = implode("\n", explode("|", $row->properties ?? ""));
 		}
 
 		// echo "<pre>";

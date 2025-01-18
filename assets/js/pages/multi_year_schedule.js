@@ -278,7 +278,7 @@ $(document).ready(function () {
 					orderable: true,
 					searchable: true,
 					visible: true,
-					width: "21%",
+					width: "18%",
 					className: "stantion",
 				},
 				{
@@ -348,7 +348,7 @@ $(document).ready(function () {
 					orderable: true,
 					searchable: true,
 					visible: true,
-					width: "8%",
+					width: "10%",
 					className: "disp text-center",
 					render: function (data, type, row, meta) {
 						const is_disabled = row.type_service_id == 1 ? null : "disabled";
@@ -438,7 +438,7 @@ $(document).ready(function () {
 					name: "Шифр ремонту",
 					orderable: true,
 					searchable: true,
-					visible: false,
+					visible: true,
 					width: "8%",
 					className: "cipher_id",
 					render: function (data, type, row, meta) {
@@ -496,7 +496,7 @@ $(document).ready(function () {
 					name: "Рік вводу",
 					orderable: true,
 					searchable: true,
-					visible: true,
+					visible: false,
 					width: "5%",
 					className: "year_commissioning text-center",
 					render: function (data, type, row, meta) {
@@ -513,7 +513,7 @@ $(document).ready(function () {
 					name: "Факт ІП",
 					orderable: true,
 					searchable: true,
-					visible: true,
+					visible: false,
 					width: "5%",
 					className: "year_repair_invest text-center",
 					render: function (data, type, row, meta) {
@@ -530,7 +530,7 @@ $(document).ready(function () {
 					name: "План ІП",
 					orderable: true,
 					searchable: true,
-					visible: true,
+					visible: false,
 					width: "5%",
 					className: "year-plan-repair-invest text-center",
 					render: function (data, type, row, meta) {

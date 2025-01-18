@@ -103,15 +103,16 @@
 								<tr>
 									<th class="align-middle text-center" style="width:5%;">ID</th>
 									<th class="align-middle text-center" style="width:10%;">ДНО</th>
-									<th class="align-middle text-center" style="width:12%;">Місце</th>
-									<th class="align-middle text-center" style="width:17%;">Тип обладнання</th>
-									<th class="align-middle text-center" style="width:11%;">Короткий тип</th>
-									<th class="align-middle text-center" style="width:10%;">Зав. №</th>
+									<th class="align-middle text-center" style="width:9%;">Місце</th>
+									<th class="align-middle text-center" style="width:12%;">Тип обладнання</th>
+									<th class="align-middle text-center" style="width:10%;">Короткий тип</th>
+									<th class="align-middle text-center" style="width:9%;">Зав. №</th>
 									<th class="align-middle text-center" style="width:10%;">Дата виготовлення</th>
 									<th class="align-middle text-center" style="width:10%;">Рік вводу</th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="isBlock">IsBlock?</th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="more"><i class="fas fa-eye text-secondary"></i></th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="delete"><i class="fas fa-trash text-secondary"></i></th>
+									<th data-visible="false" data-data="sub_number_r3">Під_номер R3</th>
 									<th data-visible="false" data-data="equipment">Вид обладнання</th>
 									<th data-visible="false" data-data="insulation_type">Вид ізоляції</th>
 									<th data-visible="false" data-data="created_by">Запис створив</th>
@@ -162,6 +163,7 @@
 												<i class="fas fa-trash text-danger"></i>
 											</a>
 										</td>
+										<td><?php echo $item->sub_number_r3; ?></td>
 										<td><?php echo $item->equipment . ' ' . $item->voltage . ' кВ'; ?></td>
 										<td><?php echo $item->insulation_type; ?></td>
 										<td><?php echo $item->created_by; ?></td>
