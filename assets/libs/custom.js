@@ -39,19 +39,8 @@ async function updateFieldAjax(event, name_controller = 'controller', name_publi
 	}
 }
 
-async function getAllDataAjax(name_controller = 'controller', name_public_method_controller = 'method') {
-	// return name_public_method_controller;
-	try {
-		const response = await fetch(`/${name_controller}/${name_public_method_controller}`, {
-			method: 'GET',
-			headers: {
-				"X-Requested-With": "XMLHttpRequest"
-			}
-		});
-		return response.json();
-	} catch (error) {
-		toastr.error(error);
-	}
+async function getAllDataAjax(event, name_controller = 'controller', name_public_method_controller = 'method') {
+
 }
 
 async function getRowDataAjax(event, name_controller = 'controller', name_public_method_controller = 'method', id = null) {

@@ -224,7 +224,28 @@ class Passports extends CI_Controller
 
 		$this->load->library('form_validation');
 
-		$rules = ($this->input->post('field') === 'commissioning_year') ? 'required|numeric|min_length[4]|max_length[4]|integer' : 'required';
+		if ($this->input->post('field') === 'place_id') {
+			$rules = 'required';
+		}
+		if ($this->input->post('field') === 'type') {
+			$rules = 'required';
+		}
+		if ($this->input->post('field') === 'short_type') {
+			$rules = 'required';
+		}
+		if ($this->input->post('field') === 'number') {
+			$rules = 'required';
+		}
+		if ($this->input->post('field') === 'commissioning_year') {
+			$rules = 'required|numeric|min_length[4]|max_length[4]|integer';
+		}
+		if ($this->input->post('field') === 'insulation_type_id') {
+			$rules = 'required';
+		}
+		if ($this->input->post('field') === 'sub_number_r3') {
+			$rules = 'required|numeric|min_length[1]|max_length[2]|integer';
+		}
+
 		$this->form_validation->set_rules('value', '<strong>' . $this->input->post('field_title') . '</strong>', $rules);
 
 		if ($this->form_validation->run() == FALSE) {

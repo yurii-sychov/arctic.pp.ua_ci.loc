@@ -101,7 +101,7 @@
 						<table id="PassportsTable" class="datatable table table-bordered table-hover table-striped d-none" data-order='[[ 0, "asc" ]]' data-page-length="5" data-state-save="1" data-paging-type="full_numbers" data-auto-width="0">
 							<thead class="thead-light">
 								<tr>
-									<th class="align-middle text-center" style="width:5%;">ID</th>
+									<th class="align-middle text-center" style="width:5%;" data-data="id">ID</th>
 									<th class="align-middle text-center" style="width:10%;">ДНО</th>
 									<th class="align-middle text-center" style="width:9%;">Місце</th>
 									<th class="align-middle text-center" style="width:12%;">Тип обладнання</th>
@@ -127,7 +127,7 @@
 										<td class="align-middle text-center"><?php echo $item->id; ?></td>
 										<td class="align-middle text-center"><?php echo $item->specific_renovation_object; ?></td>
 										<td class="align-middle text-center" data-field_name="place_id" data-field_title="Місце">
-											<select class="custom-select" name="place_id" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled>
+											<select class="custom-select" name="place_id[]" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled>
 												<option value="">Оберіть місце</option>
 												<?php foreach ($places as $place): ?>
 													<option value="<?php echo $place->id; ?>" <?php echo $place->id === $item->place_id ? 'selected' : NULL; ?>><?php echo $place->name; ?></option>

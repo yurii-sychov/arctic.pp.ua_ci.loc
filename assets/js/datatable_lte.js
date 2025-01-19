@@ -17,10 +17,28 @@ function activeForm(event) {
 	}
 }
 
+function activeSubRow(event) {
+	if ($(".datatable tbody").find("input, select").length > 0) {
+		$(".more-info").find("input, select").prop("disabled", function (i, v) {
+			if (v == true) {
+				event.currentTarget.className = "btn btn-light";
+				event.currentTarget.title = "Деактувати додаткову форму";
+				event.currentTarget.innerHTML = "<span>Деактувати додаткову форму</span>";
+			}
+			else {
+				event.currentTarget.className = "btn btn-dark";
+				event.currentTarget.title = "Активувати додаткову форму";
+				event.currentTarget.innerHTML = "<span>Активувати додаткову форму</span>";
+			}
+			return !v;
+		});
+	}
+}
+
 $(document).ready(function () {
-	$(".datatable").on("requestChild.dt", function (e, row) {
-		row.child(format(row.data())).show();
-		$(row.child()).addClass("bg-info");
+	$(".datatable").on("requestChild.dt", async function (e, row) {
+		row.child(await format(row.data())).show();
+		$(row.child()).addClass("bg-info more-info");
 	});
 
 	const table = $(".datatable")
@@ -216,7 +234,7 @@ $(document).ready(function () {
 	// }).draw();
 
 	// Add event listener for opening and closing details
-	table.on("click", "td a.dt-control", function () {
+	table.on("click", "td a.dt-control", async function () {
 		let tr = $(this).closest("tr");
 		let row = table.row(tr);
 
@@ -228,9 +246,9 @@ $(document).ready(function () {
 		}
 		else {
 			// Open this row
-			let html = format(row.data());
+			let html = await format(row.data());
 			row.child(html).show();
-			$(row.child()).addClass("bg-info");
+			$(row.child()).addClass("bg-info more-info");
 		}
 	});
 
