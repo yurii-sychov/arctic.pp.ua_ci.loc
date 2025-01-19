@@ -163,20 +163,21 @@ $(document).ready(function () {
 				],
 			},
 			// DataTables - Callbacks
-			// drawCallback: function (settings) {
-			// 	$("#datatables_length")
-			// 		.removeClass("dataTables_length")
-			// 		.addClass("d-grid gap-2 d-md-flex")
-			// 		.find("select")
-			// 		.removeClass("form-select-sm");
-			// 	$("#datatables_length").parent().removeClass("d-none");
-			// 	$("#datatables_filter")
-			// 		.removeClass("dataTables_filter")
-			// 		.addClass("d-grid gap-2 d-md-flex justify-content-md-end")
-			// 		.find("input")
-			// 		.removeClass("form-control-sm");
-			// 	$("#datatables_filter").parent().removeClass("d-none");
-			// },
+			drawCallback: function (settings) {
+				$(".dataTables_wrapper").find('.dataTables_length')
+					.removeClass("dataTables_length")
+					.addClass("d-grid gap-2 d-md-flex justify-content-md-end");
+				$(".dataTables_wrapper").find('.d-grid select').removeClass("custom-select-sm form-control-sm");
+				$(".dataTables_wrapper").find('.d-grid').parent().removeClass("d-none");
+				$(".dataTables_wrapper").find('.d-grid label').css('display', 'block');
+
+				$(".dataTables_wrapper").find('.dataTables_filter')
+					.removeClass("dataTables_filter")
+					.addClass("d-grid gap-2 d-md-flex justify-content-md-end");
+				$(".dataTables_wrapper").find('.d-grid input').removeClass("form-control-sm");
+				$(".dataTables_wrapper").find('.d-grid').parent().removeClass("d-none");
+				$(".dataTables_wrapper").find('.d-grid label').css('display', 'block');
+			},
 			headerCallback: function (thead, data, start, end, display) {
 				$(thead).find('th').each(function (k, v) {
 					if ($(this).text()) {
