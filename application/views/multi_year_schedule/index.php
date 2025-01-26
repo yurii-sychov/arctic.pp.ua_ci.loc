@@ -102,6 +102,10 @@
 					<a class="btn btn-warning my-1" href="/multi_year_schedule/get_data_for_schedule_srm" role="button" title="Згенерувати дані для БРПГ" data-bs-toggle="tooltip">
 						<i class="bi bi-file-earmark-excel"></i> Згенерувати дані для РПГ СРМ
 					</a>
+
+					<a class="btn btn-info my-1" href="/multi_year_schedule/fill_next_year" role="button" title="Заповнити дані останніх ремонтів" data-bs-toggle="tooltip">
+						<i class="bi bi-plus"></i> Заповнити дані останніх ремонтів
+					</a>
 				</div>
 			</div>
 		</div>

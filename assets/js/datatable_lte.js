@@ -150,7 +150,7 @@ $(document).ready(function () {
 						},
 					},
 					{
-						className: "btn-success d-none d-md-inline buttons-create",
+						className: "btn-primary d-none d-md-inline buttons-create",
 						text: '<i class="fas fa-plus"></i> Створити',
 						attr: {
 							title: "Додати запис",
@@ -166,7 +166,7 @@ $(document).ready(function () {
 			drawCallback: function (settings) {
 				$(".dataTables_wrapper").find('.dataTables_length')
 					.removeClass("dataTables_length")
-					.addClass("d-grid gap-2 d-md-flex justify-content-md-end");
+					.addClass("d-grid gap-2 d-md-flex");
 				$(".dataTables_wrapper").find('.d-grid select').removeClass("custom-select-sm form-control-sm");
 				$(".dataTables_wrapper").find('.d-grid').parent().removeClass("d-none");
 				$(".dataTables_wrapper").find('.d-grid label').css('display', 'block');
@@ -242,6 +242,7 @@ $(document).ready(function () {
 		// $(this).find('i').toggleClass('fa-eye-slash text-primary fa-eye text-info');
 
 		if (row.child.isShown()) {
+			// console.log(row.data());
 			// This row is already open - close it
 			row.child.hide();
 		}
@@ -253,5 +254,4 @@ $(document).ready(function () {
 		}
 	});
 
-	// table_api(table);
 });

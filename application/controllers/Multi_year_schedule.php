@@ -615,4 +615,25 @@ class Multi_year_schedule extends CI_Controller
 		// $this->specific_renovation_object_model->delete_specific_renovation_object_full($specific_renovation_object_id);
 		redirect('/multi_year_schedule');
 	}
+
+	public function fill_next_year()
+	{
+		$data = $this->schedule_year_model->get_current_year();
+
+		// $schedules = $this->schedule_model->get_all();
+
+		// $i = 0;
+		// foreach ($schedules as $schedule) {
+		// 	foreach ($data as $item) {
+		// 		if ($schedule->id == $item->schedule_id) {
+		// 			$i++;
+		// 		}
+		// 	}
+		// }
+
+		echo "<pre>";
+		// echo $i;
+		print_r($data);
+		echo "</pre>";
+	}
 }

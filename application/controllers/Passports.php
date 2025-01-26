@@ -236,6 +236,9 @@ class Passports extends CI_Controller
 		if ($this->input->post('field') === 'number') {
 			$rules = 'required';
 		}
+		if ($this->input->post('field') === 'is_block') {
+			$rules = 'required';
+		}
 		if ($this->input->post('field') === 'commissioning_year') {
 			$rules = 'required|numeric|min_length[4]|max_length[4]|integer';
 		}

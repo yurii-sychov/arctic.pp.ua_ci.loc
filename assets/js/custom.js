@@ -5,6 +5,13 @@ async function updateFieldAjax(event, name_controller = 'controller', name_publi
 	form.set('id', id ? id : event.target.closest("tr, dl").dataset.id);
 	form.set('value', event.target.value);
 
+	if (typeof update_datatable === 'function') {
+		let table = $(".datatable").DataTable();
+		let tr = $(event.target).closest("tr").prev("tr");
+		let row = table.row(tr);
+		update_datatable(form.get('field'), event.target, row.data());
+	}
+
 	// ________________________________________________________________________________________
 	if (event.target.type == 'checkbox') {
 		if (event.target.checked == false) {

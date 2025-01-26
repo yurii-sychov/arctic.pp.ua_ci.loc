@@ -186,6 +186,18 @@ class Schedule_year_Model extends CI_Model
 		return $query->result();
 	}
 
+	public function get_current_year()
+	{
+		$this->db->select('schedules_years.schedule_id, schedules_years.year_service, schedules.type_service_id, specific_renovation_objects.subdivision_id, specific_renovation_objects.complete_renovation_object_id, specific_renovation_objects.name');
+		$this->db->where('schedules_years.schedule_id = schedules.id');
+		$this->db->where('schedules.specific_renovation_object_id = specific_renovation_objects.id');
+		$this->db->where('schedules_years.year_service', date('Y'));
+		$this->db->where('specific_renovation_objects.subdivision_id', 1);
+		$this->db->from('schedules_years, schedules, specific_renovation_objects');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	// public function delete($data)
 	// {
 	// 	$this->db->delete('schedules_years', $data);

@@ -53,3 +53,12 @@ async function format(d) {
 
 	return html;
 }
+
+function update_datatable(field, target, d) {
+	if (field === 'insulation_type_id') {
+		d.insulation_type = $(target).find('option:selected').text();
+	}
+	if (field === 'sub_number_r3') {
+		d.sub_number_r3 = $(target).val();
+	}
+}
