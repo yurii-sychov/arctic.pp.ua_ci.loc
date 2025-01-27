@@ -11,13 +11,14 @@ function deleteRow(event) {
 	}
 }
 
-async function format(d) {
+async function format(d, tr) {
 	let insulation_types = await getAllDataAjax('insulation_types', 'get_data_ajax');
+	let passport = await getRowDataAjax('passports', 'get_row_data_ajax', d.id);
 
 	let options = '';
 
 	for (let i = 0; i < insulation_types.data.length; i++) {
-		options += `<option ${d.insulation_type === insulation_types.data[i].insulation_type ? 'selected' : null} value="${insulation_types.data[i].id}">${insulation_types.data[i].insulation_type}</option>`;
+		options += `<option ${passport.data.insulation_type_id === insulation_types.data[i].id ? 'selected' : null} value="${insulation_types.data[i].id}">${insulation_types.data[i].insulation_type}</option>`;
 	}
 
 	let html = `
@@ -32,7 +33,7 @@ async function format(d) {
 		</dd>
 		<dt class="col-sm-3">Під_номер R3</dt>
 		<dd class="col-sm-9" data-field_name="sub_number_r3" data-field_title="Під_номер R3">
-			<input class="form-control text-left" name="sub_number_r3[]" value="${d.sub_number_r3}" maxlength="2" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled>
+			<input class="form-control text-left" name="sub_number_r3[]" value="${passport.data.sub_number_r3}" maxlength="2" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled>
 		</dd>
 		<dt class="col-sm-3">Запис створив</dt>
 		<dd class="col-sm-9">${d.created_by}</dd>
@@ -54,11 +55,11 @@ async function format(d) {
 	return html;
 }
 
-function update_datatable(field, target, d) {
-	if (field === 'insulation_type_id') {
-		d.insulation_type = $(target).find('option:selected').text();
-	}
-	if (field === 'sub_number_r3') {
-		d.sub_number_r3 = $(target).val();
-	}
-}
+// function update_datatable(field, target, d) {
+// 	if (field === 'insulation_type_id' && $(target).val()) {
+// 		d.insulation_type = $(target).find('option:selected').text();
+// 	}
+// 	if (field === 'sub_number_r3' && $(target).val()) {
+// 		d.sub_number_r3 = $(target).val();
+// 	}
+// }

@@ -106,6 +106,7 @@
 									<th data-visible="false" data-data="updated_by">Запис змінив</th>
 									<th data-visible="false" data-data="created_at">Дата створення запису</th>
 									<th data-visible="false" data-data="updated_at">Дата зміни запису</th>
+									<th data-visible="false" data-data="page_size_pdf">Розмір листа PDF</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -149,6 +150,7 @@
 										<td><?php echo $item->updated_by; ?></td>
 										<td><?php echo $item->created_at; ?></td>
 										<td><?php echo $item->updated_at; ?></td>
+										<td>A2</td>
 									</tr>
 								<?php endforeach; ?>
 							</tbody>

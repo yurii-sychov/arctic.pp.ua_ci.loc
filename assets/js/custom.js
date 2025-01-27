@@ -5,12 +5,12 @@ async function updateFieldAjax(event, name_controller = 'controller', name_publi
 	form.set('id', id ? id : event.target.closest("tr, dl").dataset.id);
 	form.set('value', event.target.value);
 
-	if (typeof update_datatable === 'function') {
-		let table = $(".datatable").DataTable();
-		let tr = $(event.target).closest("tr").prev("tr");
-		let row = table.row(tr);
-		update_datatable(form.get('field'), event.target, row.data());
-	}
+	// if (typeof update_datatable === 'function') {
+	// 	let table = $(".datatable").DataTable();
+	// 	let tr = $(event.target).closest("tr").prev("tr");
+	// 	let row = table.row(tr);
+	// 	update_datatable(form.get('field'), event.target, row.data());
+	// }
 
 	// ________________________________________________________________________________________
 	if (event.target.type == 'checkbox') {
@@ -47,7 +47,6 @@ async function updateFieldAjax(event, name_controller = 'controller', name_publi
 }
 
 async function getAllDataAjax(name_controller = 'controller', name_public_method_controller = 'method') {
-	// return name_public_method_controller;
 	try {
 		const response = await fetch(`/${name_controller}/${name_public_method_controller}`, {
 			method: 'GET',
@@ -61,8 +60,18 @@ async function getAllDataAjax(name_controller = 'controller', name_public_method
 	}
 }
 
-async function getRowDataAjax(event, name_controller = 'controller', name_public_method_controller = 'method', id = null) {
-
+async function getRowDataAjax(name_controller = 'controller', name_public_method_controller = 'method', id = null) {
+	try {
+		const response = await fetch(`/${name_controller}/${name_public_method_controller}/?id=${id}`, {
+			method: 'GET',
+			headers: {
+				"X-Requested-With": "XMLHttpRequest"
+			}
+		});
+		return response.json();
+	} catch (error) {
+		toastr.error(error);
+	}
 }
 
 async function development(text) {

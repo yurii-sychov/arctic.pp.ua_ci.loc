@@ -132,10 +132,11 @@ $(document).ready(function () {
 							title: "Экспорт в PDF",
 						},
 						init: function (e, dt, node, config) {
+							node.pageSize = e.row().data().page_size_pdf;
 							dt.removeClass("btn-secondary");
 						},
 						orientation: "landscape",
-						pageSize: "A1",
+						// pageSize: "A2",
 						download: "open",
 					},
 					{
@@ -248,7 +249,7 @@ $(document).ready(function () {
 		}
 		else {
 			// Open this row
-			let html = await format(row.data());
+			let html = await format(row.data(), $(this));
 			row.child(html).show();
 			$(row.child()).addClass("bg-info more-info");
 		}

@@ -115,10 +115,12 @@
 									<th data-visible="false" data-data="sub_number_r3">Під_номер R3</th>
 									<th data-visible="false" data-data="equipment">Вид обладнання</th>
 									<th data-visible="false" data-data="insulation_type">Вид ізоляції</th>
+									<th data-visible="false" data-data="insulation_type_id">ID виду ізоляції</th>
 									<th data-visible="false" data-data="created_by">Запис створив</th>
 									<th data-visible="false" data-data="updated_by">Запис змінив</th>
 									<th data-visible="false" data-data="created_at">Дата створення запису</th>
 									<th data-visible="false" data-data="updated_at">Дата зміни запису</th>
+									<th data-visible="false" data-data="page_size_pdf">Розмір листа PDF</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -166,10 +168,12 @@
 										<td><?php echo $item->sub_number_r3; ?></td>
 										<td><?php echo $item->equipment . ' ' . $item->voltage . ' кВ'; ?></td>
 										<td><?php echo $item->insulation_type; ?></td>
+										<td><?php echo $item->insulation_type_id; ?></td>
 										<td><?php echo $item->created_by; ?></td>
 										<td><?php echo $item->updated_by; ?></td>
 										<td><?php echo $item->created_at; ?></td>
 										<td><?php echo $item->updated_at; ?></td>
+										<td>A2</td>
 									</tr>
 								<?php endforeach; ?>
 							</tbody>
