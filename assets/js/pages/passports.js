@@ -55,11 +55,40 @@ async function format(d, tr) {
 	return html;
 }
 
-// function update_datatable(field, target, d) {
-// 	if (field === 'insulation_type_id' && $(target).val()) {
-// 		d.insulation_type = $(target).find('option:selected').text();
-// 	}
-// 	if (field === 'sub_number_r3' && $(target).val()) {
-// 		d.sub_number_r3 = $(target).val();
-// 	}
-// }
+async function openPassportProperties(event) {
+	let passport_id = event.target.closest("tr, dl").dataset.id;
+	$('#propertiesModal').find('.modal-footer .create-pdf').attr({ href: '/passports/gen_passport_pdf/' + passport_id, target: '_blank' });
+
+	let passport = await getRowDataAjax('passports', 'get_row_data_ajax', passport_id);
+	let passport_properties = await getRowDataAjax('passports', 'get_data_passport_properties_ajax', passport_id);
+
+	let properties = '';
+	passport_properties.data.forEach(function (item) {
+		properties += `
+		<tr>
+			<td><strong>${item.property}</strong></td>
+			<td>${item.value}</td>
+		</tr>
+		`;
+	});
+
+	let html = `
+	<h5 class="text-primary text-center"><strong>Об'єкт:</strong> <u>${passport.data.complete_renovation_object}</u> <strong>ДНО:</strong> <u>${passport.data.specific_renovation_object}</u></h5>
+	<table class="table table-striped table-bordered table-hover">
+		<thead class="thead-dark">
+			<tr class="text-center">
+				<th scope="col">Характеристика</th>
+				<th scope="col">Значення</th>
+			</tr>
+		</thead>
+		<tbody>
+			${properties}
+		</tbody>
+  </table>
+	`;
+
+	$('#propertiesModal').find(".modal-body").empty().append(html);
+	if (passport.status === 'SUCCESS') {
+		$('#propertiesModal').find('.overlay').hide();
+	}
+}

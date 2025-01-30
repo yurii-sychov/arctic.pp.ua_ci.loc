@@ -103,14 +103,15 @@
 								<tr>
 									<th class="align-middle text-center" style="width:5%;" data-data="id">ID</th>
 									<th class="align-middle text-center" style="width:10%;">ДНО</th>
-									<th class="align-middle text-center" style="width:9%;">Місце</th>
-									<th class="align-middle text-center" style="width:12%;">Тип обладнання</th>
-									<th class="align-middle text-center" style="width:10%;">Короткий тип</th>
-									<th class="align-middle text-center" style="width:9%;">Зав. №</th>
+									<th class="align-middle text-center" style="width:10%;">Місце</th>
+									<th class="align-middle text-center" style="width:13%;">Тип обладнання</th>
+									<th class="align-middle text-center" style="width:11%;">Короткий тип</th>
+									<th class="align-middle text-center" style="width:11%;">Зав. №</th>
 									<th class="align-middle text-center" style="width:10%;">Дата виготовлення</th>
 									<th class="align-middle text-center" style="width:10%;">Рік вводу</th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="isBlock">IsBlock?</th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="more"><i class="fas fa-eye text-secondary"></i></th>
+									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="properties"><i class="fas fa-plus text-secondary"></i></th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="delete"><i class="fas fa-trash text-secondary"></i></th>
 									<th data-visible="false" data-data="sub_number_r3">Під_номер R3</th>
 									<th data-visible="false" data-data="equipment">Вид обладнання</th>
@@ -161,6 +162,11 @@
 											</a>
 										</td>
 										<td class="align-middle text-center">
+											<a href="javascript:void(0);" tabindex="-1" data-toggle="modal" data-target="#propertiesModal" onClick="openPassportProperties(event);">
+												<i class="fas fa-search-plus text-warning"></i>
+											</a>
+										</td>
+										<td class="align-middle text-center">
 											<a href="javascript:void(0);" onClick="deleteRow(event);" tabindex="-1">
 												<i class="fas fa-trash text-danger"></i>
 											</a>
@@ -189,3 +195,27 @@
 	</div>
 	<!-- /.container-fluid -->
 <?php endif; ?>
+
+<!-- Modal -->
+<div class="modal fade" id="propertiesModal" tabindex="-1" aria-labelledby="propertiesModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="overlay">
+				<i class="fas fa-2x fa-sync fa-spin"></i>
+			</div>
+			<div class="modal-header">
+				<h5 class="modal-title" id="propertiesModalLabel"><strong>Характеристики обладнання</strong></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				Тут скорьо будють хоректерістікі!!!<br>А як Вам зручно їх бачити?
+			</div>
+			<div class="modal-footer">
+				<a href="javascript:void(0);" class="btn btn-danger create-pdf"><i class="fas fa-file-pdf"></i> Створити паспорт в форматі PDF</a>
+				<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="far fa-window-close"></i> Закрити вікно</button>
+			</div>
+		</div>
+	</div>
+</div>

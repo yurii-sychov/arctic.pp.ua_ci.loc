@@ -1354,6 +1354,27 @@ class Passports extends CI_Controller
 		}
 	}
 
+	public function get_data_passport_properties_ajax()
+	{
+		$this->output->set_content_type('application/json');
+
+		if (!$this->input->is_ajax_request()) {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не Ajax запрос!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		if (!$this->input->get()) {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не GET запрос!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		$results = $this->passport_property_model->get_data_for_passport($this->input->get('id'));
+
+		if ($results) {
+			$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'OK!', 'data' => $results], JSON_UNESCAPED_UNICODE));
+		}
+	}
+
 	public function get_data_excel($subdivision_id = NULL, $complete_renovation_object_id = NULL)
 	{
 		if ((!$subdivision_id || !is_numeric($subdivision_id))) {
