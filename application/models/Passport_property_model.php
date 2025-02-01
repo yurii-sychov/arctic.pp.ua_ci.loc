@@ -93,4 +93,11 @@ class Passport_property_Model extends CI_Model
 		$query = $this->db->update('passport_properties');
 		return $query;
 	}
+
+	public function update_field($id, $data)
+	{
+		$this->db->where('id', $id);
+		$query = $this->db->update('passport_properties', $data);
+		return $query;
+	}
 }

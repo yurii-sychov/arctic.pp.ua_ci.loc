@@ -111,7 +111,7 @@
 									<th class="align-middle text-center" style="width:10%;">Рік вводу</th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="isBlock">IsBlock?</th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="more"><i class="fas fa-eye text-secondary"></i></th>
-									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="properties"><i class="fas fa-plus text-secondary"></i></th>
+									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="properties"><i class="fas fa-search-plus text-secondary"></i></th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="delete"><i class="fas fa-trash text-secondary"></i></th>
 									<th data-visible="false" data-data="sub_number_r3">Під_номер R3</th>
 									<th data-visible="false" data-data="equipment">Вид обладнання</th>
@@ -121,7 +121,7 @@
 									<th data-visible="false" data-data="updated_by">Запис змінив</th>
 									<th data-visible="false" data-data="created_at">Дата створення запису</th>
 									<th data-visible="false" data-data="updated_at">Дата зміни запису</th>
-									<th data-visible="false" data-data="page_size_pdf">Розмір листа PDF</th>
+									<th data-visible="false" data-data="page_size_pdf" data-class-name="page-size-pdf">Розмір листа PDF</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -209,12 +209,11 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
-				Тут скорьо будють хоректерістікі!!!<br>А як Вам зручно їх бачити?
-			</div>
-			<div class="modal-footer">
-				<a href="javascript:void(0);" class="btn btn-danger create-pdf"><i class="fas fa-file-pdf"></i> Створити паспорт в форматі PDF</a>
-				<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="far fa-window-close"></i> Закрити вікно</button>
+			<div class="modal-body"></div>
+			<div class="modal-footer flex-column flex-md-row flex-nowrap">
+				<a href="javascript:void(0);" class="btn btn-danger btn-block" id="createPassportModal">Генерувати паспорт в форматі PDF</a>
+				<button class="btn btn-dark btn-block" id="buttonPropertiesFormModal" type="button" title="Активувати форму" onclick="activeModalForm(event);">Активувати форму</button>
+				<button type="button" class="btn btn-warning btn-block" data-dismiss="modal" id="closeModal">Закрити вікно</button>
 			</div>
 		</div>
 	</div>

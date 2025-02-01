@@ -47,7 +47,7 @@ async function format(d, tr) {
 	<hr>
 	<div class="row">
 		<div class="col-12 text-right">
-			<button class="btn btn-dark" type="button" title="Активувати форму" onclick="activeSubRow(event);"><span>Активувати додаткову форму</span></button>
+			<button class="btn btn-dark" type="button" title="Активувати форму" onclick="activeSubForm(event);">Активувати додаткову форму</button>
 		</div>
 	</div>
 	`;
@@ -56,39 +56,49 @@ async function format(d, tr) {
 }
 
 async function openPassportProperties(event) {
+	$('.modal .modal-footer').find('#buttonPropertiesFormModal').removeClass('btn btn-light btn-block').addClass('btn btn-dark btn-block');
+	$('.modal .modal-footer').find('#buttonPropertiesFormModal').attr('title', 'Активувати форму');
+	$('.modal .modal-footer').find('#buttonPropertiesFormModal').html('Активувати форму');
+
 	let passport_id = event.target.closest("tr, dl").dataset.id;
 	$('#propertiesModal').find('.modal-footer .create-pdf').attr({ href: '/passports/gen_passport_pdf/' + passport_id, target: '_blank' });
 
 	let passport = await getRowDataAjax('passports', 'get_row_data_ajax', passport_id);
 	let passport_properties = await getRowDataAjax('passports', 'get_data_passport_properties_ajax', passport_id);
 
-	let properties = '';
-	passport_properties.data.forEach(function (item) {
-		properties += `
-		<tr>
-			<td><strong>${item.property}</strong></td>
-			<td>${item.value}</td>
+	if (typeof passport === 'object' && typeof passport_properties === 'object') {
+
+		let properties = '';
+		passport_properties.data.forEach(function (item) {
+			properties += `
+		<tr class="table-secondary" data-id="${item.id}">
+			<td class="align-middle"><strong>${item.property}</strong></td>
+			<td class="align-middle" data-field_name="value" data-field_title="Значення"><input class="form-control" value='${item.value}' onChange="updateFieldAjax(event, 'passport_properties', 'update_field_ajax');" disabled /></td>
 		</tr>
 		`;
-	});
+		});
 
-	let html = `
-	<h5 class="text-primary text-center"><strong>Об'єкт:</strong> <u>${passport.data.complete_renovation_object}</u> <strong>ДНО:</strong> <u>${passport.data.specific_renovation_object}</u></h5>
-	<table class="table table-striped table-bordered table-hover">
-		<thead class="thead-dark">
-			<tr class="text-center">
-				<th scope="col">Характеристика</th>
-				<th scope="col">Значення</th>
-			</tr>
-		</thead>
-		<tbody>
-			${properties}
-		</tbody>
-  </table>
-	`;
+		let html = `
+			<h4 class="text-primary text-center"><strong>Об'єкт:</strong> ${passport.data.complete_renovation_object}<strong> ДНО:</strong> ${passport.data.specific_renovation_object}</h4>
+			<table class="table table-striped table-bordered table-hover table-sm">
+				<thead class="thead-dark">
+					<tr class="text-center">
+						<th class="col-md-5 align-middle">Характеристика</th>
+						<th class="col-md-7 align-middle">Значення</th>
+					</tr>
+				</thead>
+				<tbody>
+					${properties}
+				</tbody>
+			</table>
+		`;
 
-	$('#propertiesModal').find(".modal-body").empty().append(html);
-	if (passport.status === 'SUCCESS') {
-		$('#propertiesModal').find('.overlay').hide();
+		$('#propertiesModal').find(".modal-body").empty().append(html);
+		if (passport.status === 'SUCCESS') {
+			$('#propertiesModal').find('.overlay').hide();
+		}
+	}
+	else {
+		toastr.error("Щось пішло не так. Будь ласка зверніться до адміністратора.", "Помилка");
 	}
 }

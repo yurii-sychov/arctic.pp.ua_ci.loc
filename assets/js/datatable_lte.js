@@ -17,18 +17,36 @@ function activeForm(event) {
 	}
 }
 
-function activeSubRow(event) {
+function activeSubForm(event) {
 	if ($(".datatable tbody").find("input, select").length > 0) {
 		$(".more-info").find("input, select").prop("disabled", function (i, v) {
 			if (v == true) {
 				event.currentTarget.className = "btn btn-light";
 				event.currentTarget.title = "Деактувати додаткову форму";
-				event.currentTarget.innerHTML = "<span>Деактувати додаткову форму</span>";
+				event.currentTarget.innerHTML = "Деактувати додаткову форму";
 			}
 			else {
 				event.currentTarget.className = "btn btn-dark";
 				event.currentTarget.title = "Активувати додаткову форму";
-				event.currentTarget.innerHTML = "<span>Активувати додаткову форму</span>";
+				event.currentTarget.innerHTML = "Активувати додаткову форму";
+			}
+			return !v;
+		});
+	}
+}
+
+function activeModalForm(event) {
+	if ($(".modal .modal-body").find("input, select").length > 0) {
+		$(".modal .modal-body").find("input, select").prop("disabled", function (i, v) {
+			if (v == true) {
+				event.currentTarget.className = "btn btn-light btn-block";
+				event.currentTarget.title = "Деактувати форму";
+				event.currentTarget.innerHTML = "Деактувати форму";
+			}
+			else {
+				event.currentTarget.className = "btn btn-dark btn-block";
+				event.currentTarget.title = "Активувати форму";
+				event.currentTarget.innerHTML = "Активувати форму";
 			}
 			return !v;
 		});
@@ -93,7 +111,7 @@ $(document).ready(function () {
 									// return ($(node).find('input').val() || $(node).find('input').val() === '') ? $(node).find('input').val() : data;
 								},
 							},
-							columns: ':not(".more, .delete, .word")',
+							columns: ':not(".more, .properties, .delete, .page-size-pdf")',
 						},
 						attr: {
 							id: "ButtonExcel",
@@ -125,7 +143,7 @@ $(document).ready(function () {
 									// return ($(node).find('input').val() || $(node).find('input').val() === '') ? $(node).find('input').val() : data;
 								},
 							},
-							columns: ':not(".more, .delete, .word")',
+							columns: ':not(".more, .properties, .delete, .page-size-pdf")',
 						},
 						attr: {
 							id: "ButtonPDF",
