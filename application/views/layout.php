@@ -178,6 +178,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
 					<li class="nav-item">
 						<a class="nav-link <?php if ($page === 'dashboard/index') : ?>active<?php endif; ?>" aria-current="page" href="/dashboard">Статистика</a>
 					</li>
+					<li class="nav-item">
+						<a class="nav-link <?php if ($page === 'passports/index') : ?>active<?php endif; ?> position-relative" aria-current="page" href="/passports/index/1/1">
+							Паспорти
+							<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
+								New
+								<span class="visually-hidden">New</span>
+							</span>
+						</a>
+					</li>
 				</ul>
 				<!-- <form class="d-flex"> -->
 				<!-- <input class="form-control me-2" type="search" placeholder="Пошук" aria-label="Search" disabled> -->

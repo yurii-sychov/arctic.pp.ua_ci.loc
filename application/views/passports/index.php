@@ -104,11 +104,11 @@
 									<th class="align-middle text-center" style="width:5%;" data-data="id">ID</th>
 									<th class="align-middle text-center" style="width:10%;">ДНО</th>
 									<th class="align-middle text-center" style="width:10%;">Місце</th>
-									<th class="align-middle text-center" style="width:13%;">Тип обладнання</th>
-									<th class="align-middle text-center" style="width:11%;">Короткий тип</th>
+									<th class="align-middle text-center" style="width:15%;">Тип обладнання</th>
+									<th class="align-middle text-center" style="width:10%;">Короткий тип</th>
 									<th class="align-middle text-center" style="width:11%;">Зав. №</th>
 									<th class="align-middle text-center" style="width:10%;">Дата виготовлення</th>
-									<th class="align-middle text-center" style="width:10%;">Рік вводу</th>
+									<th class="align-middle text-center" style="width:9%;">Рік вводу</th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="isBlock">IsBlock?</th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="more"><i class="fas fa-eye text-secondary"></i></th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="properties"><i class="fas fa-search-plus text-secondary"></i></th>
@@ -210,8 +210,8 @@
 				</button>
 			</div>
 			<div class="modal-body"></div>
-			<div class="modal-footer flex-column flex-md-row flex-nowrap">
-				<a href="javascript:void(0);" class="btn btn-danger btn-block" id="createPassportModal">Генерувати паспорт в форматі PDF</a>
+			<div class="modal-footer flex-column flex-lg-row flex-nowrap">
+				<a href="javascript:void(0);" class="btn btn-danger btn-block create-pdf" id="createPassportModal">Генерувати паспорт в форматі PDF</a>
 				<button class="btn btn-dark btn-block" id="buttonPropertiesFormModal" type="button" title="Активувати форму" onclick="activeModalForm(event);">Активувати форму</button>
 				<button type="button" class="btn btn-warning btn-block" data-dismiss="modal" id="closeModal">Закрити вікно</button>
 			</div>

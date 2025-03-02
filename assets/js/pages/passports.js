@@ -56,6 +56,7 @@ async function format(d, tr) {
 }
 
 async function openPassportProperties(event) {
+	// $('#propertiesModal').modal({ keyboard: false, backdrop: 'static' });
 	$('.modal .modal-footer').find('#buttonPropertiesFormModal').removeClass('btn btn-light btn-block').addClass('btn btn-dark btn-block');
 	$('.modal .modal-footer').find('#buttonPropertiesFormModal').attr('title', 'Активувати форму');
 	$('.modal .modal-footer').find('#buttonPropertiesFormModal').html('Активувати форму');
@@ -63,23 +64,51 @@ async function openPassportProperties(event) {
 	let passport_id = event.target.closest("tr, dl").dataset.id;
 	$('#propertiesModal').find('.modal-footer .create-pdf').attr({ href: '/passports/gen_passport_pdf/' + passport_id, target: '_blank' });
 
+
 	let passport = await getRowDataAjax('passports', 'get_row_data_ajax', passport_id);
 	let passport_properties = await getRowDataAjax('passports', 'get_data_passport_properties_ajax', passport_id);
 
-	if (typeof passport === 'object' && typeof passport_properties === 'object') {
+	if (passport.data && passport_properties.data) {
+		function htmlspecialchars(text) {
+			var map = {
+				'&': '&amp;',
+				'<': '&lt;',
+				'>': '&gt;',
+				'"': '&quot;',
+				"'": '&#039;'
+			};
+
+			return text.replace(/[&<>"']/g, function (m) { return map[m]; });
+		}
 
 		let properties = '';
 		passport_properties.data.forEach(function (item) {
+
 			properties += `
-		<tr class="table-secondary" data-id="${item.id}">
-			<td class="align-middle"><strong>${item.property}</strong></td>
-			<td class="align-middle" data-field_name="value" data-field_title="Значення"><input class="form-control" value='${item.value}' onChange="updateFieldAjax(event, 'passport_properties', 'update_field_ajax');" disabled /></td>
-		</tr>
-		`;
+			<tr class="table-secondary" data-id="${item.id}">
+				<td class="align-middle"><strong>${item.property}</strong></td>
+				<td class="align-middle" data-field_name="value" data-field_title="Значення"><input class="form-control" name="value[]" value="${htmlspecialchars(item.value)}" onChange="updateFieldAjax(event, 'passport_properties', 'update_field_ajax');" disabled></td>
+			</tr>
+			`;
 		});
 
+		switch (passport.data.place_id) {
+			case "1":
+				text_color = 'text-warning';
+				break;
+			case "2":
+				text_color = 'text-success';
+				break;
+			case "3":
+				text_color = 'text-danger';
+				break;
+			default:
+				text_color = 'text-primary';
+		}
+
 		let html = `
-			<h4 class="text-primary text-center"><strong>Об'єкт:</strong> ${passport.data.complete_renovation_object}<strong> ДНО:</strong> ${passport.data.specific_renovation_object}</h4>
+			<h3 class="text-dark text-center"><strong>${passport.data.complete_renovation_object}</strong><h3>
+			<h5 class="${text_color} text-center"><strong>ДНО:</strong> ${passport.data.specific_renovation_object} <strong> Місце встановлення:</strong> ${passport.data.place}</h5>
 			<table class="table table-striped table-bordered table-hover table-sm">
 				<thead class="thead-dark">
 					<tr class="text-center">
@@ -87,18 +116,21 @@ async function openPassportProperties(event) {
 						<th class="col-md-7 align-middle">Значення</th>
 					</tr>
 				</thead>
-				<tbody>
-					${properties}
-				</tbody>
+				<tbody>${properties}</tbody>
 			</table>
 		`;
 
 		$('#propertiesModal').find(".modal-body").empty().append(html);
-		if (passport.status === 'SUCCESS') {
-			$('#propertiesModal').find('.overlay').hide();
-		}
+		$('#propertiesModal').find('.overlay').hide();
 	}
-	else {
+	if (!passport.data || !passport_properties.data) {
 		toastr.error("Щось пішло не так. Будь ласка зверніться до адміністратора.", "Помилка");
+		toastr.error(passport_properties.message, "Помилка");
+		toastr.info('<a href="javascript:void(0);">Додати технічні характеристики!</a>', "Що потрібно зробити?");
 	}
 }
+
+$('#propertiesModal').on('hidden.bs.modal', function (event) {
+	$('#propertiesModal').find(".modal-body").empty();
+	$('#propertiesModal').find('.overlay').show();
+});

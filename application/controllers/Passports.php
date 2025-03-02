@@ -1372,6 +1372,8 @@ class Passports extends CI_Controller
 
 		if ($results) {
 			$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'OK!', 'data' => $results], JSON_UNESCAPED_UNICODE));
+		} else {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Немає технічних характеристик для цього обладнання.'], JSON_UNESCAPED_UNICODE));
 		}
 	}
 
@@ -1386,7 +1388,7 @@ class Passports extends CI_Controller
 		foreach ($passports as $k => $row) {
 			$subdivision = $row->subdivision;
 			$complete_renovation_object = $row->complete_renovation_object;
-			$group = 'Підрозділ (' . $row->subdivision . ')_Об\'єкт (' . $row->complete_renovation_object . ')_ДНО (' . $row->specific_renovation_object . ')';
+			$group = 'Підрозділ (' . $row->subdivision . ')_Об\'єкт (' . $row->complete_renovation_object . ')_ДНО (' . $row->specific_renovation_object . ')_Обладнання (' . $row->equipment . ')';
 			$group_passports[$group]['num'] = null;
 			$group_passports[$group]['subdivision'] = $row->subdivision;
 			$group_passports[$group]['complete_renovation_object'] = $row->complete_renovation_object;
