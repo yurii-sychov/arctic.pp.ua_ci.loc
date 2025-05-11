@@ -1,5 +1,10 @@
+async function actionAjax(event) {
+	alert(event.target.innerHTML);
+}
+
 async function updateFieldAjax(event, name_controller = 'controller', name_public_method_controller = 'method', field_name = null, field_title = null, id = null) {
 	let form = new FormData();
+
 	form.set('field', field_name ? field_name : event.target.closest("td, dd").dataset.field_name);
 	form.set('field_title', field_title ? field_title : event.target.closest("td, dd").dataset.field_title);
 	form.set('id', id ? id : event.target.closest("tr, dl").dataset.id);
@@ -24,18 +29,23 @@ async function updateFieldAjax(event, name_controller = 'controller', name_publi
 			body: form
 		});
 
-		const result = await response.json();
+		if (!response.ok) {
+			throw new Error(`HTTP error! Status: ${response.status}`);
+		}
 
-		if (result.status === 'SUCCESS') {
+		const data = await response.json();
+
+		if (data.status === 'SUCCESS') {
 			event.target.classList.remove('is-invalid');
-			toastr.success(result.message, "Успіх");
+			toastr.success(data.message, "Успіх");
 		}
 		else {
 			event.target.classList.add('is-invalid');
-			toastr.error(result.message, "Помилка");
+			toastr.error(data.message, "Помилка");
 		}
+
 	} catch (error) {
-		toastr.error(error);
+		toastr.error(error, "Помилка");
 	}
 }
 

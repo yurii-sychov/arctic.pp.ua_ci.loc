@@ -10,7 +10,7 @@
 	<div class="row">
 		<div class="col-md-12 mb-3">
 			<label for="description" class="form-label">Опис об'єкту</label>
-			<textarea class="form-control" id="description" name="description" rows="10" cols="50"><?php echo htmlspecialchars($stantion->description); ?></textarea>
+			<textarea class="form-control" id="description" name="description" rows="10" cols="50"><?php echo htmlspecialchars($stantion->description ?? ''); ?></textarea>
 			<div class="invalid-feedback"></div>
 		</div>
 	</div>

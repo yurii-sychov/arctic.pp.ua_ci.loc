@@ -44,16 +44,16 @@
 							<table class="table table-bordered align-middle">
 								<thead>
 									<tr>
-										<th>Дата</th>
-										<th>Тип</th>
-										<th>Зміст</th>
+										<th style="width: 15%;">Дата</th>
+										<th style="width: 20%;">Тип</th>
+										<th style="width: 65%;">Зміст</th>
 									</tr>
 								</thead>
 								<tbody>
 									<?php foreach ($news as $item) : ?>
 										<?php $text_color_random = array_rand($text_color, 1); ?>
 										<tr class="<?php echo $text_color[$text_color_random]; ?>">
-											<td><?php echo $item->date_created; ?></td>
+											<td class="text-center"><?php echo $item->date_created; ?></td>
 											<td><?php echo $item->title; ?></td>
 											<td><?php echo $item->description; ?></td>
 										</tr>

@@ -134,3 +134,9 @@ $('#propertiesModal').on('hidden.bs.modal', function (event) {
 	$('#propertiesModal').find(".modal-body").empty();
 	$('#propertiesModal').find('.overlay').show();
 });
+
+$('[data-mask]').inputmask();
+
+// $('[datetimepicker]').datetimepicker({
+// 	format: 'DD.MM.YYYY'
+// });

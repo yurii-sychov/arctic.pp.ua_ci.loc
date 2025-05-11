@@ -40,12 +40,30 @@ class Schedule_material_Model extends CI_Model
 	{
 		// $this->db->select('(SELECT `materials`.`name` FROM `materials` WHERE materials.id = schedules_materials.material_id ORDER BY `materials`.`name` ASC) as name');
 		// $this->db->select('(SELECT `materials`.`unit` FROM `materials` WHERE materials.id = schedules_materials.material_id) as unit');
-		$this->db->select('schedules_materials.*');
+		$this->db->select('schedules_material.*');
 		$this->db->select('materials.name');
 		$this->db->select('materials.unit');
 		$this->db->where('schedules_materials.material_id = materials.id');
 		$this->db->where('schedules_materials.schedule_id', $schedule_id);
 		$this->db->where('schedules_materials.year_service', (date('Y') + 1));
+		$this->db->from('schedules_materials, materials');
+		$this->db->order_by('schedules_materials.is_extra', 'DESC');
+		$this->db->order_by('materials.name', 'ASC');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	public function get_materials_for_schedule_id_current_year($schedule_id)
+	{
+		// $this->db->select('(SELECT `materials`.`name` FROM `materials` WHERE materials.id = schedules_materials.material_id ORDER BY `materials`.`name` ASC) as name');
+		// $this->db->select('(SELECT `materials`.`unit` FROM `materials` WHERE materials.id = schedules_materials.material_id) as unit');
+		$this->db->select('schedules_materials.*');
+		$this->db->select('materials.name');
+		$this->db->select('materials.unit');
+		$this->db->select('materials.r3_id');
+		$this->db->where('schedules_materials.material_id = materials.id');
+		$this->db->where('schedules_materials.schedule_id', $schedule_id);
+		$this->db->where('schedules_materials.year_service', date('Y'));
 		$this->db->from('schedules_materials, materials');
 		$this->db->order_by('schedules_materials.is_extra', 'DESC');
 		$this->db->order_by('materials.name', 'ASC');

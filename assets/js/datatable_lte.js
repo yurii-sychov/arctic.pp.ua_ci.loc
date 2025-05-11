@@ -183,6 +183,9 @@ $(document).ready(function () {
 				],
 			},
 			// DataTables - Callbacks
+			preDrawCallback: function (settings) {
+				$(".dataTables_wrapper").find('input[type="search"]').attr("name", "search");
+			},
 			drawCallback: function (settings) {
 				$(".dataTables_wrapper").find('.dataTables_length')
 					.removeClass("dataTables_length")
@@ -197,7 +200,6 @@ $(document).ready(function () {
 				$(".dataTables_wrapper").find('.d-grid input').removeClass("form-control-sm");
 				$(".dataTables_wrapper").find('.d-grid').parent().removeClass("d-none");
 				$(".dataTables_wrapper").find('.d-grid label').css('display', 'block');
-				$(".dataTables_wrapper").find('input[type="search"]').attr("name", "search");
 			},
 			headerCallback: function (thead, data, start, end, display) {
 				$(thead).find('th').each(function (k, v) {

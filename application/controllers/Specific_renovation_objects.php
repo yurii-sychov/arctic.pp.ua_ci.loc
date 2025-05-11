@@ -8,6 +8,10 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
+use Monolog\Level;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
 class Specific_renovation_objects extends CI_Controller
 {
 	public function __construct()
@@ -18,7 +22,7 @@ class Specific_renovation_objects extends CI_Controller
 			redirect('authentication/signin');
 		}
 
-		if ($this->session->user->group !== 'admin' && $this->session->user->group !== 'engineer' && $this->session->user->group !== 'master') {
+		if (!$this->session->user->group) {
 			show_404();
 		}
 
@@ -28,6 +32,8 @@ class Specific_renovation_objects extends CI_Controller
 		$this->load->model('equipment_model');
 		$this->load->model('voltage_class_model');
 		$this->load->model('user_model');
+
+		$this->monolog();
 	}
 
 	public function index($subdivision_id = NULL, $complete_renovation_object_id = NULL, $equipment_id = NULL)
@@ -177,7 +183,8 @@ class Specific_renovation_objects extends CI_Controller
 		$result = $this->specific_renovation_object_model->update_field($this->input->post('id', TRUE), $data);
 
 		if ($result) {
-			$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!'], JSON_UNESCAPED_UNICODE));
+			$data['id'] = $this->input->post('id', TRUE);
+			$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!', 'data' => $data], JSON_UNESCAPED_UNICODE));
 			return;
 		}
 	}
@@ -262,5 +269,14 @@ class Specific_renovation_objects extends CI_Controller
 		}
 
 		$this->output->set_output(json_encode(['status' => 'SUCCESS', 'specific_renovation_objects' => $specific_renovation_objects], JSON_UNESCAPED_UNICODE));
+	}
+
+	private function monolog()
+	{
+		if (phpversion() > 8) {
+			$log = new Logger('log');
+			$log->pushHandler(new StreamHandler('uploads/logs/logs.log', Level::Debug));
+			$log->info('Перегляд сторінки: ' . current_url() . ' - Користувач: ' . $this->session->user->login);
+		}
 	}
 }

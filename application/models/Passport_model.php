@@ -137,7 +137,9 @@ class Passport_Model extends CI_Model
 		if ($filter['voltage_class_id']) {
 			$this->db->where('specific_renovation_objects.voltage_class_id', rtrim(ltrim($filter['voltage_class_id'], "^"), "$"));
 		}
-
+		if ($filter['is_photo']) {
+			$this->db->where('passports.is_photo', rtrim(ltrim($filter['is_photo'], "^"), "$"));
+		}
 		if ($post['search']['value']) {
 			$this->db->like('specific_renovation_objects.name', $post['search']['value']);
 		}
@@ -170,7 +172,9 @@ class Passport_Model extends CI_Model
 		if ($filter['voltage_class_id']) {
 			$this->db->where('specific_renovation_objects.voltage_class_id', rtrim(ltrim($filter['voltage_class_id'], "^"), "$"));
 		}
-
+		if ($filter['is_photo']) {
+			$this->db->where('passports.is_photo', rtrim(ltrim($filter['is_photo'], "^"), "$"));
+		}
 		if ($post['search']['value']) {
 			$this->db->like('specific_renovation_objects.name', $post['search']['value']);
 		}

@@ -7,8 +7,8 @@
 	<input type="hidden" name="passport_id" value="" id="idPassportIdAdd">
 	<div class="row">
 		<div class="col-md-12 mb-3">
-			<label class="form-label">Підрозділ</label>
-			<select class="form-select" disabled>
+			<label class="form-label" for="idSubdivisionOperationList">Підрозділ</label>
+			<select class="form-select" name="subdivision" id="idSubdivisionOperationList" disabled>
 				<option value="">Оберіть підрозділ</option>
 			</select>
 			<div class="invalid-feedback"></div>
@@ -16,8 +16,8 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12 mb-3">
-			<label class="form-label">Підстанція</label>
-			<select class="form-select" disabled>
+			<label class="form-label" for="idStantionOperationList">Підстанція</label>
+			<select class="form-select" name="stantion" id="idStantionOperationList" disabled>
 				<option value="">Оберіть підстанцію</option>
 			</select>
 			<div class="invalid-feedback"></div>
@@ -25,8 +25,8 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12 mb-3">
-			<label class="form-label">Диспечерське найменування</label>
-			<select class="form-select" disabled>
+			<label class="form-label" for="idDispOperationList">Диспечерське найменування</label>
+			<select class="form-select" name="disp" id="idDispOperationList" disabled>
 				<option value="">Оберіть диспечерське найменування</option>
 			</select>
 			<div class="invalid-feedback"></div>
@@ -34,8 +34,8 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12 mb-3">
-			<label class="form-label">Місце встановлення</label>
-			<select class="form-select" disabled>
+			<label class="form-label" for="idPlaceOperationList">Місце встановлення</label>
+			<select class="form-select" name="place" id="idPlaceOperationList" disabled>
 				<option value="">Оберіть місце встановлення</option>
 			</select>
 			<div class="invalid-feedback"></div>

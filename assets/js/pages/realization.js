@@ -1,9 +1,55 @@
+async function openMaterialsModal(event) {
+	let modal = new bootstrap.Modal(document.getElementById('materialsModal'), {
+		keyboard: false
+	});
+	modal.show();
+
+	let schedule_id = event.target.closest('tr').dataset.schedule_id;
+
+	try {
+		const response = await fetch('/realization/get_materials_for_schedule_id_ajax/' + schedule_id, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
+
+		if (!response.ok) {
+			throw new Error(`Ошибка HTTP: ${response.status}`);
+		}
+
+		const data = await response.json();
+
+		let html = '';
+		for (let i = 0; i < data.data.length; i++) {
+			let is_extra = (data.data[i].is_extra == 1) ? 'table-danger' : 'table-default';
+			html += `
+				<tr class="${is_extra}" >
+					<td class="text-center">${i + 1}</td>
+					<td class="text-center">${data.data[i].r3_id}</td>
+					<td class="text-start">${data.data[i].name}</td>
+					<td class="text-center">${data.data[i].unit}</td>
+					<td class="text-center">${data.data[i].quantity}</td>
+				</tr>
+			`;
+		}
+
+		$('#materialsModal').find('table tbody').empty().append(html);
+
+	} catch (error) {
+		toastr.error('Ошибка запроса:', error);
+	}
+}
+
 function generateScheduleExcel(event) {
 	const url = new URL(location.href);
 	if (url.searchParams.get('stantion_id')) {
-		location.href = '/schedules/genarate_year_schedule_simple_excel/' + url.searchParams.get('stantion_id') + '/2024';
+		location.href = '/schedules/genarate_year_schedule_simple_excel/' + url.searchParams.get('stantion_id');
 	}
+}
 
+function generateMaterialsExcel(event) {
+	location.href = '/realization/genarate_year_materials_simple_excel/';
 }
 
 function activeFormRow(event) {
@@ -89,7 +135,7 @@ $(document).ready(function () {
 						"data-bs-toggle": "tooltip"
 					},
 					init: function (e, dt, node, config) {
-						dt.removeClass('btn-secondary')
+						dt.removeClass('btn-secondary');
 					}
 				},
 				{
@@ -105,7 +151,7 @@ $(document).ready(function () {
 						"data-bs-toggle": "tooltip"
 					},
 					init: function (e, dt, node, config) {
-						dt.removeClass('btn-secondary')
+						dt.removeClass('btn-secondary');
 					}
 				},
 				// {
@@ -161,7 +207,7 @@ $(document).ready(function () {
 						"data-bs-toggle": "tooltip"
 					},
 					init: function (e, dt, node, config) {
-						dt.removeClass('btn-secondary')
+						dt.removeClass('btn-secondary');
 					}
 				},
 				{
@@ -174,7 +220,7 @@ $(document).ready(function () {
 						"data-bs-toggle": "tooltip"
 					},
 					init: function (e, dt, node, config) {
-						dt.removeClass('btn-secondary')
+						dt.removeClass('btn-secondary');
 					},
 					// autoPrint: false,
 					exportOptions: {

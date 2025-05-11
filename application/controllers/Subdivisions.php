@@ -8,6 +8,11 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
+use Monolog\Level;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Formatter\JsonFormatter;
+
 class Subdivisions extends CI_Controller
 {
 	public function __construct()
@@ -18,12 +23,14 @@ class Subdivisions extends CI_Controller
 			redirect('authentication/signin');
 		}
 
-		if ($this->session->user->group !== 'admin' && $this->session->user->group !== 'engineer' && $this->session->user->group !== 'master') {
+		if (!$this->session->user->group) {
 			show_404();
 		}
 
 		$this->load->model('subdivision_model');
 		$this->load->model('user_model');
+
+		$this->monolog();
 	}
 
 	public function index()
@@ -120,7 +127,8 @@ class Subdivisions extends CI_Controller
 		$result = $this->subdivision_model->update_field($this->input->post('id', TRUE), $data);
 
 		if ($result) {
-			$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!'], JSON_UNESCAPED_UNICODE));
+			$data['id'] = $this->input->post('id', TRUE);
+			$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!', 'data' => $data], JSON_UNESCAPED_UNICODE));
 			return;
 		}
 	}
@@ -139,23 +147,35 @@ class Subdivisions extends CI_Controller
 		$this->output->set_content_type('application/json');
 
 		if (!$this->input->is_ajax_request()) {
+			$this->output->set_status_header(400);
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не Ajax запрос!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}
 
 
 		if (!$this->input->get()) {
+			$this->output->set_status_header(400);
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не GET запрос!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}
 
-		$subdivisions = $this->subdivision_model->get_data();
+		$data = $this->subdivision_model->get_data();
 
-		if (!$subdivisions) {
+		if (!$data) {
+			$this->output->set_status_header(400);
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Не вдалося отримати дані з реєстру!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}
 
-		$this->output->set_output(json_encode(['status' => 'SUCCESS', 'subdivisions' => $subdivisions], JSON_UNESCAPED_UNICODE));
+		$this->output->set_output(json_encode(['status' => 'SUCCESS', 'subdivisions' => $data], JSON_UNESCAPED_UNICODE));
+	}
+
+	private function monolog()
+	{
+		if (phpversion() > 8) {
+			$log = new Logger('log');
+			$log->pushHandler(new StreamHandler('uploads/logs/logs.log', Level::Debug));
+			$log->info('Перегляд сторінки: ' . current_url() . ' - Користувач: ' . $this->session->user->login);
+		}
 	}
 }

@@ -1211,11 +1211,11 @@ class Schedules extends CI_Controller
 		$writer->save('php://output');
 	}
 
-	public function genarate_year_schedule_simple_excel($stantion_id, $current_year = NULL)
+	public function genarate_year_schedule_simple_excel($stantion_id)
 	{
 		$stantion = $this->complete_renovation_object_model->get_row($stantion_id);
 
-		$data = $this->schedule_year_model->get_data_for_simple_year($stantion_id, $current_year);
+		$data = $this->schedule_year_model->get_data_for_simple_year($stantion_id, date('Y'));
 
 		// echo "<pre>";
 		// print_r($data);
@@ -1223,7 +1223,7 @@ class Schedules extends CI_Controller
 		// exit;
 
 		header('Content-Type: application/vnd.ms-excel');
-		header('Content-Disposition: attachment;filename="Річний план-графік для майстрів на ' . (date('Y') + 1) . ' для ' . $stantion->name . '.xlsx"');
+		header('Content-Disposition: attachment;filename="Річний план-графік для майстрів на ' . date('Y') . ' для ' . $stantion->name . '.xlsx"');
 		header('Cache-Control: max-age=0');
 
 		$spreadsheet = new Spreadsheet();
@@ -1275,7 +1275,8 @@ class Schedules extends CI_Controller
 		$active_sheet->mergeCells('A7:G7')->setCellValue('A7', $stantion->name)->getStyle('A7')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 		$active_sheet->getStyle('A7:G7')->getFont()->setSize(14)->setBold(false);
 
-		$year = $current_year ? date('Y') : (date('Y') + 1);
+		// $year = $current_year ? date('Y') : (date('Y') + 1);
+		$year = date('Y');
 		$active_sheet->mergeCells('A8:G8')->setCellValue('A8', 'на ' . $year . ' рік')->getStyle('A8')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 		$active_sheet->getStyle('A8:G8')->getFont()->setSize(14)->setBold(false);
 

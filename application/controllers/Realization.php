@@ -29,7 +29,7 @@ class Realization extends CI_Controller
 		// $this->load->model('schedule_model');
 		// $this->load->model('schedule_note_model');
 		$this->load->model('schedule_year_model');
-		// $this->load->model('schedule_material_model');
+		$this->load->model('schedule_material_model');
 		// $this->load->model('schedule_worker_model');
 		// $this->load->model('schedule_technic_model');
 		// $this->load->model('ciphers_material_model');
@@ -70,6 +70,9 @@ class Realization extends CI_Controller
 			$data['equipments'] = $this->schedule_year_model->get_data($this->input->get('stantion_id'));
 		}
 
+		// echo "<pre>";
+		// print_r($data);
+		// echo "</pre>";
 		$this->load->view('layout', $data);
 	}
 
@@ -98,4 +101,20 @@ class Realization extends CI_Controller
 		$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!'], JSON_UNESCAPED_UNICODE));
 		return;
 	}
+
+	public function get_materials_for_schedule_id_ajax($schedule_id)
+	{
+		$this->output->set_content_type('application/json');
+
+		$results = $this->schedule_material_model->get_materials_for_schedule_id_current_year($schedule_id);
+
+		if (!$results) {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Не вдалося отримати дані з реєстру!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		$this->output->set_output(json_encode(['status' => 'SUCCESS', 'data' => $results], JSON_UNESCAPED_UNICODE));
+	}
+
+	public function genarate_year_materials_simple_excel() {}
 }

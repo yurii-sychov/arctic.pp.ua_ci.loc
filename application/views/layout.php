@@ -161,9 +161,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 							aria-current="page" href="/buildings">Будівлі та споруди</a>
 					</li> -->
 
-					<?php if (($this->session->user->group === 'admin' || $this->session->user->group === 'master') && ($this->session->user->group !== 'sp' || $this->session->user->group !== 'sdzp' || $this->session->user->group !== 'head')) : ?>
+					<?php if (($this->session->user->group === 'admin' || $this->session->user->group === 'master' || $this->session->user->group === 'user') && ($this->session->user->group !== 'sp' || $this->session->user->group !== 'sdzp' || $this->session->user->group !== 'head')) : ?>
 						<li class="nav-item">
-							<a class="nav-link <?php if ($page === 'protective_arsenal/index') : ?>active<?php endif; ?>" aria-current="page" href="/protective_arsenal">Захисні засоби</a>
+							<a class="nav-link <?php if ($page === 'fire_extinguishers') : ?>active<?php endif; ?>" aria-current="page" href="/fire_extinguishers">Вогнегасники</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link <?php if ($page === 'protective_arsenals') : ?>active<?php endif; ?>" aria-current="page" href="/protective_arsenals">Захисні засоби</a>
 						</li>
 					<?php endif; ?>
 
@@ -322,6 +325,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 			</div>
 		</div>
 	</div>
+
+	<!-- <script id="chatway" async="true" src="https://cdn.chatway.app/widget.js?id=SjdkmKkDcYOC"></script> -->
 </body>
 
 </html>

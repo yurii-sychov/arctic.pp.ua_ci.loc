@@ -137,12 +137,12 @@
 											<input type="text" name="year_plan_repair_invest[]" class="form-control text-center" value="<?php echo $item->year_plan_repair_invest; ?>" maxlength="4" tabindex="4" onChange="updateFieldAjax(event, 'specific_renovation_objects', 'update_field_ajax');" disabled />
 										</td>
 										<td class="align-middle text-center">
-											<a class="dt-control" href="javascript:void(0);" tabindex="-1">
+											<a class="dt-control" href="javascript:void(0);" title="Більше інформації" tabindex="-1">
 												<i class="fas fa-eye text-info"></i>
 											</a>
 										</td>
 										<td class="align-middle text-center">
-											<a href="javascript:void(0);" onClick="deleteRow(event);" tabindex="-1">
+											<a href="javascript:void(0);" onClick="deleteRow(event);" title="Видалити" tabindex="-1">
 												<i class="fas fa-trash text-danger"></i>
 											</a>
 										</td>

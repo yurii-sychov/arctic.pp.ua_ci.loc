@@ -10,6 +10,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title><?php echo $title; ?></title>
 
+	<link rel="icon" href="data:;base64,=">
 	<!-- Google Font: Source Sans Pro -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 	<!-- Font Awesome Icons -->
@@ -318,6 +319,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
 								</p>
 							</a>
 						</li>
+						<li class="nav-item">
+							<a href="/fire_extinguishers" class="nav-link <?php if ($page === 'fire_extinguishers') echo 'active'; ?>">
+								<i class="nav-icon fas fa-fire-extinguisher"></i>
+								<p>
+									Вогнегасники
+									<span class="right badge badge-warning">New</span>
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="/protective_arsenals" class="nav-link <?php if ($page === 'protective_arsenals') echo 'active'; ?>">
+								<i class="nav-icon fas fa-mitten"></i>
+								<p>
+									Захисні засоби
+									<span class="right badge badge-danger">New</span>
+								</p>
+							</a>
+						</li>
 					</ul>
 				</nav>
 				<!-- /.sidebar-menu -->
@@ -426,6 +445,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	<!-- CustomJS -->
 	<script src="/assets/js/custom.js?v=<?php echo date("Y-m-d"); ?>"></script>
 	<!-- Page specific script -->
+
+	<?php if (isset($ag_grid) && $ag_grid) : ?>
+		<script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+	<?php endif; ?>
 
 	<?php if (isset($page_js) && $page_js) : ?>
 		<script src="/assets/js/pages/<?php echo $page_js; ?>.js?v=<?php echo date("Y-m-d"); ?>"></script>

@@ -23,7 +23,6 @@ class Authentication extends CI_Controller
 	{
 		$this->output->set_content_type('application/json', 'utf-8');
 
-		// Якщо це не Ajax-запрос
 		if ($this->input->is_ajax_request() === FALSE) {
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Это не Ajax-запрос!']));
 			return;
@@ -74,7 +73,6 @@ class Authentication extends CI_Controller
 	{
 		$this->output->set_content_type('application/json', 'utf-8');
 
-		// Якщо це не Ajax-запрос
 		if ($this->input->is_ajax_request() === FALSE) {
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Это не Ajax-запрос!']));
 			return;

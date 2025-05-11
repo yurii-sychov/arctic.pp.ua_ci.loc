@@ -102,14 +102,15 @@
 							<thead class="thead-light">
 								<tr>
 									<th class="align-middle text-center" style="width:5%;" data-data="id">ID</th>
-									<th class="align-middle text-center" style="width:10%;">ДНО</th>
-									<th class="align-middle text-center" style="width:10%;">Місце</th>
-									<th class="align-middle text-center" style="width:15%;">Тип обладнання</th>
+									<th class="align-middle text-center" style="width:8%;">ДНО</th>
+									<th class="align-middle text-center" style="width:9%;">Місце</th>
+									<th class="align-middle text-center" style="width:13%;">Тип обладнання</th>
 									<th class="align-middle text-center" style="width:10%;">Короткий тип</th>
 									<th class="align-middle text-center" style="width:11%;">Зав. №</th>
 									<th class="align-middle text-center" style="width:10%;">Дата виготовлення</th>
 									<th class="align-middle text-center" style="width:9%;">Рік вводу</th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="isBlock">IsBlock?</th>
+									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="isPhoto">IsPhoto?</th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="more"><i class="fas fa-eye text-secondary"></i></th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="properties"><i class="fas fa-search-plus text-secondary"></i></th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="delete"><i class="fas fa-trash text-secondary"></i></th>
@@ -146,28 +147,42 @@
 										<td class="align-middle" data-field_name="number" data-field_title="Зав. №" data-search="<?php echo $item->number; ?>" data-order="<?php echo $item->number; ?>">
 											<input type="text" name="number[]" class="form-control text-left" value="<?php echo $item->number; ?>" maxlength="30" tabindex="3" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
 										</td>
-										<td class="align-middle text-center"><?php echo $item->production_date; ?></td>
+										<td class="align-middle text-center" data-field_name="production_date" data-field_title="Рік виготовлення" data-search="<?php echo $item->production_date; ?>" data-order="<?php echo $item->production_date; ?>">
+											<input type="text" name="production_date[]" class="form-control text-center" value="<?php echo $item->production_date_format; ?>" maxlength="10" tabindex="4" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled data-inputmask-alias="datetime" data-inputmask-inputformat="dd.mm.yyyy" data-mask />
+											<!-- <div class="input-group date" id="reservationdate_<?php echo $item->id; ?>" data-target-input="nearest" datetimepicker>
+												<input type="text" name="production_date[]" class="form-control text-center datetimepicker-input" value="<?php echo $item->production_date_format; ?>" maxlength="10" tabindex="4" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" isabled data-target="#reservationdate_<?php echo $item->id; ?>" data-inputmask-alias="datetime" data-inputmask-inputformat="dd.mm.yyyy" data-mask />
+												<div class="input-group-append" data-target="#reservationdate_<?php echo $item->id; ?>" data-toggle="datetimepicker">
+													<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+												</div>
+											</div> -->
+										</td>
 										<td class="align-middle text-center" data-field_name="commissioning_year" data-field_title="Рік вводу" data-search="<?php echo $item->commissioning_year; ?>" data-order="<?php echo $item->commissioning_year; ?>">
-											<input type="text" name="commissioning_year[]" class="form-control text-center" value="<?php echo $item->commissioning_year; ?>" maxlength="4" tabindex="4" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
+											<input type="text" name="commissioning_year[]" class="form-control text-center" value="<?php echo $item->commissioning_year; ?>" maxlength="4" tabindex="5" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
 										</td>
 										<td class="align-middle text-center" data-field_name="is_block" data-field_title="Блокування">
 											<div class="custom-control custom-switch">
-												<input type="checkbox" class="custom-control-input" data-field_name="is_block" data-field_title="Деблокувати/Блокувати" id="switch<?php echo $item->id; ?>" <?php echo $item->is_block ? 'checked' : NULL; ?> value="<?php echo $item->is_block; ?>" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
-												<label class="custom-control-label" for="switch<?php echo $item->id; ?>" title="Деблокувати/Блокувати" style="cursor: pointer;"></label>
+												<input type="checkbox" class="custom-control-input" data-field_name="is_block" data-field_title="Деблокувати/Блокувати" id="switch_is_block_<?php echo $item->id; ?>" <?php echo $item->is_block ? 'checked' : NULL; ?> value="<?php echo $item->is_block; ?>" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
+												<label class="custom-control-label" for="switch_is_block_<?php echo $item->id; ?>" title="Деблокувати/Блокувати" style="cursor: pointer;"></label>
+											</div>
+										</td>
+										<td class="align-middle text-center" data-field_name="is_photo" data-field_title="Фото">
+											<div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+												<input type="checkbox" class="custom-control-input" data-field_name="is_photo" data-field_title="Нема фото/Є фото" id="switch_is_photo_<?php echo $item->id; ?>" <?php echo $item->is_photo ? 'checked' : NULL; ?> value="<?php echo $item->is_photo; ?>" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
+												<label class="custom-control-label" for="switch_is_photo_<?php echo $item->id; ?>" title="Нема фото/Є фото" style="cursor: pointer;"></label>
 											</div>
 										</td>
 										<td class="align-middle text-center">
-											<a class="dt-control" href="javascript:void(0);" tabindex="-1">
+											<a class="dt-control" href="javascript:void(0);" title="Більше інформації" tabindex="-1">
 												<i class="fas fa-eye text-info"></i>
 											</a>
 										</td>
 										<td class="align-middle text-center">
-											<a href="javascript:void(0);" tabindex="-1" data-toggle="modal" data-target="#propertiesModal" onClick="openPassportProperties(event);">
+											<a href="javascript:void(0);" title="Технічні характеристики" tabindex="-1" data-toggle="modal" data-target="#propertiesModal" onClick="openPassportProperties(event);">
 												<i class="fas fa-search-plus text-warning"></i>
 											</a>
 										</td>
 										<td class="align-middle text-center">
-											<a href="javascript:void(0);" onClick="deleteRow(event);" tabindex="-1">
+											<a href="javascript:void(0);" onClick="deleteRow(event);" title="Видалити" tabindex="-1">
 												<i class="fas fa-trash text-danger"></i>
 											</a>
 										</td>

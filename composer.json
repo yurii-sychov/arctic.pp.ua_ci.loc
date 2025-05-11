@@ -17,7 +17,8 @@
 		"shuchkin/simplexlsx": "^1.0",
 		"shuchkin/simplexlsxgen": "^1.2",
 		"almasaeed2010/adminlte": "~3.2",
-		"phpoffice/phpword": "^1.2"
+		"phpoffice/phpword": "^1.2",
+		"monolog/monolog": "^3.9"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

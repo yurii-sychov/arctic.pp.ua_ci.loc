@@ -545,11 +545,13 @@ class Complete_renovation_objects extends CI_Controller
 		$this->output->set_content_type('application/json');
 
 		if (!$this->input->is_ajax_request()) {
+			$this->output->set_status_header(400);
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не Ajax запрос!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}
 
 		if (!$this->input->get()) {
+			$this->output->set_status_header(400);
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не GET запрос!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}
@@ -557,6 +559,7 @@ class Complete_renovation_objects extends CI_Controller
 		$complete_renovation_objects = $this->complete_renovation_object_model->get_data_for_subdivision($this->input->get('subdivision_id'));
 
 		if (!$complete_renovation_objects) {
+			$this->output->set_status_header(400);
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Не вдалося отримати дані з реєстру!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}

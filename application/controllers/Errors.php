@@ -15,6 +15,8 @@ class Errors extends CI_Controller
 	{
 		$this->output->set_content_type('application/json');
 
+		$this->output->set_status_header(404);
+
 		$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Сторінка не існує!'], JSON_UNESCAPED_UNICODE));
 
 		return;

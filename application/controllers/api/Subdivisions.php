@@ -12,20 +12,24 @@ use chriskacerguis\RestServer\RestController;
 
 class Subdivisions extends Ci_Controller
 {
+	public $key = '81809f82e2074b59448635de2fcc121aaec62890';
+
 	function __construct()
 	{
 		parent::__construct();
 		$this->output->set_header('Access-Control-Allow-Origin: *');
-		$this->output->set_header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Authorization');
+		$this->output->set_header("Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS, *");
+		$this->output->set_header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token , Authorization, *");
+		// $this->output->set_header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Authorization');
 		$this->output->set_content_type('application/json', 'utf-8');
 		$this->load->model('api/subdivision_model');
 	}
 
-	public function index($key)
+	public function index()
 	{
 		$data = [];
 
-		if ($key !== hash('ripemd160', 'react-native-repair')) {
+		if ($this->input->get('key') !== $this->key) {
 			$data['status'] = 'ERROR';
 			$data['message'] = 'Не вірний Api Key!';
 

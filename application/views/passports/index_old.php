@@ -48,6 +48,13 @@
 					?>
 				</select>
 			</div>
+			<div class="col-lg-2">
+				<select class="form-select my-1" id="FilterIsPhoto">
+					<option value="" selected>Оберіть паспорти з фото</option>
+					<option value="1">З фото</option>
+					<option value="0">Без фото</option>
+				</select>
+			</div>
 			<?php if ($this->session->user->group === 'admin') : ?>
 				<div class="col-lg-2">
 					<select class="form-select my-1" id="OrderUpdateAt">
@@ -146,8 +153,8 @@
 					<?php $this->load->view('passports/form_passport_edit'); ?>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
-					<button type="button" class="btn btn-primary action" onclick="editPassport(event);">Змінити</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити вікно</button>
+					<button type="button" class="btn btn-primary action" onclick="editPassport(event);">Змінити паспортні дані</button>
 				</div>
 			</div>
 		</div>
@@ -167,8 +174,8 @@
 				<?php $this->load->view('passports/form_passport_move'); ?>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
-				<button type="button" class="btn btn-primary action" onclick="movePassport(event);">Перемістити</button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити вікно</button>
+				<button type="button" class="btn btn-primary action" onclick="movePassport(event);">Перемістити паспорт</button>
 			</div>
 		</div>
 	</div>

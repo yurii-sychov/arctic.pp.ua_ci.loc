@@ -8,6 +8,10 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
+use Monolog\Level;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\{Font, Border, Alignment};
@@ -45,9 +49,10 @@ class Passports extends CI_Controller
 			redirect('authentication/signin');
 		}
 
-		if ($this->session->user->group !== 'admin' && $this->session->user->group !== 'engineer' && $this->session->user->group !== 'master' && $this->session->user->group !== 'user' && $this->session->user->group !== 'head') {
+		if (!$this->session->user->group) {
 			show_404();
 		}
+
 		$this->load->model('subdivision_model');
 		$this->load->model('complete_renovation_object_model');
 		$this->load->model('specific_renovation_object_model');
@@ -64,6 +69,8 @@ class Passports extends CI_Controller
 		$this->load->model('passport_photo_model');
 		$this->load->model('log_model');
 		$this->load->model('user_model');
+
+		$this->monolog();
 	}
 
 	public function index($subdivision_id = NULL, $complete_renovation_object_id = NULL, $equipment_id = NULL)
@@ -114,6 +121,7 @@ class Passports extends CI_Controller
 
 			$insulation_types = $this->insulation_type_model->get_data();
 			$users = $this->user_model->get_data();
+
 			foreach ($passports as $key => $passport) {
 				// foreach ($specific_renovation_objects as $specific_renovation_object) {
 				// 	if ($passport->specific_renovation_object_id == $specific_renovation_object->id) {
@@ -121,6 +129,7 @@ class Passports extends CI_Controller
 				// 	}
 				// }
 				$passports[$key]->voltage = ($passport->voltage / 1000);
+				$passports[$key]->production_date_format = date('d.m.Y', strtotime($passport->production_date ?? ''));
 				foreach ($places as $place) {
 					if ($passport->place_id == $place->id) {
 						$passports[$key]->place = $place->name;
@@ -207,6 +216,10 @@ class Passports extends CI_Controller
 	{
 		$this->output->set_content_type('application/json');
 
+		// if (preg_match('/^(\d{2})\.(\d{2})\.(\d{4})$/', $this->input->post('value'))) {
+		// $_POST['value'] = date('Y-m-d', strtotime($this->input->post('value')));
+		// }
+
 		if (!$this->input->is_ajax_request()) {
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не Ajax запрос!'], JSON_UNESCAPED_UNICODE));
 			return;
@@ -239,6 +252,13 @@ class Passports extends CI_Controller
 		if ($this->input->post('field') === 'is_block') {
 			$rules = 'required';
 		}
+		if ($this->input->post('field') === 'is_photo') {
+			$rules = 'required';
+		}
+		if ($this->input->post('field') === 'production_date') {
+			$rules = 'required|min_length[10]|max_length[10]';
+			$_POST['value'] = date('Y-m-d', strtotime($this->input->post('value')));
+		}
 		if ($this->input->post('field') === 'commissioning_year') {
 			$rules = 'required|numeric|min_length[4]|max_length[4]|integer';
 		}
@@ -267,7 +287,8 @@ class Passports extends CI_Controller
 		$result = $this->passport_model->update_field($this->input->post('id', TRUE), $data);
 
 		if ($result) {
-			$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!'], JSON_UNESCAPED_UNICODE));
+			$data['id'] = $this->input->post('id', TRUE);
+			$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!', 'data' => $data], JSON_UNESCAPED_UNICODE));
 			return;
 		}
 	}
@@ -291,6 +312,7 @@ class Passports extends CI_Controller
 
 		foreach ($this->input->post('columns') as $key => $value) {
 			$filter[$value['data']] = $value['search']['value'];
+			$filter[$value['name']] = $value['search']['value'];
 			if ($key == $this->input->post('order')[0]['column']) {
 				$order_dir = $this->input->post('order')[0]['dir'];
 				$order_field = $this->input->post('columns')[$key]['data'];
@@ -620,59 +642,63 @@ class Passports extends CI_Controller
 		}
 	}
 
-	public function get_data_passport()
-	{
-		$this->output->set_content_type('application/json');
+	// public function get_data_passport()
+	// {
+	// 	$this->output->set_content_type('application/json');
 
-		if (!$this->input->is_ajax_request()) {
-			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не Ajax запрос!'], JSON_UNESCAPED_UNICODE));
-			return;
-		}
+	// 	if (!$this->input->is_ajax_request()) {
+	// 		$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не Ajax запрос!'], JSON_UNESCAPED_UNICODE));
+	// 		return;
+	// 	}
 
-		if (!$this->input->post()) {
-			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не POST запрос!'], JSON_UNESCAPED_UNICODE));
-			return;
-		}
+	// 	if (!$this->input->post()) {
+	// 		$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не POST запрос!'], JSON_UNESCAPED_UNICODE));
+	// 		return;
+	// 	}
 
-		if ($this->session->user->group === 'user' || $this->session->user->group === 'head') {
-			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Вам не дозволена ця операція!'], JSON_UNESCAPED_UNICODE));
-			return;
-		}
+	// 	if ($this->session->user->group === 'user' || $this->session->user->group === 'head') {
+	// 		$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Вам не дозволена ця операція!'], JSON_UNESCAPED_UNICODE));
+	// 		return;
+	// 	}
 
-		$this->load->library('form_validation');
+	// 	$this->load->library('form_validation');
 
-		$passport = $this->passport_model->get_passport($this->input->post('id'));
+	// 	$passport = $this->passport_model->get_passport($this->input->post('id'));
 
-		if (!$passport) {
-			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Не вдалося отримати дані з реєстру!'], JSON_UNESCAPED_UNICODE));
-			return;
-		}
+	// 	if (!$passport) {
+	// 		$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Не вдалося отримати дані з реєстру!'], JSON_UNESCAPED_UNICODE));
+	// 		return;
+	// 	}
 
-		$disp = $this->specific_renovation_object_model->get_specific_renovation_object($passport->specific_renovation_object_id);
+	// 	$disp = $this->specific_renovation_object_model->get_specific_renovation_object($passport->specific_renovation_object_id);
 
-		$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані для зміни отримано', 'passport' => $passport, 'disp' => $disp], JSON_UNESCAPED_UNICODE));
-	}
+	// 	$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані для зміни отримано', 'passport' => $passport, 'disp' => $disp], JSON_UNESCAPED_UNICODE));
+	// }
 
 	public function get_data_passport_ajax($id = NULL)
 	{
 		$this->output->set_content_type('application/json');
 
 		if (!$this->input->is_ajax_request()) {
+			$this->output->set_status_header(400);
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не Ajax запрос!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}
 
 		if (!$id) {
+			$this->output->set_status_header(400);
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'В запросі немає ідентифікатора!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}
 
 		if (!is_numeric($id)) {
+			$this->output->set_status_header(400);
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Ідентифікатор повиненн бути цілим числом!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}
 
 		if ($this->session->user->group === 'user' || $this->session->user->group === 'head') {
+			$this->output->set_status_header(403);
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Вам не дозволена ця операція!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}
@@ -682,13 +708,41 @@ class Passports extends CI_Controller
 		$passport = $this->passport_model->get_passport($id);
 
 		if (!isset($passport)) {
-			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Не вдалося отримати дані з реєстру!'], JSON_UNESCAPED_UNICODE));
+			$this->output->set_status_header(400);
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Не вдалося отримати дані паспорту з бази даних!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}
 
 		$disp = $this->specific_renovation_object_model->get_specific_renovation_object($passport->specific_renovation_object_id);
 
 		$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані для зміни отримано', 'passport' => $passport, 'disp' => $disp], JSON_UNESCAPED_UNICODE));
+	}
+
+	public function get_passports_ajax()
+	{
+		$this->output->set_content_type('application/json');
+
+		if (!$this->input->is_ajax_request()) {
+			$this->output->set_status_header(400);
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не Ajax запрос!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		if (!$this->input->get()) {
+			$this->output->set_status_header(400);
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не GET запрос!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		$data = $this->passport_model->get_passport($this->input->get('id'));
+
+		if (!$data) {
+			$this->output->set_status_header(400);
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Не вдалося отримати дані з реєстру!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		$this->output->set_output(json_encode(['status' => 'SUCCESS', 'data' => $data], JSON_UNESCAPED_UNICODE));
 	}
 
 	public function get_data_passport_for_move()
@@ -1309,6 +1363,30 @@ class Passports extends CI_Controller
 		return;
 	}
 
+	public function change_is_photo_ajax()
+	{
+		$this->output->set_content_type('application/json');
+
+		if (!$this->input->is_ajax_request()) {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не Ajax запрос!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		if (!$this->input->post()) {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не POST запрос!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		if ($this->session->user->group !== 'admin') {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Вам не дозволена ця операція!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		$this->passport_model->change_value('is_photo', $this->input->post('value'), $this->input->post('id'));
+		$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!'], JSON_UNESCAPED_UNICODE));
+		return;
+	}
+
 	public function change_is_block_property_ajax()
 	{
 		$this->output->set_content_type('application/json');
@@ -1834,6 +1912,15 @@ class Passports extends CI_Controller
 	private function complete_renovation_objects()
 	{
 		return 'private function get_complete_renovation_objects()';
+	}
+
+	private function monolog()
+	{
+		if (phpversion() > 8) {
+			$log = new Logger('log');
+			$log->pushHandler(new StreamHandler('uploads/logs/logs.log', Level::Debug));
+			$log->info('Перегляд сторінки: ' . current_url() . ' - Користувач: ' . $this->session->user->login);
+		}
 	}
 
 	// Custom validation functions

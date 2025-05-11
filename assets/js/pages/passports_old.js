@@ -1,5 +1,4 @@
-function format(d) {
-	console.log(d, 'sdcsdcsdcsd');
+async function format(d) {
 	// `d` is the original data object for the row
 	let html = "";
 	let tr_passport_properties = "";
@@ -10,13 +9,14 @@ function format(d) {
 			: `${v.is_block == 1 ? '<i class="bi bi-lock text-secondary" title="Заблоковано" style="font-size: 24px"></i>' : '<i class="bi bi-unlock text-primary" title="Розблоковано" style="font-size: 24px"></i>'}`;
 		tr_passport_properties += `
 			<tr class="align-middle" data-id="${v.id}">
-			<th>${v.property}</th>
-			<td><input class="form-control" value="${htmlspecialchars(v.value)}" name="value" disabled tabindex="1"></td>
-			<td class="text-center">
-			<a href="javascript:void(0);" ${(d.DT_RowData.user_group === "admin" || v.is_block == 0) ? 'onclick="editProperty(event);"' : null} data-bs-toggle="tooltip" data-bs-placement="top" title="Активувати форму"><i class="bi bi-toggle-off" style="font-size: 24px"></i></a>
-			${icon_is_block}
-			${(icon_trash = "")}
-			</td>
+				<th>${k + 1}</th>
+				<th>${v.property}</th>
+				<td><input class="form-control" value="${htmlspecialchars(v.value)}" name="value" disabled tabindex="1"></td>
+				<td class="text-center">
+				<a href="javascript:void(0);" ${(d.DT_RowData.user_group === "admin" || v.is_block == 0) ? 'onclick="editProperty(event);"' : null} data-bs-toggle="tooltip" data-bs-placement="top" title="Активувати форму"><i class="bi bi-toggle-off" style="font-size: 24px"></i></a>
+				${icon_is_block}
+				${(icon_trash = "")}
+				</td>
 			</tr>
 		`;
 	});
@@ -46,14 +46,15 @@ function format(d) {
 		<div class="card-header"><h5>Більше інформації</h5></div>
 		<div class="card-body">
 		<div class="row">
-		<div class="col-md-4">
+		<div class="col-md-5">
 		<h4 class="text-center">Технічні характеристики</h4>
 		<table class="table table-bordered table-striped more-info">
 		<thead>
 		<tr>
-		<th class="text-center" style="width:65%">Характеристика</th>
-		<th class="text-center" style="width:20%">Значення</th>
-		<th class="text-center" style="width:15%">Дія</th>
+		<th class="text-center" style="width:5%">#</th>
+		<th class="text-center" style="width:50%">Характеристика</th>
+		<th class="text-center" style="width:35%">Значення</th>
+		<th class="text-center" style="width:10%">Дія</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -84,13 +85,13 @@ function format(d) {
 	}
 
 	html += `</div>
-		<div class="col-md-8">
+		<div class="col-md-7">
 		<h4 class="text-center">Експлуатаційні дані</h4>
 		<table class="table table-bordered table-striped more-info">
 		<thead>
 		<tr>
-		<th class="text-center" style="width:15%">Дата</th>
-		<th class="text-center" style="width:55%">Експлуатаційні дані</th>
+		<th class="text-center" style="width:12%">Дата</th>
+		<th class="text-center" style="width:58%">Експлуатаційні дані</th>
 		<th class="text-center" style="width:15%">Викованець</th>
 		<th class="text-center" style="width:15%">Дія</th>
 		</tr>
@@ -168,6 +169,10 @@ $(document).ready(function () {
 				$(row).find('.type').attr({ "data-bs-toggle": "popover", "data-bs-placement": "left", "data-bs-trigger": "hover focus", "data-bs-content": data.short_type ? data.short_type : null });
 			},
 
+			preDrawCallback: function (settings) {
+				$("#datatables_filter").find('input[type="search"]').attr("name", "search");
+			},
+
 			drawCallback: function (settings) {
 				$("#datatables_length")
 					.removeClass("dataTables_length")
@@ -181,6 +186,7 @@ $(document).ready(function () {
 					.find("input")
 					.removeClass("form-control-sm");
 				$("#datatables_filter").parent().removeClass("d-none");
+				// $("#datatables_filter").find('input[type="search"]').attr("name", "search");
 
 				if (
 					typeof settings.json !== "undefined" &&
@@ -221,7 +227,7 @@ $(document).ready(function () {
 
 			initComplete: function (settings, json) {
 				for (i = 0; i < settings.aoColumns.length; i++) {
-					if (settings.aoColumns[i].data === "complete_renovation_object_id") {
+					if (settings.aoColumns[i].name === "complete_renovation_object_id") {
 						const value = settings.aoPreSearchCols[i].sSearch;
 						$("#FilterStantion").val(value.substring(1, value.length - 1));
 
@@ -229,7 +235,7 @@ $(document).ready(function () {
 							$("#FilterStantion").addClass("text-success");
 						}
 					}
-					if (settings.aoColumns[i].data === "equipment_id") {
+					if (settings.aoColumns[i].name === "equipment_id") {
 						const value = settings.aoPreSearchCols[i].sSearch;
 						$("#FilterEquipment").val(value.substring(1, value.length - 1));
 
@@ -237,7 +243,7 @@ $(document).ready(function () {
 							$("#FilterEquipment").addClass("text-success");
 						}
 					}
-					if (settings.aoColumns[i].data === "insulation_type_id") {
+					if (settings.aoColumns[i].name === "insulation_type_id") {
 						const value = settings.aoPreSearchCols[i].sSearch;
 						$("#FilterInsulationType").val(value.substring(1, value.length - 1));
 
@@ -245,7 +251,7 @@ $(document).ready(function () {
 							$("#FilterInsulationType").addClass("text-success");
 						}
 					}
-					if (settings.aoColumns[i].data === "voltage_class_id") {
+					if (settings.aoColumns[i].name === "voltage_class_id") {
 						const value = settings.aoPreSearchCols[i].sSearch;
 						$("#FilterVoltageClass").val(value.substring(1, value.length - 1));
 
@@ -253,13 +259,20 @@ $(document).ready(function () {
 							$("#FilterVoltageClass").addClass("text-success");
 						}
 					}
-					if (settings.aoColumns[i].data === "updated_at") {
+					if (settings.aoColumns[i].name === "is_photo") {
+						const value = settings.aoPreSearchCols[i].sSearch;
+						$("#FilterIsPhoto").val(value.substring(1, value.length - 1));
+
+						if (value !== "") {
+							$("#FilterIsPhoto").addClass("text-success");
+						}
+					}
+					if (settings.aoColumns[i].name === "updated_at") {
 						if (settings.aaSorting[0][0] == settings.aoColumns[i].idx) {
 							const value = settings.aLastSort[0].dir;
 							$("#OrderUpdateAt").val(value);
 						}
 					}
-
 				}
 			},
 
@@ -299,7 +312,7 @@ $(document).ready(function () {
 				{
 					data: "stantion",
 					title: "Підстанція",
-					name: "Підстанція",
+					name: "stantion",
 					orderable: true,
 					searchable: true,
 					visible: true,
@@ -309,7 +322,7 @@ $(document).ready(function () {
 				{
 					data: "equipment",
 					title: "Обладнання",
-					name: "Обладнання",
+					name: "equipment",
 					orderable: true,
 					searchable: true,
 					visible: true,
@@ -319,7 +332,7 @@ $(document).ready(function () {
 				{
 					data: "disp",
 					title: "Дисп.",
-					name: "Дисп.",
+					name: "disp",
 					orderable: true,
 					searchable: true,
 					visible: true,
@@ -332,7 +345,7 @@ $(document).ready(function () {
 				{
 					data: "place",
 					title: "Місце",
-					name: "Місце",
+					name: "place",
 					orderable: true,
 					searchable: true,
 					visible: true,
@@ -342,7 +355,7 @@ $(document).ready(function () {
 				{
 					data: "type",
 					title: "Тип",
-					name: "Тип",
+					name: "type",
 					orderable: true,
 					searchable: true,
 					visible: true,
@@ -350,24 +363,34 @@ $(document).ready(function () {
 					className: "type",
 				},
 				{
+					data: "short_type",
+					title: "Краткий тип",
+					name: "short_type",
+					orderable: true,
+					searchable: true,
+					visible: false,
+					width: "16%",
+					className: "short-type",
+				},
+				{
 					data: "number",
 					title: "Номер",
-					name: "Номер",
+					name: "number",
 					orderable: true,
 					searchable: true,
 					visible: true,
-					width: "9%",
+					width: "8.5%",
 					className: "number text-center",
 				},
 				{
 					data: "production_date",
 					title: '<i class="bi bi-calendar"></i>',
-					name: "Дата випуску",
+					name: "production_date",
 					orderable: true,
 					searchable: true,
 					visible: true,
 					width: "6%",
-					className: "production_date text-center",
+					className: "production-date text-center",
 					render: function (data, type, row, meta) {
 						let options = { year: "numeric", month: "numeric", day: "numeric" };
 						return data == "0000-00-00" || data == null
@@ -438,7 +461,7 @@ $(document).ready(function () {
 					searchable: false,
 					visible: true,
 					width: "0.5%",
-					className: "more_info text-center",
+					className: "more-info text-center",
 					render: function (data, type, row, meta) {
 						return `
 <a href="javascript:void(0);" tabindex="${meta.col}" class="mx-1 dt-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Більше інформації"><i class="bi bi-eye text-info"></i></a>`;
@@ -470,10 +493,29 @@ $(document).ready(function () {
 					render: function (data, type, row, meta) {
 						if (data.DT_RowData.user_group == "admin") {
 							return `
-<input class="form-check-input" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Деблокувати/Блокувати" tabindex="${meta.col}" type="checkbox" ${data.DT_RowData.user_group == "admin" ? 'onclick="changeIsBlock(event);' : ''}" ${data.is_block == 1 ? 'checked' : ''} ${data.DT_RowData.user_group != "admin" ? 'disabled' : ''} value="${data.id}">`;
+<input class="form-check-input" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Деблокувати/Блокувати" tabindex="${meta.col}" type="checkbox" name="is_block[]" ${data.DT_RowData.user_group == "admin" ? 'onclick="changeIsBlock(event);' : ''}" ${data.is_block == 1 ? 'checked' : ''} ${data.DT_RowData.user_group != "admin" ? 'disabled' : ''} value="${data.id}">`;
 						}
 						else {
 							return `${data.is_block == 1 ? '<i class="bi bi-lock text-secondary" title="Заблоковано"></i>' : '<i class="bi bi-unlock text-primary" title="Розблоковано"></i>'}`;
+						}
+					},
+				},
+				{
+					data: null,
+					title: '<i class="bi bi-file-image text-secondary"></i>',
+					name: "is_photo",
+					orderable: false,
+					searchable: false,
+					visible: true,
+					width: "0.5%",
+					className: "is-photo text-center",
+					render: function (data, type, row, meta) {
+						if (data.DT_RowData.user_group == "admin") {
+							return `
+<input class="form-check-input" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Нема фото/Є фото" tabindex="${meta.col}" type="checkbox" name="is_photo[]" ${data.DT_RowData.user_group == "admin" ? 'onclick="changeIsPhoto(event);' : ''}" ${data.is_photo == 1 ? 'checked' : ''} ${data.DT_RowData.user_group != "admin" ? 'disabled' : ''} value="${data.id}">`;
+						}
+						else {
+							return `${data.is_photo == 1 ? '<i class="bi bi-file-image text-primary" title="Є фото таблички"></i>' : '<i class="bi bi-file-earmark-image text-secondary" title="Нема фото таблички"></i>'}`;
 						}
 					},
 				},
@@ -491,46 +533,6 @@ $(document).ready(function () {
 <a href="javascript:void(0);" tabindex="${meta.col}" ${data.DT_RowData.user_group == "admin" ? 'onclick="deletePassport(event);' : null}" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Видалити паспорт"><i class="bi bi-trash ${data.DT_RowData.user_group == "admin" ? 'text-danger' : 'text-secondary'}"></i></a>`;
 					},
 				},
-
-				// {
-				// 	data: null,
-				// 	title: "Дія",
-				// 	name: "actions",
-				// 	orderable: false,
-				// 	searchable: false,
-				// 	visible: true,
-				// 	width: "12%",
-				// 	className: "text-center actions",
-				// 	render: function (data, type, row, meta) {
-				// 		return `
-				// 		<a href="javascript:void(0);" onclick="fillAddPropertiesModal(event);" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Додати властивості"><i class="bi bi-plus-square text-primary"></i></a>
-				// 		<a href="javascript:void(0);" onclick="${data.is_block == 0 || data.DT_RowData.user_group == "admin"
-				// 				? "getDataPassport(event);"
-				// 				: null
-				// 			}" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Редагувати паспорт"><i class="bi bi-pencil-square ${data.is_block == 0 || data.DT_RowData.user_group == "admin"
-				// 				? "text-success"
-				// 				: "text-secondary"
-				// 			}"
-				// 		}></i></a>
-				// 		<a href="javascript:void(0);" onclick="movePassport(event);" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Перемістити паспорт"><i class="bi bi-arrow-left-right text-warning"></i></a>
-				// 		<a href="javascript:void(0);" onclick="printPassport(event);" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Сгенерувати паспорт"><i class="bi bi-file-earmark-pdf text-danger"></i></a>
-				// 		<a href="javascript:void(0);" class="mx-1 dt-control" data-bs-toggle="tooltip" data-bs-placement="top" title="Більше інформації"><i class="bi bi-eye text-info"></i></a>
-				// 		<a href="javascript:void(0);" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Додати експлуатаційні дані" onclick="openAddOperatingListModal(event)"><i class="bi bi-journal-plus text-success"></i></a>
-				// 		<a href="javascript:void(0);" onclick="deletePassport(event);" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Видалити"><i class="bi bi-trash text-danger"></i></a>
-				// 	`;
-				// 	},
-				// },
-				// {
-				// 	data: "null",
-				// 	title: "Більше",
-				// 	name: "Більше",
-				// 	orderable: false,
-				// 	searchable: false,
-				// 	visible: true,
-				// 	width: "5%",
-				// 	className: "text-center dt-control",
-				// 	defaultContent: "",
-				// },
 				{
 					data: "complete_renovation_object_id",
 					title: "complete_renovation_object_id",
@@ -573,13 +575,13 @@ $(document).ready(function () {
 				},
 				{
 					data: "insulation_type_id",
-					title: "Вид ізоляції",
-					name: "Вид ізоляції",
+					title: "insulation_type_id",
+					name: "insulation_type_id",
 					orderable: true,
 					searchable: true,
 					visible: false,
 					width: "",
-					className: "insulation_type_id",
+					className: "insulation-type-id",
 				},
 				{
 					data: "voltage_class_id",
@@ -622,12 +624,12 @@ $(document).ready(function () {
 			},
 		});
 
-	table.on('requestChild.dt', function (e, row) {
-		row.child(format(row.data())).show();
+	table.on('requestChild.dt', async function (e, row) {
+		row.child(await format(row.data())).show();
 	});
 
 	// Add event listener for opening and closing details
-	$("#datatables tbody").on("click", "td a.dt-control", function () {
+	table.on("click", "td a.dt-control", async function () {
 		var tr = $(this).closest("tr");
 		var row = table.row(tr);
 
@@ -640,7 +642,7 @@ $(document).ready(function () {
 			table.ajax.reload(null, false);
 		} else {
 			// Open this row
-			let html = format(row.data());
+			let html = await format(row.data());
 			row.child(html).show();
 			$(".datepicker").datepicker({
 				format: "dd.mm.yyyy",
@@ -670,18 +672,22 @@ $(document).ready(function () {
 					"X-Requested-With": "XMLHttpRequest"
 				},
 			});
-			const json = await response.json();
+			const data = await response.json();
+
+			// if (data.status === 'ERROR') {
+			// 	throw new Error(data.message);
+			// }
 
 			let options = `<option value="">Всі підстанції</option>`;
-			if (json.complete_renovation_objects) {
-				json.complete_renovation_objects.forEach(el => {
+			if (data.complete_renovation_objects) {
+				data.complete_renovation_objects.forEach(el => {
 					options += `<option value="${el.id}" ${el.id == localStorage.getItem('passports_stantion_id') ? 'selected' : ''}>${el.name}</option>`;
 				});
 			}
 			$("#FilterStantion option").remove();
 			$("#FilterStantion").append(options);
 		} catch (error) {
-			console.error('Ошибка:', error);
+			console.error(error);
 		}
 	}
 
@@ -698,22 +704,24 @@ $(document).ready(function () {
 					"X-Requested-With": "XMLHttpRequest"
 				},
 			});
-			const json = await response.json();
-			console.log(json);
+			const data = await response.json();
+
+			// if (data.status === 'ERROR') {
+			// 	throw new Error(data.message);
+			// }
+
 			let options = `<option value="">Всі підстанції</option>`;
-			if (json.complete_renovation_objects) {
-				json.complete_renovation_objects.forEach(el => {
+			if (data.complete_renovation_objects) {
+				data.complete_renovation_objects.forEach(el => {
 					options += `<option value="${el.id}">${el.name}</option>`;
 				});
 			}
 			$("#FilterStantion option").remove();
 			$("#FilterStantion").append(options);
 		} catch (error) {
-			console.error('Ошибка:', error);
+			console.error(error);
 		}
 	});
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	$("#FilterStantion").on("change", function (event) {
 		localStorage.setItem('passports_stantion_id', event.target.value);
@@ -744,7 +752,7 @@ $(document).ready(function () {
 
 	$("#FilterInsulationType").on("change", function () {
 		table
-			.columns(".insulation_type_id")
+			.columns(".insulation-type-id")
 			.search(this.value ? "^" + this.value + "$" : "", true, false)
 			.draw();
 
@@ -758,6 +766,19 @@ $(document).ready(function () {
 	$("#FilterVoltageClass").on("change", function () {
 		table
 			.columns(".voltage-class-id")
+			.search(this.value ? "^" + this.value + "$" : "", true, false)
+			.draw();
+
+		if (this.value === "") {
+			$(this).removeClass("text-success");
+		} else {
+			$(this).addClass("text-success");
+		}
+	});
+
+	$("#FilterIsPhoto").on("change", function () {
+		table
+			.columns(".is-photo")
 			.search(this.value ? "^" + this.value + "$" : "", true, false)
 			.draw();
 
@@ -782,6 +803,63 @@ $(document).ready(function () {
 		window.location.reload();
 	});
 });
+
+// function getDataPassportForEdit_OLD(event) {
+// 	let id = $(event.currentTarget).closest("tr").data("id");
+// 	$.ajax({
+// 		method: "POST",
+// 		url: "/passports/get_data_passport",
+// 		data: { id },
+// 	}).done(function (data) {
+// 		if (data.status === "SUCCESS") {
+// 			let modal = $("#editPassportModal");
+// 			modal.modal("show");
+// 			console.log(data);
+// 			toastr.success(data.message, "OK");
+// 			fillFormEditPassport(data.passport, data.disp);
+// 		} else {
+// 			toastr.error(data.message, "Помилка");
+// 		}
+// 	});
+// }
+
+async function getDataPassportForEdit(event) {
+	try {
+		const id = $(event.currentTarget).closest("tr").data("id");
+		const modal = $("#editPassportModal");
+		const response = await fetch("/passports/get_data_passport_ajax/" + id, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+				"X-Requested-With": "XMLHttpRequest",
+			},
+		});
+		const data = await response.json();
+		if (data.status === 'ERROR') {
+			throw new Error(data.message);
+		}
+		await fillFormEditPassport(data.passport, data.disp);
+		await modal.modal("show");
+	} catch (error) {
+		toastr.error(error, 'Помилка запроса');
+	}
+}
+
+async function fillFormEditPassport(passport, disp) {
+	$("#idEdit").val(passport.id);
+	$("#idCompleteRenovationObjectEdit").val(passport.complete_renovation_object_id);
+	$("#idEquipmentEdit").val(disp.equipment_id);
+	$("#idInsulationTypeEdit").val(passport.insulation_type_id);
+	$("#idPlaceEdit").val(passport.place_id);
+	$("#idVoltageClassEdit").val(disp.voltage_class_id);
+	$("#idSpecificRenovationObjectEdit").val(disp.name);
+	$("#idTypeEdit").val(passport.type);
+	$("#idShortTypeEdit").val(passport.short_type);
+	$("#idProductionDateEdit").val(passport.production_date).datepicker("update");
+	$("#idСommissioningYearEdit").val(passport.commissioning_year);
+	$("#idNumberEdit").val(passport.number);
+	$("#idRefinementMethodEdit").val(passport.refinement_method);
+}
 
 function addPassport(event) {
 	const form = $("#formAddPassport");
@@ -1157,60 +1235,6 @@ $("#addPassportModal, #editPassportModal, #movePassportModal, #addOperatingListM
 	}
 );
 
-function getDataPassportForEdit_OLD(event) {
-	let id = $(event.currentTarget).closest("tr").data("id");
-	$.ajax({
-		method: "POST",
-		url: "/passports/get_data_passport",
-		data: { id },
-	}).done(function (data) {
-		if (data.status === "SUCCESS") {
-			let modal = $("#editPassportModal");
-			modal.modal("show");
-			console.log(data);
-			toastr.success(data.message, "OK");
-			fillFormEditPassport(data.passport, data.disp);
-		} else {
-			toastr.error(data.message, "Помилка");
-		}
-	});
-}
-
-async function getDataPassportForEdit(event) {
-	try {
-		const id = $(event.currentTarget).closest("tr").data("id");
-		const modal = $("#editPassportModal");
-		const response = await fetch("/passports/get_data_passport_ajax/" + id, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/x-www-form-urlencoded",
-				"X-Requested-With": "XMLHttpRequest",
-			},
-		});
-		const data = await response.json();
-		await fillFormEditPassport(data.passport, data.disp);
-		modal.modal("show");
-	} catch (error) {
-		console.log(error);
-	}
-}
-
-async function fillFormEditPassport(passport, disp) {
-	$("#idEdit").val(passport.id);
-	$("#idCompleteRenovationObjectEdit").val(passport.complete_renovation_object_id);
-	$("#idEquipmentEdit").val(disp.equipment_id);
-	$("#idInsulationTypeEdit").val(passport.insulation_type_id);
-	$("#idPlaceEdit").val(passport.place_id);
-	$("#idVoltageClassEdit").val(disp.voltage_class_id);
-	$("#idSpecificRenovationObjectEdit").val(disp.name);
-	$("#idTypeEdit").val(passport.type);
-	$("#idShortTypeEdit").val(passport.short_type);
-	$("#idProductionDateEdit").val(passport.production_date).datepicker("update");
-	$("#idСommissioningYearEdit").val(passport.commissioning_year);
-	$("#idNumberEdit").val(passport.number);
-	$("#idRefinementMethodEdit").val(passport.refinement_method);
-}
-
 function getDataPassportForMove(event) {
 	let id = $(event.currentTarget).closest("tr").data("id");
 	let request = $.ajax({
@@ -1221,7 +1245,6 @@ function getDataPassportForMove(event) {
 	request.done(function (data, textStatus, jqXHR) {
 		if (data.status === "SUCCESS") {
 			let modal = $("#movePassportModal");
-			console.log('sdcsdc', modal);
 			modal.modal("show");
 			fillFormMovePassport(data.passport, data.disp);
 			toastr.success(textStatus, "OK");
@@ -1624,6 +1647,27 @@ function changeIsBlock(event) {
 	});
 }
 
+function changeIsPhoto(event) {
+	const id = $(event.target).parents("tr").data("id");
+	let value;
+	if ($(event.target).prop("checked")) {
+		value = 1;
+	} else {
+		value = 0;
+	}
+	$.ajax({
+		method: "POST",
+		url: "/passports/change_is_photo_ajax",
+		data: { id, value },
+	}).done(function (data) {
+		if (data.status === "SUCCESS") {
+			toastr.success(data.message, "Успіх");
+		} else {
+			toastr.error(data.message, "Помилка");
+		}
+	});
+}
+
 function changeIsBlockProperty(event) {
 	const id = $(event.target).parents("tr").data("id");
 	let value;
@@ -1665,7 +1709,7 @@ function changeDisp(event) {
 }
 
 function exportToExcel() {
-	console.log('exportToExcel()');
+	toastr.info("exportToExcel()", "Info");
 }
 
 function getDataForCopyProperties() { }
@@ -1706,11 +1750,6 @@ function copyProperties(event) {
 // 	}
 // }
 
-$(".datepicker").datepicker({
-	format: "dd.mm.yyyy",
-	autoclose: true,
-});
-
 function htmlspecialchars(str) {
 	if (typeof str == "string") {
 		str = str.replace(/&/g, "&amp;");
@@ -1721,6 +1760,21 @@ function htmlspecialchars(str) {
 	}
 	return str;
 }
+
+function createRow(event) {
+	location.href = '/passports/create';
+}
+
+function deleteRow(event) {
+	let result = confirm("Ви впевнені?");
+	if (result) {
+		location.href = '/passports/delete_row/' + $(event.currentTarget).parents('tr').data('id');
+	} else {
+		return;
+	}
+}
+
+//**************************************************** */
 
 let tooltipEl = $('[data-bs-toggle="tooltip"]');
 if (tooltipEl) {
@@ -1736,18 +1790,7 @@ if (popoverEl) {
 	}
 }
 
-
-//**************************************************** */
-function createRow(event) {
-	location.href = '/passports/create';
-}
-
-function deleteRow(event) {
-	let result = confirm("Ви впевнені?");
-	if (result) {
-		location.href = '/passports/delete_row/' + $(event.currentTarget).parents('tr').data('id');
-	} else {
-		return;
-	}
-}
-
+$(".datepicker").datepicker({
+	format: "dd.mm.yyyy",
+	autoclose: true,
+});

@@ -2,21 +2,11 @@
 	<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
 	<input type="hidden" id="idEdit" name="id">
 	<div class="row">
-		<div class="col-md-6 mb-3">
+		<div class="col-md-12 mb-3">
 			<label for="idCompleteRenovationObjectEdit" class="form-label">Підстанція</label>
-			<select class="form-select" id="idCompleteRenovationObjectEdit" name="complete_renovation_object_id" disabled>
+			<select class="form-select text-success" id="idCompleteRenovationObjectEdit" name="complete_renovation_object_id" disabled style="font-weight: 900;">
 				<option value="" selected>Оберіть підстанцію</option>
 				<?php foreach ($stantions as $item) : ?>
-					<option value="<?php echo $item->id; ?>"><?php echo $item->name; ?></option>
-				<?php endforeach; ?>
-			</select>
-			<div class="invalid-feedback"></div>
-		</div>
-		<div class="col-md-6 mb-3">
-			<label for="idEquipmentEdit" class="form-label">Вид обладнання</label>
-			<select class="form-select" id="idEquipmentEdit" name="equipment_id" disabled>
-				<option value="" selected>Оберіть вид обладнання</option>
-				<?php foreach ($equipments as $item) : ?>
 					<option value="<?php echo $item->id; ?>"><?php echo $item->name; ?></option>
 				<?php endforeach; ?>
 			</select>
@@ -26,18 +16,18 @@
 
 	<div class="row">
 		<div class="col-md-6 mb-3">
-			<label for="idInsulationTypeEdit" class="form-label">Вид ізоляції</label>
-			<select class="form-select" id="idInsulationTypeEdit" name="insulation_type_id">
-				<option value="" selected>Оберіть вид ізоляції</option>
-				<?php foreach ($insulation_type as $item) : ?>
-					<option value="<?php echo $item->id; ?>"><?php echo $item->insulation_type; ?></option>
+			<label for="idEquipmentEdit" class="form-label">Вид обладнання</label>
+			<select class="form-select text-success" id="idEquipmentEdit" name="equipment_id" disabled style="font-weight: 900;">
+				<option value="" selected>Оберіть вид обладнання</option>
+				<?php foreach ($equipments as $item) : ?>
+					<option value="<?php echo $item->id; ?>"><?php echo $item->name; ?></option>
 				<?php endforeach; ?>
 			</select>
 			<div class="invalid-feedback"></div>
 		</div>
 		<div class="col-md-6 mb-3">
 			<label for="idPlaceEdit" class="form-label">Місце встановлення</label>
-			<select class="form-select" id="idPlaceEdit" name="place_id" disabled>
+			<select class="form-select text-success" id="idPlaceEdit" name="place_id" disabled style="font-weight: 900;">
 				<option value="" selected>Оберіть місце встановлення</option>
 				<?php foreach ($places as $item) : ?>
 					<option value="<?php echo $item->id; ?>"><?php echo $item->name; ?></option>
@@ -50,7 +40,7 @@
 	<div class="row">
 		<div class="col-md-6 mb-3">
 			<label for="idVoltageClassEdit" class="form-label">Клас напруги</label>
-			<select class="form-select" id="idVoltageClassEdit" name="voltage_class_id" disabled>
+			<select class="form-select text-success" id="idVoltageClassEdit" name="voltage_class_id" disabled style="font-weight: 900;">
 				<option value="" selected>Оберіть клас напруги</option>
 				<?php foreach ($voltage_class as $item) : ?>
 					<option value="<?php echo $item->id; ?>"><?php echo ($item->voltage / 1000); ?> кВ</option>
@@ -60,7 +50,20 @@
 		</div>
 		<div class="col-md-6 mb-3">
 			<label for="idSpecificRenovationObjectEdit" class="form-label">Диспечерське найменування</label>
-			<input type="text" class="form-control" id="idSpecificRenovationObjectEdit" placeholder="Введіть диспечерське найменування" name="specific_renovation_object" disabled>
+			<input type="text" class="form-control text-success" id="idSpecificRenovationObjectEdit" placeholder="Введіть диспечерське найменування" name="specific_renovation_object" disabled style="font-weight: 900;">
+			<div class="invalid-feedback"></div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 mb-3">
+			<label for="idInsulationTypeEdit" class="form-label">Вид ізоляції</label>
+			<select class="form-select" id="idInsulationTypeEdit" name="insulation_type_id">
+				<option value="" selected>Оберіть вид ізоляції</option>
+				<?php foreach ($insulation_type as $item) : ?>
+					<option value="<?php echo $item->id; ?>"><?php echo $item->insulation_type; ?></option>
+				<?php endforeach; ?>
+			</select>
 			<div class="invalid-feedback"></div>
 		</div>
 	</div>

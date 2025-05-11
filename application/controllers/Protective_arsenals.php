@@ -10,7 +10,7 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Protective_arsenal extends CI_Controller
+class Protective_arsenals extends CI_Controller
 {
 	public function __construct()
 	{
@@ -20,24 +20,26 @@ class Protective_arsenal extends CI_Controller
 			redirect('authentication/signin');
 		}
 
-		if ($this->session->user->group !== 'admin' && $this->session->user->group !== 'master') {
+		if ($this->session->user->group !== 'admin' && $this->session->user->group !== 'master' && $this->session->user->group !== 'user') {
 			show_404();
 		}
-		// $this->load->model('passport_model');
-		// $this->load->model('schedule_model');
-		// $this->load->model('specific_renovation_object_model');
+
+		$this->load->model('protective_arsenal_model');
 	}
 
 	public function index()
 	{
 		$data = [];
 		$data['title'] = 'Захисні засоби';
-		$data['content'] = 'protective_arsenal/index';
-		$data['page'] = 'protective_arsenal/index';
-		$data['page_js'] = 'protective_arsenal';
-		$data['datatables'] = TRUE;
+		$data['content'] = 'protective_arsenals/index';
+		$data['page'] = 'protective_arsenals';
+		$data['page_js'] = 'protective_arsenals';
+		$data['ag_grid'] = TRUE;
+		$data['datatables'] = FALSE;
 		$data['title_heading'] = 'Захисні засоби';
 		$data['title_heading_card'] = 'Захисні засоби';
-		$this->load->view('layout', $data);
+
+		$data['protective_arsenals'] = $this->protective_arsenal_model->get_data();
+		$this->load->view('layout_lte', $data);
 	}
 }

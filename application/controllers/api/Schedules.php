@@ -11,12 +11,16 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Schedules extends CI_Controller
 {
 
+	public $key = '81809f82e2074b59448635de2fcc121aaec62890';
+
 	public function __construct()
 	{
 		parent::__construct();
-		// $this->output->set_header('Access-Control-Allow-Origin: *');
+		$this->output->set_header('Access-Control-Allow-Origin: *');
+		$this->output->set_header("Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS, *");
+		$this->output->set_header("Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token , Authorization, *");
 		// $this->output->set_header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Authorization');
-		// $this->output->set_content_type('application/json', 'utf-8');
+		$this->output->set_content_type('application/json', 'utf-8');
 		$this->load->model('api/schedule_model');
 	}
 
@@ -24,46 +28,41 @@ class Schedules extends CI_Controller
 	{
 		$data = [];
 
-		$data = $this->schedule_model->get_rows();
+		if ($this->input->get('key') !== $this->key) {
+			$data['status'] = 'ERROR';
+			$data['message'] = 'Не вірний Api Key!';
 
-		$new_data[] = [
-			'repair_type' => 'Вид ремонту',
-			'stantion' => 'Підстанція',
-			'oborud' => 'Найменування обладнання',
-			'disp' => 'Диспечерське найменування',
-			'year_start' => 'Рік випуску обладнання',
-			'class_voltage' => 'Клас напруги обладнання',
-			'repair_year_last' => 'Дата останього обслуговування',
-			'period' => 'Періодичність ремонту',
-			'year_repair_invest' => 'Рік заходу в ІП фактично',
-			'year_plan_repair_invest' => 'Плановий рік включення в ІП',
-		];
-
-
-		foreach ($data as $row) {
-			$new_array['repair_type'] = $row->repair_type;
-			$new_array['stantion'] = explode(" ", str_replace("\"", "", $row->stantion))[0] . " " . explode(" ", str_replace("\"", "", $row->stantion))[1];
-			$new_array['oborud'] = $row->oborud;
-			$new_array['disp'] = $row->disp;
-			$new_array['year_start'] = $row->year_start;
-			$new_array['class_voltage'] = $row->class_voltage;
-			$new_array['repair_year_last'] = $row->repair_year_last;
-			$new_array['period'] = $row->period;
-			$new_array['year_repair_invest'] = $row->year_repair_invest;
-			$new_array['year_plan_repair_invest'] = $row->year_plan_repair_invest;
-			array_push($new_data, $new_array);
+			$this->output->set_status_header(403);
+			return $this->output->set_output(json_encode($data, JSON_UNESCAPED_UNICODE));
 		}
 
-		// echo "<pre>";
-		// print_r($new_data);
-		// print_r($data);
-		// echo "</pre>";
+		$result = [];
+		$data['data'] = $result;
+		$data['total'] = count($result);
+		$data['message'] = 'Ok Read!';
 
-		$xlsx = Shuchkin\SimpleXLSXGen::fromArray($new_data);
-		$xlsx->saveAs('./uploads/multi_grafik_source.xlsx');
+		$this->output->set_status_header(200);
+		return $this->output->set_output(json_encode($data, JSON_UNESCAPED_UNICODE));
+	}
 
-		redirect('multi_year_schedule');
+	public function get_rows_current_year_sp()
+	{
+		$data = [];
 
-		// $this->output->set_output(json_encode($data, JSON_UNESCAPED_UNICODE));
+		if ($this->input->get('key') !== $this->key) {
+			$data['status'] = 'ERROR';
+			$data['message'] = 'Не вірний Api Key!';
+
+			$this->output->set_status_header(403);
+			return $this->output->set_output(json_encode($data, JSON_UNESCAPED_UNICODE));
+		}
+
+		$result = $this->schedule_model->get_rows_current_year_sp();
+		$data['data'] = $result;
+		$data['total'] = count($result);
+		$data['message'] = 'Ok Read!';
+
+		$this->output->set_status_header(200);
+		return $this->output->set_output(json_encode($data, JSON_UNESCAPED_UNICODE));
 	}
 }
