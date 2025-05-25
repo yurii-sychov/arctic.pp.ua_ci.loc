@@ -34,16 +34,16 @@
 					<?php endforeach; ?>
 				</select>
 			</div>
-			<div class="col-lg-6">
+			<div class="col-lg-6 text-end">
 				<div class="d-grid gap-2 d-md-block">
-					<?php if ($this->input->get('subdivision_id')): ?>
-						<button type="button" class="btn btn-outline-success" onclick="generateMaterialsExcel(event);" data-subdivision_id="<?php echo $this->input->get('subdivision_id'); ?>">
-							<i class="bi bi-file-earmark-excel"></i> Матеріали по СП
-						</button>
-					<?php endif; ?>
 					<?php if ($this->input->get('subdivision_id') and $this->input->get('stantion_id')): ?>
 						<button type="button" class="btn btn-outline-secondary btn-outline" onclick="generateMaterialsExcel(event);" data-subdivision_id="<?php echo $this->input->get('subdivision_id'); ?>" data-stantion_id="<?php echo $this->input->get('stantion_id'); ?>">
 							<i class="bi bi-file-earmark-excel"></i> Матеріали по <?php echo $complete_renovation_object->name; ?>
+						</button>
+					<?php endif; ?>
+					<?php if ($this->input->get('subdivision_id')): ?>
+						<button type="button" class="btn btn-outline-success" onclick="generateMaterialsExcel(event);" data-subdivision_id="<?php echo $this->input->get('subdivision_id'); ?>">
+							<i class="bi bi-file-earmark-excel"></i> Матеріали по СП
 						</button>
 					<?php endif; ?>
 				</div>

@@ -297,7 +297,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
 								<i class="nav-icon fas fa-file"></i>
 								<p>
 									Акти приймання
-									<span class="right badge badge-danger">New</span>
+									<span class="right badge badge-secondary">New</span>
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="/documentations" class="nav-link <?php if ($page === 'sp_instructions') echo 'active'; ?>">
+								<i class="nav-icon fas fa-file"></i>
+								<p>
+									Документація
+									<span class="right badge badge-info">New</span>
 								</p>
 							</a>
 						</li>

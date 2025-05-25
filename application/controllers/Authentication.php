@@ -179,7 +179,8 @@ class Authentication extends CI_Controller
 			$this->log_model->insert_data($log_data);
 		}
 
-		$this->session->sess_destroy();
+		// $this->session->sess_destroy();
+		unset($_SESSION['user']);
 
 		redirect('/authentication/signin');
 	}

@@ -835,6 +835,7 @@ async function getDataPassportForEdit(event) {
 			},
 		});
 		const data = await response.json();
+		console.table(data.passport);
 		if (data.status === 'ERROR') {
 			throw new Error(data.message);
 		}
