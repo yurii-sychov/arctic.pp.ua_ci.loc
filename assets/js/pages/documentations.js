@@ -34,7 +34,7 @@ async function addData(event) {
 	let result = await fetchPostData('documentations/add_data_row_ajax/', formData);
 
 	if (result.status === 'ERROR') {
-		toastr.error(result.message, 'Помилка');
+		toastr.error(result.message, 'Помилка', { 'positionClass': 'toast-top-full-width' });
 		return;
 	}
 	toastr.success(result.message, 'Успіх');
@@ -111,7 +111,7 @@ async function editData(event) {
 	let result = await fetchPostData('documentations/edit_data_row_ajax/' + event.target.dataset.id, formData);
 
 	if (result.status === 'ERROR') {
-		toastr.error(result.message, 'Помилка');
+		toastr.error(result.message, 'Помилка', { 'positionClass': 'toast-top-full-width' });
 		return;
 	}
 	toastr.success(result.message, 'Успіх');

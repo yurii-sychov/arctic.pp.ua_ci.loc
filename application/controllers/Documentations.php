@@ -238,14 +238,15 @@ class Documentations extends CI_Controller
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_error_delimiters('', '');
+		// $this->form_validation->set_error_delimiters('', '');
 
-		$this->form_validation->set_rules('name', 'Назва', 'trim|required');
-		$this->form_validation->set_rules('number', 'Номер', 'trim|max_length[20]');
-		$this->form_validation->set_rules('document_date_start', 'Дата затвердження', 'required|min_length[10]|max_length[10]');
-		$this->form_validation->set_rules('document_date_finish', 'Дата закінчення', 'required|min_length[10]|max_length[10]');
-		$this->form_validation->set_rules('periodicity', 'Періодичність перегляду', 'required|numeric|min_length[1]|max_length[1]');
-		$this->form_validation->set_rules('document_type', 'Тип', 'required');
+		$this->form_validation->set_rules('name', '<strong>Назва</strong>', 'trim|required');
+		$this->form_validation->set_rules('number', '<strong>Номер</strong>', 'trim|max_length[255]');
+		$this->form_validation->set_rules('approval_document', '<strong>Затвердження</strong>', 'trim|max_length[255]');
+		$this->form_validation->set_rules('document_date_start', '<strong>Дата затвердження</strong>', 'required|min_length[10]|max_length[10]');
+		$this->form_validation->set_rules('document_date_finish', '<strong>Дата закінчення</strong>', 'required|min_length[10]|max_length[10]');
+		$this->form_validation->set_rules('periodicity', '<strong>Періодичність перегляду</strong>', 'required|numeric|min_length[1]|max_length[1]');
+		$this->form_validation->set_rules('document_type', '<strong>Тип</strong>', 'required');
 
 		if ($this->form_validation->run() == FALSE) {
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => validation_errors()], JSON_UNESCAPED_UNICODE));
@@ -297,14 +298,15 @@ class Documentations extends CI_Controller
 
 		$this->load->library('form_validation');
 
-		$this->form_validation->set_error_delimiters('', '');
+		// $this->form_validation->set_error_delimiters('', '');
 
-		$this->form_validation->set_rules('name', 'Назва', 'trim|required');
-		$this->form_validation->set_rules('number', 'Номер', 'trim|max_length[20]');
-		$this->form_validation->set_rules('document_date_start', 'Дата затвердження', 'min_length[10]|max_length[10]');
-		$this->form_validation->set_rules('document_date_finish', 'Дата закінчення', 'min_length[10]|max_length[10]');
-		$this->form_validation->set_rules('periodicity', 'Періодичність перегляду', 'required|numeric|min_length[1]|max_length[1]');
-		$this->form_validation->set_rules('document_type', 'Тип', 'required');
+		$this->form_validation->set_rules('name', '<strong>Назва</strong>', 'trim|required');
+		$this->form_validation->set_rules('number', '<strong>Номер</strong>', 'trim|max_length[255]');
+		$this->form_validation->set_rules('approval_document', '<strong>Затвердження</strong>', 'trim|max_length[255]');
+		$this->form_validation->set_rules('document_date_start', '<strong>Дата затвердження</strong>', 'min_length[10]|max_length[10]');
+		$this->form_validation->set_rules('document_date_finish', '<strong>Дата закінчення</strong>', 'min_length[10]|max_length[10]');
+		$this->form_validation->set_rules('periodicity', '<strong>Періодичність перегляду</strong>', 'required|numeric|min_length[1]|max_length[1]');
+		$this->form_validation->set_rules('document_type', '<strong>Тип</strong>', 'required');
 
 		if ($this->form_validation->run() == FALSE) {
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => validation_errors()], JSON_UNESCAPED_UNICODE));
@@ -472,10 +474,7 @@ class Documentations extends CI_Controller
 
 		// Close and output PDF document
 		// This method has several options, check the source code documentation for more information.
-		$arr = ['-', '/', '"'];
-		$repl = [' ', '_', ''];
-		$file_name = $doc_name;
-		$pdf->Output(str_replace($arr, $repl, $data['plot']->name) . ' (' . $doc_name . ').pdf', 'I');
+		$pdf->Output(str_replace(['-', '/', '"'], [' ', '_', ''], $data['plot']->name) . ' (' . $doc_name . ').pdf', 'I');
 
 		//============================================================+
 		// END OF FILE

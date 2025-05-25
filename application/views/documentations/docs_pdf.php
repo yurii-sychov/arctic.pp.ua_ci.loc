@@ -10,7 +10,7 @@
 
 <body>
 	<br><br><br><br>
-	<table cellpadding="2">
+	<table cellpadding="2" border="0">
 		<tbody>
 			<tr>
 				<td><strong>ЗАТВЕРДЖУЮ</strong></td>
@@ -42,7 +42,6 @@
 			</tr>
 		</thead>
 	</table>
-	<br><br>
 
 	<table cellpadding="2">
 		<tbody>
@@ -64,7 +63,7 @@
 			<tr>
 				<th style="width: 5%;"><strong>№<br>п/п</strong></th>
 				<th style="width: 84%;line-height: 250%;"><strong><?php echo $doc_name; ?></strong></th>
-				<th style="width: 12%;"><strong>Термін<br>зберігання</strong></th>
+				<th style="width: 11%;"><strong>Термін<br>зберігання</strong></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -76,7 +75,7 @@
 						<br>
 						(<?php echo $item->number; ?>)
 					</td>
-					<td style="width: 12%;">постійно</td>
+					<td style="width: 11%;">постійно</td>
 				</tr>
 			<?php endforeach; ?>
 		</tbody>
@@ -86,9 +85,9 @@
 	<table border="0">
 		<tbody>
 			<tr>
-				<td class="text-end" align="right" style="width: 30%;"><strong>Начальник СП</strong></td>
-				<td class="text-center" style="width: 40%;"></td>
-				<td class="text-start" align="left" style="width: 30%;"><strong>Юрій СИЧОВ</strong></td>
+				<td align="right" style="width: 30%;"><strong>Начальник СП</strong></td>
+				<td align="center" style="width: 40%;"></td>
+				<td align="left" style="width: 30%;"><strong>Юрій СИЧОВ</strong></td>
 			</tr>
 		</tbody>
 	</table>
