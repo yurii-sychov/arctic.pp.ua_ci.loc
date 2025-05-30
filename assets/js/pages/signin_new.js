@@ -19,7 +19,7 @@ $(document).ready(function () {
 			dataType: "json",
 			success: function (response, status, jqXHR) {
 				if (response.status === "SUCCESS") {
-					toastr.success(response.message, "Успіх");
+					toastr.success(response.message, "Успіх", { 'positionClass': 'toast-top-center' });
 					// $("#infoBlockMessage")
 					// 	.removeClass("alert-danger")
 					// 	.addClass("alert-success")
@@ -31,7 +31,7 @@ $(document).ready(function () {
 
 					setTimeout(() => {
 						location.href = "/documentations";
-					}, 2000);
+					}, 3000);
 				} else {
 					let message = "";
 					response.message.forEach((item, key) => {
@@ -39,7 +39,7 @@ $(document).ready(function () {
 							<span>${item.message}</span><br>
 						`;
 					});
-					toastr.error(message, "Помилка");
+					toastr.error(message, "Помилка", { 'positionClass': 'toast-top-center' });
 					// $("#infoBlockMessage").html(message);
 					// $("#infoBlock").show();
 					// setTimeout(() => {

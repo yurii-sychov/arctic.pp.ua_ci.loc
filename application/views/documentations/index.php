@@ -50,105 +50,111 @@
 					<h6 class="text-white text-capitalize ps-3"><?php echo $title_heading_card; ?> (В реєстрі всього: <?php echo count($documentations); ?> документів)</h6>
 				</div>
 			</div>
-			<div class="card-body px-0 pb-2">
-				<div class="table-responsive p-0">
-					<table class="table table-bordered table-striped table-hover align-items-center mb-0">
-						<thead>
-							<tr>
-								<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 55%;">Назва документа</th>
-								<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 9%;">Затвердження</th>
-								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 8%;">Дата закінчення</th>
-								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 8%;">Вид документа</th>
-								<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 14%;">Група (Підгрупа) документа</th>
-								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 2%;">Мусор?!</th>
-								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;">
-									<i class="material-symbols-rounded">radio_button_checked</i>
-								</th>
-								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;">
-									<i class="material-symbols-rounded">radio_button_checked</i>
-								</th>
-								<!-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;">
-									<i class="material-symbols-rounded">radio_button_checked</i>
-								</th> -->
-								<!-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;">
+			<div class="card-body">
+				<table class="table table-bordered table-striped table-hover align-items-center mb-0" id="table">
+					<thead>
+						<tr>
+							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;">#</th>
+							<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 68%;">Назва документа</th>
+							<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 9%;">Затвердження</th>
+							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 8%;">Дата закінчення</th>
+							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 8%;">Вид документа</th>
+							<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 14%;">Група (Підгрупа) документа</th>
+							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 2%;">Сміття?!</th>
+							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;" data-bs-toggle="tooltip" data-bs-placement="top" title="Доданий/Ні">
+								<i class="material-symbols-rounded">check_box</i>
+							</th>
+							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;" data-bs-toggle="tooltip" data-bs-placement="top" title="Перевірений">
+								<i class="material-symbols-rounded">radio_button_checked</i>
+							</th>
+							<!-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;">
 									<i class="material-symbols-rounded">radio_button_checked</i>
 								</th> -->
-								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;">
-									<i class="material-symbols-rounded">edit</i>
-								</th>
-								<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;">
-									<i class="material-symbols-rounded">delete</i>
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php foreach ($documentations as $item): ?>
-								<tr data-id="<?php echo $item->id; ?>">
-									<td class="align-middle" style="white-space: normal;">
-										<p class="text-xs font-weight-bold mb-0"><?php echo $item->name; ?></p>
-										<p class="text-xs text-secondary mb-0 text-uppercase">
-											<?php if ($item->number): ?>
-												<?php echo $item->number ? '(' . $item->number . ')' : null; ?>
-											<?php else: ?>
-												<span class="text-success">Номер не передбачано</span>
-											<?php endif; ?>
-										</p>
-									</td>
-									<td class="align-middle text-sm">
-										<p class="text-xs font-weight-bold mb-0"><?php echo $item->approval_document; ?></p>
-										<p class="text-xs text-secondary mb-0">від <?php echo $item->date_start_doc; ?> року</p>
-									</td>
-									<td class="align-middle text-center text-sm">
-										<span class="text-secondary text-xs font-weight-bold"><?php echo $item->date_finish_doc; ?></span>
-									</td>
-									<td class="align-middle text-center text-uppercase">
-										<span class="text-secondary text-xs font-weight-bold"><?php echo $item->document_type_text; ?></span>
-									</td>
-									<td class="align-middle" style="white-space: normal;">
-										<span class="text-secondary text-xs font-weight-bold"><?php echo $item->category_tree; ?></span>
-									</td>
-									<td class="align-middle text-center text-sm">
-										<?php if ($item->is_trash): ?>
-											<span class="badge badge-sm bg-gradient-warning">#Trash</span>
+							<!-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;">
+									<i class="material-symbols-rounded">radio_button_checked</i>
+								</th> -->
+							<!-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;">
+									<i class="material-symbols-rounded">radio_button_checked</i>
+								</th> -->
+							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;" data-bs-toggle="tooltip" data-bs-placement="top" title="Редагувати">
+								<i class="material-symbols-rounded">edit</i>
+							</th>
+							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;" data-bs-toggle="tooltip" data-bs-placement="top" title="В сміття">
+								<i class="material-symbols-rounded">delete</i>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php foreach ($documentations as $k => $item): ?>
+							<tr data-id="<?php echo $item->id; ?>">
+								<td class="align-middle text-center text-sm"><?php echo $item->id; ?></td>
+								<td class="align-middle" style="white-space: normal;">
+									<p class="text-xs font-weight-bold mb-0"><?php echo $item->name; ?></p>
+									<p class="text-xs text-secondary mb-0 text-uppercase">
+										<?php if ($item->number): ?>
+											<?php echo $item->number ? '(' . $item->number . ')' : null; ?>
+										<?php else: ?>
+											<span class="text-success">Номер не передбачано</span>
 										<?php endif; ?>
-									</td>
-									<td class="align-middle text-center text-sm">
-										<div class="form-check px-0">
-											<input class="form-check-input" type="checkbox" id="my_docs_<?php echo $item->id; ?>" <?php echo $item->my_docs ? 'checked' : null; ?> <?php echo $this->input->get('plot_id') ? 'onclick="addDelDocs(event);"' : NULL; ?> <?php echo $this->input->get('plot_id') ? NULL : 'disabled'; ?>>
-										</div>
-										<!-- <i class="material-symbols-rounded text-primary"><?php echo $item->required ? 'radio_button_checked' : 'radio_button_unchecked'; ?></i> -->
-									</td>
-									<td class="align-middle text-center pt-3">
+									</p>
+								</td>
+								<td class="align-middle text-sm">
+									<p class="text-xs font-weight-bold mb-0"><?php echo $item->approval_document; ?></p>
+									<p class="text-xs text-secondary mb-0">від <?php echo $item->date_start_doc; ?> року</p>
+								</td>
+								<td class="align-middle text-center text-sm">
+									<span class="text-secondary text-xs font-weight-bold"><?php echo $item->date_finish_doc; ?></span>
+								</td>
+								<td class="align-middle text-center text-uppercase">
+									<span class="text-secondary text-xs font-weight-bold"><?php echo $item->document_type_text; ?></span>
+								</td>
+								<td class="align-middle" style="white-space: normal;">
+									<span class="text-secondary text-xs font-weight-bold"><?php echo $item->category_tree; ?></span>
+								</td>
+								<td class="align-middle text-center text-sm">
+									<?php if ($item->is_trash): ?>
+										<span class="badge badge-sm bg-gradient-warning">#Trash</span>
+									<?php endif; ?>
+								</td>
+								<td class="align-middle text-center text-sm">
+									<div class="form-check px-0">
+										<input class="form-check-input" type="checkbox" id="my_docs_<?php echo $item->id; ?>" <?php echo $item->my_docs ? 'checked' : null; ?> <?php echo $this->input->get('plot_id') ? 'onclick="addDelDocs(event);"' : NULL; ?> <?php echo $this->input->get('plot_id') ? NULL : 'disabled'; ?>>
+									</div>
+									<!-- <i class="material-symbols-rounded text-primary"><?php echo $item->required ? 'radio_button_checked' : 'radio_button_unchecked'; ?></i> -->
+								</td>
+								<td class="align-middle text-center pt-3">
+									<i class="material-symbols-rounded text-danger"><?php echo $item->checked ? 'radio_button_checked' : 'radio_button_unchecked'; ?></i>
+								</td>
+								<!-- <td class="align-middle text-center pt-3">
 										<i class="material-symbols-rounded text-danger"><?php echo $item->required ? 'radio_button_checked' : 'radio_button_unchecked'; ?></i>
-									</td>
-									<!-- <td class="align-middle text-center pt-3">
+									</td> -->
+								<!-- <td class="align-middle text-center pt-3">
 										<i class="material-symbols-rounded text-warning"><?php echo $item->required_150 ? 'radio_button_checked' : 'radio_button_unchecked'; ?></i>
 									</td> -->
-									<!-- <td class="align-middle text-center pt-3">
+								<!-- <td class="align-middle text-center pt-3">
 										<i class="material-symbols-rounded text-info"><?php echo $item->required_35 ? 'radio_button_checked' : 'radio_button_unchecked'; ?></i>
 									</td> -->
-									<td class="align-middle text-center pt-3">
-										<i class="material-symbols-rounded text-success" style="cursor: pointer;" <?php echo ($this->session->master->master_group === 'admin') ? 'onclick="editDocument(event);"' : NULL; ?>>edit</i>
-									</td>
-									<td class="align-middle text-center pt-3">
-										<?php if (!$item->is_trash): ?>
-											<i class="material-symbols-rounded text-danger" title="Викинути у сміття" style="cursor: pointer;" <?php echo ($this->session->master->master_group === 'admin') ? 'onclick="trashDocument(event);"' : NULL; ?>>delete_sweep</i>
-										<?php else: ?>
-											<i class="material-symbols-rounded text-danger" title="Дістати зі сміття" style="cursor: pointer;" <?php echo ($this->session->master->master_group === 'admin') ? 'onclick="untrashDocument(event);"' : NULL; ?>>restore_from_trash</i>
-										<?php endif; ?>
-									</td>
-								</tr>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
-				</div>
+								<td class="align-middle text-center pt-3">
+									<i class="material-symbols-rounded text-success" style="cursor: pointer;" <?php echo ($this->session->master->master_group === 'admin') ? 'onclick="editDocument(event);"' : NULL; ?>>edit</i>
+								</td>
+								<td class="align-middle text-center pt-3">
+									<?php if (!$item->is_trash): ?>
+										<i class="material-symbols-rounded text-danger" title="Викинути у сміття" style="cursor: pointer;" <?php echo ($this->session->master->master_group === 'admin') ? 'onclick="trashDocument(event);"' : NULL; ?>>delete_sweep</i>
+									<?php else: ?>
+										<i class="material-symbols-rounded text-danger" title="Дістати зі сміття" style="cursor: pointer;" <?php echo ($this->session->master->master_group === 'admin') ? 'onclick="untrashDocument(event);"' : NULL; ?>>restore_from_trash</i>
+									<?php endif; ?>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
 </div>
 
 <?php if ($this->input->get('plot_id')): ?>
-	<div class="row">
+	<div class="row d-none">
 		<div class="col-12">
 			<div class="card my-4">
 				<div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">

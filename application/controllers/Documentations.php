@@ -44,10 +44,6 @@ class Documentations extends CI_Controller
 			redirect('auth/signin');
 		}
 
-		// if ($this->session->user->group !== 'admin' && $this->session->user->group !== 'master' && $this->session->user->group !== 'user') {
-		// 	show_404();
-		// }
-
 		$this->load->model('documentation_model');
 		$this->load->model('documentation_master_model');
 		$this->load->model('documentation_category_model');
@@ -61,9 +57,10 @@ class Documentations extends CI_Controller
 		$data['content'] = 'documentations/index';
 		$data['page'] = 'documentations';
 		$data['page_js'] = 'documentations';
-		$data['button'] = ['name' => 'button_add', 'method' => 'onclick="addDocument(event);"'];
-		$data['ag_grid'] = FALSE;
-		$data['datatables'] = FALSE;
+		$data['button'] = $this->session->master->master_group === 'admin'
+			? ['name' => 'button_add', 'method' => 'onclick="addDocument(event);"', 'class' => NULL]
+			: ['name' => 'button_add', 'method' => NULL, 'class' => 'disabled'];
+		$data['datatables'] = TRUE;
 		$data['title_heading'] = 'Документація';
 		$data['title_heading_card'] = 'Перелік документації';
 
@@ -84,10 +81,10 @@ class Documentations extends CI_Controller
 		$data['documentations'] = $documentations;
 		$data['documentation_categories'] = $documentation_categories;
 
-		$data['plots'] = $this->documentation_plot_model->get_data();
+		$data['plots'] = $this->documentation_plot_model->get_data_for_master();
 		$data['plot'] = $this->documentation_plot_model->get_data_row($this->input->get('plot_id'));
 
-		$this->load->view('layout_db', $data);
+		$this->load->view('layout_md', $data);
 	}
 
 	public function my()
@@ -103,7 +100,7 @@ class Documentations extends CI_Controller
 		$data['title_heading'] = 'Моя документація';
 		$data['title_heading_card'] = 'Перелік моєї документації';
 
-		$this->load->view('layout_db', $data);
+		$this->load->view('layout_md', $data);
 	}
 
 	public function get_data_row_ajax($id = NULL)
@@ -240,13 +237,15 @@ class Documentations extends CI_Controller
 
 		// $this->form_validation->set_error_delimiters('', '');
 
-		$this->form_validation->set_rules('name', '<strong>Назва</strong>', 'trim|required');
-		$this->form_validation->set_rules('number', '<strong>Номер</strong>', 'trim|max_length[255]');
-		$this->form_validation->set_rules('approval_document', '<strong>Затвердження</strong>', 'trim|max_length[255]');
-		$this->form_validation->set_rules('document_date_start', '<strong>Дата затвердження</strong>', 'required|min_length[10]|max_length[10]');
-		$this->form_validation->set_rules('document_date_finish', '<strong>Дата закінчення</strong>', 'required|min_length[10]|max_length[10]');
-		$this->form_validation->set_rules('periodicity', '<strong>Періодичність перегляду</strong>', 'required|numeric|min_length[1]|max_length[1]');
-		$this->form_validation->set_rules('document_type', '<strong>Тип</strong>', 'required');
+		// $this->form_validation->set_rules('name', '<strong>Назва документа</strong>', 'required|trim|max_length[255]');
+		// $this->form_validation->set_rules('number', '<strong>Номер документа</strong>', 'trim|max_length[255]');
+		// $this->form_validation->set_rules('approval_document', '<strong>Документ про затвердження</strong>', 'trim|max_length[255]');
+		// $this->form_validation->set_rules('document_date_start', '<strong>Дата затвердження документа</strong>', 'min_length[10]|max_length[10]');
+		// $this->form_validation->set_rules('document_date_finish', '<strong>Дата закінчення документа</strong>', 'min_length[10]|max_length[10]');
+		// $this->form_validation->set_rules('periodicity', '<strong>Періодичність перегляду документа, роки</strong>', 'numeric|min_length[1]|max_length[1]');
+		// $this->form_validation->set_rules('document_type', '<strong>Тип документа</strong>', 'required');
+
+		$this->set_rules();
 
 		if ($this->form_validation->run() == FALSE) {
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => validation_errors()], JSON_UNESCAPED_UNICODE));
@@ -300,13 +299,15 @@ class Documentations extends CI_Controller
 
 		// $this->form_validation->set_error_delimiters('', '');
 
-		$this->form_validation->set_rules('name', '<strong>Назва</strong>', 'trim|required');
-		$this->form_validation->set_rules('number', '<strong>Номер</strong>', 'trim|max_length[255]');
-		$this->form_validation->set_rules('approval_document', '<strong>Затвердження</strong>', 'trim|max_length[255]');
-		$this->form_validation->set_rules('document_date_start', '<strong>Дата затвердження</strong>', 'min_length[10]|max_length[10]');
-		$this->form_validation->set_rules('document_date_finish', '<strong>Дата закінчення</strong>', 'min_length[10]|max_length[10]');
-		$this->form_validation->set_rules('periodicity', '<strong>Періодичність перегляду</strong>', 'required|numeric|min_length[1]|max_length[1]');
-		$this->form_validation->set_rules('document_type', '<strong>Тип</strong>', 'required');
+		// $this->form_validation->set_rules('name', '<strong>Назва документа</strong>', 'required|trim|max_length[255]');
+		// $this->form_validation->set_rules('number', '<strong>Номер документа</strong>', 'trim|max_length[255]');
+		// $this->form_validation->set_rules('approval_document', '<strong>Документ про затвердження</strong>', 'trim|max_length[255]');
+		// $this->form_validation->set_rules('document_date_start', '<strong>Дата затвердження документа</strong>', 'min_length[10]|max_length[10]');
+		// $this->form_validation->set_rules('document_date_finish', '<strong>Дата закінчення документа</strong>', 'min_length[10]|max_length[10]');
+		// $this->form_validation->set_rules('periodicity', '<strong>Періодичність перегляду документа, роки</strong>', 'numeric|min_length[1]|max_length[1]');
+		// $this->form_validation->set_rules('document_type', '<strong>Тип документа</strong>', 'required');
+
+		$this->set_rules();
 
 		if ($this->form_validation->run() == FALSE) {
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => validation_errors()], JSON_UNESCAPED_UNICODE));
@@ -400,47 +401,43 @@ class Documentations extends CI_Controller
 		}
 
 		$data['doc_name'] = $doc_name;
-
 		$data['plot'] = $this->documentation_plot_model->get_data_row($plot);
 
 		$html = $this->load->view('/documentations/docs_pdf', $data, TRUE);
-		// return;
 
-		// create new PDF document
+		// Create new PDF document
 		$pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, 'A3', true, 'UTF-8', false);
-		// $pdf = new MYPDF('P', PDF_UNIT, 'A3', true, 'UTF-8', false);
 
-		// set document information
+		// Set document information
 		$pdf->setCreator(PDF_CREATOR);
 		$pdf->setAuthor('Yurii Sychov');
 		$pdf->setTitle('Перелік інструкцій з ОП');
 		$pdf->setSubject('Перелік інструкцій з ОП');
 		$pdf->setKeywords('TCPDF, PDF');
 
-		// set default header data
-		// PDF_HEADER_STRING = 'by Yurii Sychov - Sychov.pp.ua www.repair.pp.ua';
-		$pdf->setHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'Перелік інструкцій з ОП', "by Yurii Sychov - Sychov.pp.ua\nwww.repair.pp.ua", array(0, 64, 255), array(0, 64, 128));
+		// Set default header and footer data
+		// $pdf->setHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'Перелік інструкцій з ОП', "by Yurii Sychov - Sychov.pp.ua\nwww.repair.pp.ua", array(0, 64, 255), array(0, 64, 128));
 		$pdf->setFooterData(array(0, 64, 0), array(0, 64, 128));
 
-		// set header and footer fonts
-		$pdf->setHeaderFont(array('dejavusans', '', PDF_FONT_SIZE_MAIN));
+		// Set header and footer fonts
+		// $pdf->setHeaderFont(array('dejavusans', '', PDF_FONT_SIZE_MAIN));
 		$pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
-		// set default monospaced font
+		// Set default monospaced font
 		$pdf->setDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
-		// set margins
+		// Set margins
 		$pdf->setMargins(20, PDF_MARGIN_TOP, 10);
-		$pdf->setHeaderMargin(PDF_MARGIN_HEADER);
+		// $pdf->setHeaderMargin(PDF_MARGIN_HEADER);
 		$pdf->setFooterMargin(PDF_MARGIN_FOOTER);
 
-		// set auto page breaks
+		// Set auto page breaks
 		// $pdf->setAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
-		// set image scale factor
+		// Set image scale factor
 		// $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
-		// set some language-dependent strings (optional)
+		// Set some language-dependent strings (optional)
 		// if (@file_exists(dirname(__FILE__) . '/lang/eng.php')) {
 		// 	require_once(dirname(__FILE__) . '/lang/eng.php');
 		// 	$pdf->setLanguageArray($l);
@@ -448,7 +445,7 @@ class Documentations extends CI_Controller
 
 		// ---------------------------------------------------------
 
-		// set default font subsetting mode
+		// Set default font subsetting mode
 		$pdf->setFontSubsetting(true);
 
 		// Set font
@@ -461,7 +458,7 @@ class Documentations extends CI_Controller
 		// This method has several options, check the source code documentation for more information.
 		$pdf->AddPage();
 
-		// set text shadow effect
+		// Set text shadow effect
 		$pdf->setTextShadow(array('enabled' => true, 'depth_w' => 0.2, 'depth_h' => 0.2, 'color' => array(196, 196, 196), 'opacity' => 1, 'blend_mode' => 'Normal'));
 
 		// Set some content to print
@@ -525,6 +522,20 @@ class Documentations extends CI_Controller
 
 		$objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
 		$objWriter->save('php://output');
+	}
+
+	private function set_rules()
+	{
+		return [
+			$this->form_validation->set_rules('name', '<strong>Назва документа</strong>', 'required|trim|max_length[255]'),
+			$this->form_validation->set_rules('number', '<strong>Номер документа</strong>', 'trim|max_length[255]'),
+			$this->form_validation->set_rules('approval_document', '<strong>Документ про затвердження</strong>', 'trim|max_length[255]'),
+			$this->form_validation->set_rules('document_date_start', '<strong>Дата затвердження документа</strong>', 'min_length[10]|max_length[10]'),
+			$this->form_validation->set_rules('document revision date', '<strong>Дата затвердження документа</strong>', 'min_length[10]|max_length[10]'),
+			$this->form_validation->set_rules('document_date_finish', '<strong>Дата закінчення документа</strong>', 'min_length[10]|max_length[10]'),
+			$this->form_validation->set_rules('periodicity', '<strong>Періодичність перегляду документа, роки</strong>', 'numeric|min_length[1]|max_length[1]'),
+			$this->form_validation->set_rules('document_type', '<strong>Тип документа</strong>', 'required')
+		];
 	}
 
 	private function set_data_insert_row($post)

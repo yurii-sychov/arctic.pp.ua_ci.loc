@@ -19,17 +19,23 @@ async function addData(event) {
 	let formModal = document.getElementById('formModal');
 
 	let fields = get_fields();
-
 	fields.forEach((el) => {
 		if (formModal.querySelector('#' + el)) {
 			formData.set(el, formModal.querySelector('#' + el).value);
 		}
 	});
 
-	formData.set('required', formModal.querySelector('#required').checked ? 1 : 0);
-	formData.set('required_150', formModal.querySelector('#required_150').checked ? 1 : 0);
-	formData.set('required_35', formModal.querySelector('#required_35').checked ? 1 : 0);
-	formData.set('is_trash', formModal.querySelector('#is_trash').checked ? 1 : 0);
+	fields_bool.forEach((el) => {
+		if (formModal.querySelector('#' + el)) {
+			formData.set(el, formModal.querySelector('#' + el).checked ? 1 : 0);
+		}
+	});
+
+	// formData.set('checked', formModal.querySelector('#checked').checked ? 1 : 0);
+	// formData.set('required', formModal.querySelector('#required').checked ? 1 : 0);
+	// formData.set('required_150', formModal.querySelector('#required_150').checked ? 1 : 0);
+	// formData.set('required_35', formModal.querySelector('#required_35').checked ? 1 : 0);
+	// formData.set('is_trash', formModal.querySelector('#is_trash').checked ? 1 : 0);
 
 	let result = await fetchPostData('documentations/add_data_row_ajax/', formData);
 
@@ -38,7 +44,9 @@ async function addData(event) {
 		return;
 	}
 	toastr.success(result.message, 'Успіх');
-	location.href = '/documentations';
+	setTimeout(() => {
+		location.reload();
+	}, 1000);
 }
 
 async function fetchPostData(url, data) {
@@ -96,17 +104,24 @@ async function editData(event) {
 	let formModal = document.getElementById('formModal');
 
 	let fields = get_fields();
-
 	fields.forEach((el) => {
 		if (formModal.querySelector('#' + el)) {
 			formData.set(el, formModal.querySelector('#' + el).value);
 		}
 	});
 
-	formData.set('required', formModal.querySelector('#required').checked ? 1 : 0);
-	formData.set('required_150', formModal.querySelector('#required_150').checked ? 1 : 0);
-	formData.set('required_35', formModal.querySelector('#required_35').checked ? 1 : 0);
-	formData.set('is_trash', formModal.querySelector('#is_trash').checked ? 1 : 0);
+	let fields_bool = get_fields_bool();
+	fields_bool.forEach((el) => {
+		if (formModal.querySelector('#' + el)) {
+			formData.set(el, formModal.querySelector('#' + el).checked ? 1 : 0);
+		}
+	});
+
+	// formData.set('checked', formModal.querySelector('#checked').checked ? 1 : 0);
+	// formData.set('required', formModal.querySelector('#required').checked ? 1 : 0);
+	// formData.set('required_150', formModal.querySelector('#required_150').checked ? 1 : 0);
+	// formData.set('required_35', formModal.querySelector('#required_35').checked ? 1 : 0);
+	// formData.set('is_trash', formModal.querySelector('#is_trash').checked ? 1 : 0);
 
 	let result = await fetchPostData('documentations/edit_data_row_ajax/' + event.target.dataset.id, formData);
 
@@ -117,24 +132,35 @@ async function editData(event) {
 	toastr.success(result.message, 'Успіх');
 	setTimeout(() => {
 		location.reload();
-	}, 2000);
+	}, 1000);
+}
+
+function get_fields_bool() {
+	return ['checked', 'required', 'required_150', 'required_35', 'is_trash'];
 }
 
 async function fillForm(data) {
 	let formModal = document.getElementById('formModal');
 
 	let fields = get_fields();
-
 	fields.forEach((el) => {
 		if (formModal.querySelector('#' + el)) {
 			formModal.querySelector('#' + el).value = data[el];
 		}
 	});
 
-	formModal.querySelector('#required').checked = (data.required == 1) ? true : false;
-	formModal.querySelector('#required_150').checked = (data.required_150 == 1) ? true : false;
-	formModal.querySelector('#required_35').checked = (data.required_35 == 1) ? true : false;
-	formModal.querySelector('#is_trash').checked = (data.is_trash == 1) ? true : false;
+	let fields_bool = get_fields_bool();
+	fields_bool.forEach((el) => {
+		if (formModal.querySelector('#' + el)) {
+			formModal.querySelector('#' + el).checked = (data[el] == 1) ? true : false;
+		}
+	});
+
+	// formModal.querySelector('#checked').checked = (data.checked == 1) ? true : false;
+	// formModal.querySelector('#required').checked = (data.required == 1) ? true : false;
+	// formModal.querySelector('#required_150').checked = (data.required_150 == 1) ? true : false;
+	// formModal.querySelector('#required_35').checked = (data.required_35 == 1) ? true : false;
+	// formModal.querySelector('#is_trash').checked = (data.is_trash == 1) ? true : false;
 }
 
 async function fetchGetData(url) {
@@ -209,8 +235,10 @@ function restoreModal(modal) {
 }
 
 function get_fields() {
-	return ['name', 'number', 'approval_document', 'approval_document', 'document_date_start', 'document_date_finish', 'periodicity', 'document_type', 'documentation_category_id'];
+	return ['name', 'number', 'approval_document', 'approval_document', 'document_date_start', 'document_revision_date', 'document_date_finish', 'periodicity', 'document_type', 'documentation_category_id'];
 }
+
+
 
 async function getDocType(doc_type, tab) {
 	let result = await fetchGetData('documentations/get_data_doc_type_ajax/' + doc_type);
@@ -279,5 +307,4 @@ function getListTe(event) {
 	const urlParams = new URLSearchParams(window.location.search);
 	window.open('/documentations/list_pdf/3/' + urlParams.get('plot_id'), '_blank');
 }
-
 

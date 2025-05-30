@@ -35,6 +35,11 @@
 
 	<!-- Toastr -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" integrity="sha512-6S2HWzVFxruDlZxI3sXOZZ4/eJ8AcxkQH1+JjSe/ONCEqR9L4Ysq5JdT5ipqtzU7WHalNwzwBv+iE51gNHJNqQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+	<!-- DataTables -->
+	<?php if (isset($datatables) && $datatables) : ?>
+		<link rel="stylesheet" href="https://cdn.datatables.net/2.3.1/css/dataTables.dataTables.min.css">
+	<?php endif; ?>
 </head>
 
 <body class="g-sidenav-show  bg-gray-100">
@@ -135,7 +140,7 @@
 					<ul class="navbar-nav d-flex align-items-center  justify-content-end">
 						<li class="nav-item d-flex align-items-center">
 							<?php if (isset($button['name']) && $button['name'] === 'button_add'): ?>
-								<a class="btn btn-outline-primary btn-sm mb-0 me-3" href="javascript:void(0);" <?php echo $button['method']; ?>>Створити</a>
+								<a class="btn btn-outline-primary btn-sm mb-0 me-3 <?php echo $button['class']; ?>" href="javascript:void(0);" <?php echo $button['method']; ?>>Створити</a>
 							<?php endif; ?>
 						</li>
 						<li class="mt-1 d-none d-lg-block">
@@ -370,6 +375,12 @@
 	<!-- Toastr -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js" integrity="sha512-lbwH47l/tPXJYG9AcFNoJaTMhGvYWhVM9YI43CT+uteTRRaiLCui8snIgyAN8XWgNjNhCqlAUdzZptso6OCoFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<!-- DataTables  & Plugins -->
+	<?php if (isset($datatables) && $datatables) : ?>
+		<script src="https://cdn.datatables.net/2.3.1/js/dataTables.min.js"></script>
+		<script src="/assets/js/datatable_md.js?v=<?php echo date("Y-m-d"); ?>"></script>
+	<?php endif; ?>
 
 	<?php if (isset($page_js) && $page_js) : ?>
 		<script src="/assets/js/pages/<?php echo $page_js; ?>.js?v=<?php echo date("Y-m-d"); ?>"></script>

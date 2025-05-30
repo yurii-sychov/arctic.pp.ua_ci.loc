@@ -1,19 +1,19 @@
 <form>
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-md-9">
 			<div class="input-group input-group-static mb-4">
 				<label for="name">Назва документа</label>
 				<input type="text" class="form-control" id="name" maxlength="255" autocomplete="off">
 			</div>
 		</div>
-	</div>
-	<div class="row">
 		<div class="col-md-3">
 			<div class="input-group input-group-static mb-4">
 				<label for="number">Номер документа</label>
 				<input type="text" class="form-control" id="number" maxlength="255" autocomplete="off">
 			</div>
 		</div>
+	</div>
+	<div class="row">
 		<div class="col-md-3">
 			<div class="input-group input-group-static mb-4">
 				<label for="approval_document">Документ про затвердження</label>
@@ -24,6 +24,12 @@
 			<div class="input-group input-group-static mb-4">
 				<label for="document_date_start">Дата затвердження документа</label>
 				<input type="date" class="form-control" id="document_date_start" autocomplete="off">
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="input-group input-group-static mb-4">
+				<label for="document_revision_date">Дата перегляду документа</label>
+				<input type="date" class="form-control" id="document_revision_date" autocomplete="off">
 			</div>
 		</div>
 		<div class="col-md-3">
@@ -87,7 +93,13 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-md-4">
+			<div class="form-check form-switch">
+				<input class="form-check-input" type="checkbox" id="checked">
+				<label class="custom-control-label" for="checked">Перевірений документ</label>
+			</div>
+		</div>
+		<div class="col-md-4">
 			<div class="form-check form-switch">
 				<input class="form-check-input" type="checkbox" id="is_trash">
 				<label class="custom-control-label" for="is_trash">Знаходиться в смітті?</label>
