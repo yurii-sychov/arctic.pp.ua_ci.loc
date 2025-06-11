@@ -40,13 +40,25 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-6">
+		<div class="col-md-5">
 			<div class="input-group input-group-static mb-4">
 				<label for="periodicity">Періодичність перегляду документа, роки</label>
 				<input type="number" class="form-control" id="periodicity" min="1" max="9" pattern="/^-?\d+\.?\d*$/" onKeyPress="if (this.value.length == 1) return false;" autocomplete="off">
 			</div>
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-4">
+			<div class="input-group input-group-static mb-4">
+				<label for="term">Термін зберігання документа</label>
+				<select class="form-control" id="term">
+					<option value="" selected>Оберіть термін зберігання документа</option>
+					<option value="0">Постійно</option>
+					<option value="1">Один рік</option>
+					<option value="2">Два роки</option>
+					<option value="3">Три роки</option>
+				</select>
+			</div>
+		</div>
+		<div class="col-md-3">
 			<div class="input-group input-group-static mb-4">
 				<label for="document_type">Тип документа</label>
 				<select class="form-control" id="document_type">

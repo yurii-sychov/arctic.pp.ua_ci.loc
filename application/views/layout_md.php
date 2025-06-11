@@ -38,7 +38,7 @@
 
 	<!-- DataTables -->
 	<?php if (isset($datatables) && $datatables) : ?>
-		<link rel="stylesheet" href="https://cdn.datatables.net/2.3.1/css/dataTables.dataTables.min.css">
+		<link href="https://cdn.datatables.net/2.3.1/css/dataTables.bootstrap5.min.css" rel="stylesheet" integrity="sha384-5hBbs6yhVjtqKk08rsxdk9xO80wJES15HnXHglWBQoj3cus3WT+qDJRpvs5rRP2c" crossorigin="anonymous">
 	<?php endif; ?>
 </head>
 
@@ -378,7 +378,8 @@
 
 	<!-- DataTables  & Plugins -->
 	<?php if (isset($datatables) && $datatables) : ?>
-		<script src="https://cdn.datatables.net/2.3.1/js/dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/2.3.1/js/dataTables.min.js" integrity="sha384-LiV1KhVIIiAY/+IrQtQib29gCaonfR5MgtWzPCTBVtEVJ7uYd0u8jFmf4xka4WVy" crossorigin="anonymous"></script>
+		<script src="https://cdn.datatables.net/2.3.1/js/dataTables.bootstrap5.min.js" integrity="sha384-G85lmdZCo2WkHaZ8U1ZceHekzKcg37sFrs4St2+u/r2UtfvSDQmQrkMsEx4Cgv/W" crossorigin="anonymous"></script>
 		<script src="/assets/js/datatable_md.js?v=<?php echo date("Y-m-d"); ?>"></script>
 	<?php endif; ?>
 

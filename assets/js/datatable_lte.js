@@ -64,6 +64,7 @@ $(document).ready(function () {
 			$(".loading").css("display", processing ? "block" : "none");
 		})
 		.DataTable({
+			stateDuration: 60 * 60 * 24 * 365,
 			// DataTables - Options
 			dom:
 				"<'row'<'col-sm-12 col-md-2 my-1 d-none'l><'col-sm-12 col-md-8 my-1 text-center d-none'B><'col-sm-12 col-md-2 my-1 d-none'f>>" +

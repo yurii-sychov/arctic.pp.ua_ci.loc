@@ -20,6 +20,8 @@ use function PHPSTORM_META\type;
 
 class MYPDF extends TCPDF
 {
+	public $qr = 260;
+
 	public function Header()
 	{
 		if ($this->page === 1) {
@@ -30,8 +32,8 @@ class MYPDF extends TCPDF
 				'bgcolor' => false
 			);
 			$image_file = $_SERVER['DOCUMENT_ROOT'] . '/assets/images/logo.png';
-			$this->Image($image_file, 16, 10, 20, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
-			$this->write2DBarcode('Документ сгенеровано ' . date('d-m-Y року о H:i:s'), 'QRCODE,H', 375, 10, 29, 29, $style, 'N');
+			$this->Image($image_file, 20, 10, 20, '', 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+			$this->write2DBarcode('Документ сгенеровано ' . date('d-m-Y року о H:i:s'), 'QRCODE,H', $this->qr, 10, 29, 29, $style, 'N');
 			// $this->write2DBarcode('Документ сгенеровано ' . date('d-m-Y року о H:i:s'), 'PDF417', 231, 10, 50, 50, $style, 'N');
 			$this->SetFont('dejavusans', 'B', 20, '', true);
 			// $this->Cell(0, 15, 'ПрАТ "Кіровоградобленерго"', 0, false, 'C', 0, '', 0, false, 'M', 'M');
@@ -1034,7 +1036,7 @@ class Passports extends CI_Controller
 		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 		// set margins
-		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$pdf->SetMargins(19, PDF_MARGIN_TOP, 10);
 		$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -1068,8 +1070,11 @@ class Passports extends CI_Controller
 
 		// Close and output PDF document
 		// This method has several options, check the source code documentation for more information.
-
-		$pdf->Output("Passport.pdf", 'I');
+		// echo "<pre>";
+		// print_r($data['passport']);
+		// echo "</pre>";
+		// exit;
+		$pdf->Output(str_replace(['-', '/', '"'], [' ', '_', ''], $data['passport']->stantion . " (" . $data['passport']->disp . " " . $data['passport']->place . ")") . ".pdf", 'I');
 	}
 
 	public function gen_passport_object_pdf($id = NULL, $equipment_id = NULL)
@@ -1156,6 +1161,7 @@ class Passports extends CI_Controller
 
 		// create new PDF document
 		$pdf = new MYPDF('L', PDF_UNIT, 'A3', true, 'UTF-8', false);
+		$pdf->qr = 380;
 
 		// set document information
 		$pdf->SetAuthor('Yurii Sychov');
@@ -1173,7 +1179,7 @@ class Passports extends CI_Controller
 		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 		// set margins
-		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$pdf->SetMargins(19, PDF_MARGIN_TOP, 10);
 		$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -1235,6 +1241,7 @@ class Passports extends CI_Controller
 
 		// create new PDF document
 		$pdf = new MYPDF('L', PDF_UNIT, 'A3', true, 'UTF-8', false);
+		$pdf->qr = 380;
 
 		// set document information
 		$pdf->SetAuthor('Yurii Sychov');
@@ -1252,7 +1259,7 @@ class Passports extends CI_Controller
 		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 		// set margins
-		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$pdf->SetMargins(19, PDF_MARGIN_TOP, 10);
 		$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 

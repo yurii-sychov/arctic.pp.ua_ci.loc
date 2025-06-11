@@ -121,6 +121,7 @@ $(document).ready(function () {
 			// processing: true,
 			autoWidth: false,
 			stateSave: true,
+			stateDuration: 60 * 60 * 24 * 365,
 			deferRender: true,
 			pagingType: "full_numbers",
 			serverSide: serverSide,
@@ -223,7 +224,8 @@ $(document).ready(function () {
 				$(thead).find('th').addClass("text-center align-middle");
 			},
 
-			stateLoadParam: function (settings, data) { },
+			stateLoadParams: function (settings, data) {
+			},
 
 			initComplete: function (settings, json) {
 				for (i = 0; i < settings.aoColumns.length; i++) {
@@ -677,7 +679,7 @@ $(document).ready(function () {
 			// if (data.status === 'ERROR') {
 			// 	throw new Error(data.message);
 			// }
-
+			console.log("localStorage.getItem('passports_stantion_id')", localStorage.getItem('passports_stantion_id'));
 			let options = `<option value="">Всі підстанції</option>`;
 			if (data.complete_renovation_objects) {
 				data.complete_renovation_objects.forEach(el => {
@@ -725,6 +727,7 @@ $(document).ready(function () {
 
 	$("#FilterStantion").on("change", function (event) {
 		localStorage.setItem('passports_stantion_id', event.target.value);
+
 		table
 			.columns(".complete-renovation-object-id")
 			.search(this.value ? "^" + this.value + "$" : "", true, true)

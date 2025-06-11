@@ -427,7 +427,7 @@ class Documentations extends CI_Controller
 		$pdf->setDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 		// Set margins
-		$pdf->setMargins(20, PDF_MARGIN_TOP, 10);
+		$pdf->setMargins(19, PDF_MARGIN_TOP, 10);
 		// $pdf->setHeaderMargin(PDF_MARGIN_HEADER);
 		$pdf->setFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -534,6 +534,7 @@ class Documentations extends CI_Controller
 			$this->form_validation->set_rules('document revision date', '<strong>Дата затвердження документа</strong>', 'min_length[10]|max_length[10]'),
 			$this->form_validation->set_rules('document_date_finish', '<strong>Дата закінчення документа</strong>', 'min_length[10]|max_length[10]'),
 			$this->form_validation->set_rules('periodicity', '<strong>Періодичність перегляду документа, роки</strong>', 'numeric|min_length[1]|max_length[1]'),
+			$this->form_validation->set_rules('term', '<strong>Термін зберігання документа</strong>', 'required'),
 			$this->form_validation->set_rules('document_type', '<strong>Тип документа</strong>', 'required')
 		];
 	}

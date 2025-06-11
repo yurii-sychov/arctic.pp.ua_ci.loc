@@ -10,7 +10,7 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="input-group input-group-static mb-4">
-							<select class="form-control ps-2" id="filter_plot" onchange="document.location=this.options[this.selectedIndex].value">
+							<select class="form-control px-2" id="filter_plot" onchange="document.location=this.options[this.selectedIndex].value">
 								<option value="/documentations" selected>Оберіть об'єкт (дільницю)</option>
 								<?php foreach ($plots as $item): ?>
 									<option value="/documentations?plot_id=<?php echo $item->id; ?>" <?php echo $item->id == $this->input->get('plot_id') ? 'selected' : NULL; ?>><?php echo $item->name; ?></option>
@@ -37,6 +37,47 @@
 						</button>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="input-group input-group-static">
+							<select class="form-control px-2 filter" name="document_type_text" onchange="filter(event);">
+								<option value="">Фільтр за видом документа</option>
+								<option value="ОП">ОП</option>
+								<option value="ПБ">ПБ</option>
+								<option value="ТЕ">ТЕ</option>
+								<option value="Інше">Інше</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="input-group input-group-static">
+							<select class="form-control px-2 filter" name="category_tree" onchange="filter(event);">
+								<option value="">Фільтр за групою (підгрупою) документа</option>
+								<?php foreach ($category_tree as $item): ?>
+									<option value="<?php echo $item['path']; ?>"><?php echo $item['path']; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="input-group input-group-static">
+							<select class="form-control px-2 filter" name="is_trash" onchange="filter(event);">
+								<option value="">Фільтр за сміттям</option>
+								<option value="1">#Trash</option>
+								<option value="0">#NoTrash</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="input-group input-group-static">
+							<select class="form-control px-2 filter" name="checked" onchange="filter(event);">
+								<option value="">Фільтр за перевіреним</option>
+								<option value="1">Перевірений</option>
+								<option value="0">Ні</option>
+							</select>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -51,20 +92,23 @@
 				</div>
 			</div>
 			<div class="card-body">
-				<table class="table table-bordered table-striped table-hover align-items-center mb-0" id="table">
+				<div class="text-center loading">
+					<div class="spinner-border text-primary" role="status"></div>
+				</div>
+				<table class="datatable table table-bordered table-striped table-hover align-items-center mb-0 d-none" data-order='[[ 0, "asc" ]]' data-page-length="5" data-state-save="1" data-paging-type="full_numbers" data-auto-width="0">
 					<thead>
 						<tr>
 							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;">#</th>
-							<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 68%;">Назва документа</th>
+							<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 54%;">Назва документа</th>
 							<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 9%;">Затвердження</th>
 							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 8%;">Дата закінчення</th>
-							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 8%;">Вид документа</th>
-							<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 14%;">Група (Підгрупа) документа</th>
+							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 8%;" data-class-name="document_type_text">Вид документа</th>
+							<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 14%;" data-class-name="category_tree">Група (Підгрупа) документа</th>
 							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 2%;">Сміття?!</th>
-							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;" data-bs-toggle="tooltip" data-bs-placement="top" title="Доданий/Ні">
+							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 pe-3 pt-3" style="width: 1%;" data-orderable="false" data-bs-toggle="tooltip" data-bs-placement="top" title="Доданий/Ні">
 								<i class="material-symbols-rounded">check_box</i>
 							</th>
-							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;" data-bs-toggle="tooltip" data-bs-placement="top" title="Перевірений">
+							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 pe-3 pt-3" style="width: 1%;" data-orderable="false" data-bs-toggle="tooltip" data-bs-placement="top" title="Перевірений">
 								<i class="material-symbols-rounded">radio_button_checked</i>
 							</th>
 							<!-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;">
@@ -76,12 +120,14 @@
 							<!-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;">
 									<i class="material-symbols-rounded">radio_button_checked</i>
 								</th> -->
-							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;" data-bs-toggle="tooltip" data-bs-placement="top" title="Редагувати">
+							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 pe-3 pt-3" style="width: 1%;" data-orderable="false" data-bs-toggle="tooltip" data-bs-placement="top" title="Редагувати">
 								<i class="material-symbols-rounded">edit</i>
 							</th>
-							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="width: 1%;" data-bs-toggle="tooltip" data-bs-placement="top" title="В сміття">
+							<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 pe-3 pt-3" style="width: 1%;" data-orderable="false" data-bs-toggle="tooltip" data-bs-placement="top" title="В сміття">
 								<i class="material-symbols-rounded">delete</i>
 							</th>
+							<th data-visible="false" data-class-name="is_trash">Сміття?!</th>
+							<th data-visible="false" data-class-name="checked">Перевірений/Ні</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -144,6 +190,8 @@
 										<i class="material-symbols-rounded text-danger" title="Дістати зі сміття" style="cursor: pointer;" <?php echo ($this->session->master->master_group === 'admin') ? 'onclick="untrashDocument(event);"' : NULL; ?>>restore_from_trash</i>
 									<?php endif; ?>
 								</td>
+								<td><?php echo $item->is_trash; ?></td>
+								<td><?php echo $item->checked; ?></td>
 							</tr>
 						<?php endforeach; ?>
 					</tbody>

@@ -559,7 +559,7 @@ class Complete_renovation_objects extends CI_Controller
 		$complete_renovation_objects = $this->complete_renovation_object_model->get_data_for_subdivision($this->input->get('subdivision_id'));
 
 		if (!$complete_renovation_objects) {
-			$this->output->set_status_header(400);
+			$this->output->set_status_header(200);
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Не вдалося отримати дані з реєстру!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}

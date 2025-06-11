@@ -18,13 +18,14 @@ async function addData(event) {
 
 	let formModal = document.getElementById('formModal');
 
-	let fields = get_fields();
+	let fields = getFields();
 	fields.forEach((el) => {
 		if (formModal.querySelector('#' + el)) {
 			formData.set(el, formModal.querySelector('#' + el).value);
 		}
 	});
 
+	let fields_bool = getFieldsBool();
 	fields_bool.forEach((el) => {
 		if (formModal.querySelector('#' + el)) {
 			formData.set(el, formModal.querySelector('#' + el).checked ? 1 : 0);
@@ -103,14 +104,14 @@ async function editData(event) {
 
 	let formModal = document.getElementById('formModal');
 
-	let fields = get_fields();
+	let fields = getFields();
 	fields.forEach((el) => {
 		if (formModal.querySelector('#' + el)) {
 			formData.set(el, formModal.querySelector('#' + el).value);
 		}
 	});
 
-	let fields_bool = get_fields_bool();
+	let fields_bool = getFieldsBool();
 	fields_bool.forEach((el) => {
 		if (formModal.querySelector('#' + el)) {
 			formData.set(el, formModal.querySelector('#' + el).checked ? 1 : 0);
@@ -135,21 +136,17 @@ async function editData(event) {
 	}, 1000);
 }
 
-function get_fields_bool() {
-	return ['checked', 'required', 'required_150', 'required_35', 'is_trash'];
-}
-
 async function fillForm(data) {
 	let formModal = document.getElementById('formModal');
 
-	let fields = get_fields();
+	let fields = getFields();
 	fields.forEach((el) => {
 		if (formModal.querySelector('#' + el)) {
 			formModal.querySelector('#' + el).value = data[el];
 		}
 	});
 
-	let fields_bool = get_fields_bool();
+	let fields_bool = getFieldsBool();
 	fields_bool.forEach((el) => {
 		if (formModal.querySelector('#' + el)) {
 			formModal.querySelector('#' + el).checked = (data[el] == 1) ? true : false;
@@ -224,6 +221,86 @@ async function addDelDocs(event) {
 
 }
 
+function filter(event) {
+	localStorage.setItem(event.target.name, event.target.value);
+	localStorage.setItem('field_' + event.target.name, event.target.name);
+
+	event.target.classList.remove('text-primary');
+	if (event.target.selectedIndex) {
+		event.target.classList.add('text-primary');
+	}
+
+	const table = $(".datatable").dataTable().api();
+
+	console.log(table.columns('.' + event.target.name).data());
+
+	table
+		.columns('.' + event.target.name)
+		.search(event.target.value ? event.target.value : "", { exact: true })
+		.draw();
+}
+
+function setFilter() {
+	if (localStorage.getItem('field_document_type_text') === 'document_type_text') {
+		let select = document.getElementsByName('document_type_text')[0];
+
+		let options = document.getElementsByName('document_type_text')[0].getElementsByTagName('option');
+
+		for (let i = 0; i < options.length; i++) {
+			if (options[i].value === localStorage.getItem('document_type_text')) options[i].selected = true;
+		}
+
+		if (select.selectedIndex) {
+			select.classList.add('text-primary');
+		}
+
+	}
+
+	if (localStorage.getItem('field_category_tree') === 'category_tree') {
+		let select = document.getElementsByName('category_tree')[0];
+
+		let options = document.getElementsByName('category_tree')[0].getElementsByTagName('option');
+
+		for (let i = 0; i < options.length; i++) {
+			if (options[i].value === localStorage.getItem('category_tree')) options[i].selected = true;
+		}
+
+		if (select.selectedIndex) {
+			select.classList.add('text-primary');
+		}
+	}
+
+	if (localStorage.getItem('field_is_trash') === 'is_trash') {
+		let select = document.getElementsByName('is_trash')[0];
+
+		let options = document.getElementsByName('is_trash')[0].getElementsByTagName('option');
+
+		for (let i = 0; i < options.length; i++) {
+			if (options[i].value === localStorage.getItem('is_trash')) options[i].selected = true;
+		}
+
+		if (select.selectedIndex) {
+			select.classList.add('text-primary');
+		}
+	}
+
+	if (localStorage.getItem('field_checked') === 'checked') {
+		let select = document.getElementsByName('checked')[0];
+
+		let options = document.getElementsByName('checked')[0].getElementsByTagName('option');
+
+		for (let i = 0; i < options.length; i++) {
+			if (options[i].value === localStorage.getItem('checked')) options[i].selected = true;
+		}
+
+		if (select.selectedIndex) {
+			select.classList.add('text-primary');
+		}
+	}
+}
+
+setFilter();
+
 function restoreModal(modal) {
 	document.getElementById('submit').removeAttribute('onclick');
 	document.getElementById('submit').removeAttribute('data-id');
@@ -234,11 +311,13 @@ function restoreModal(modal) {
 	modal.querySelector('.modal-title').innerHTML = 'Форма';
 }
 
-function get_fields() {
-	return ['name', 'number', 'approval_document', 'approval_document', 'document_date_start', 'document_revision_date', 'document_date_finish', 'periodicity', 'document_type', 'documentation_category_id'];
+function getFields() {
+	return ['name', 'number', 'approval_document', 'approval_document', 'document_date_start', 'document_revision_date', 'document_date_finish', 'periodicity', 'term', 'document_type', 'documentation_category_id'];
 }
 
-
+function getFieldsBool() {
+	return ['checked', 'required', 'required_150', 'required_35', 'is_trash'];
+}
 
 async function getDocType(doc_type, tab) {
 	let result = await fetchGetData('documentations/get_data_doc_type_ajax/' + doc_type);
