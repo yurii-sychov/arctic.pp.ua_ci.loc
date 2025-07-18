@@ -55,8 +55,15 @@
 					<option value="0">Без фото</option>
 				</select>
 			</div>
+			<div class="col-lg-2">
+				<select class="form-select my-1" id="FilterIsAstor">
+					<option value="" selected>Оберіть паспорти внесені в Астор</option>
+					<option value="1">В Асторі</option>
+					<option value="0">Не в Асторі</option>
+				</select>
+			</div>
 			<?php if ($this->session->user->group === 'admin') : ?>
-				<div class="col-lg-2">
+				<div class="col-lg-2 d-none">
 					<select class="form-select my-1" id="OrderUpdateAt">
 						<option value="" selected>Сортувати по даті оновлення</option>
 						<!-- <option value="asc">Сортувати за зростанням</option> -->
@@ -116,11 +123,6 @@
 	</div>
 </div>
 
-<!-- Button trigger modal -->
-<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
-</button> -->
-
 <!-- Modal Form Add Passport -->
 <?php if ($this->session->user->id == 1 || $this->session->user->group === 'engineer') : ?>
 	<div class="modal fade" id="addPassportModal" tabindex="-1" aria-labelledby="addPassportModalLabel" aria-hidden="true">
@@ -135,6 +137,26 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
 					<button type="button" class="btn btn-primary action" onclick="addPassport(event);">Зберегти</button>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php endif; ?>
+
+<!-- Modal Form Add Properties -->
+<?php if ($this->session->user->group === 'admin' or $this->session->user->group === 'engineer' or $this->session->user->group === 'master') : ?>
+	<div class="modal fade" id="addPropertiesModal" tabindex="-1" aria-labelledby="addPropertiesModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="addPropertiesModalLabel">Додавання характеристик обладнання</h5>
+				</div>
+				<div class="modal-body">
+					<?php $this->load->view('passports/form_properties'); ?>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
+					<button type="button" class="btn btn-primary action" onclick="addProperties(event);">Зберегти</button>
 				</div>
 			</div>
 		</div>
@@ -162,41 +184,19 @@
 <?php endif; ?>
 
 <!-- Modal Form Move Passport -->
-<?php //if ($this->session->user->id == 1) :
-?>
-<div class="modal fade" id="movePassportModal" tabindex="-1" aria-labelledby="movePassportModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-xl">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="movePassportModalLabel">Переміщення паспорту обладнання</h5>
-			</div>
-			<div class="modal-body">
-				<?php $this->load->view('passports/form_passport_move'); ?>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити вікно</button>
-				<button type="button" class="btn btn-primary action" onclick="movePassport(event);">Перемістити паспорт</button>
-			</div>
-		</div>
-	</div>
-</div>
-<?php //endif;
-?>
-
-<!-- Modal Form Add Properties -->
-<?php if ($this->session->user->group === 'admin' or $this->session->user->group === 'engineer' or $this->session->user->group === 'master') : ?>
-	<div class="modal fade" id="addPropertiesModal" tabindex="-1" aria-labelledby="addPropertiesModalLabel" aria-hidden="true">
+<?php if ($this->session->user->group === 'admin') : ?>
+	<div class="modal fade" id="movePassportModal" tabindex="-1" aria-labelledby="movePassportModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-xl">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="addPropertiesModalLabel">Додавання характеристик обладнання</h5>
+					<h5 class="modal-title" id="movePassportModalLabel">Переміщення паспорту обладнання</h5>
 				</div>
 				<div class="modal-body">
-					<?php $this->load->view('passports/form_properties'); ?>
+					<?php $this->load->view('passports/form_passport_move'); ?>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити</button>
-					<button type="button" class="btn btn-primary action" onclick="addProperties(event);">Зберегти</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрити вікно</button>
+					<button type="button" class="btn btn-primary action" onclick="movePassport(event);">Перемістити паспорт</button>
 				</div>
 			</div>
 		</div>

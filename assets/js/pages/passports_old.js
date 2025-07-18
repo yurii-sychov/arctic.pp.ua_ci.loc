@@ -9,7 +9,7 @@ async function format(d) {
 			: `${v.is_block == 1 ? '<i class="bi bi-lock text-secondary" title="Заблоковано" style="font-size: 24px"></i>' : '<i class="bi bi-unlock text-primary" title="Розблоковано" style="font-size: 24px"></i>'}`;
 		tr_passport_properties += `
 			<tr class="align-middle" data-id="${v.id}">
-				<th>${k + 1}</th>
+				<th class="text-center">${k + 1}</th>
 				<th>${v.property}</th>
 				<td><input class="form-control" value="${htmlspecialchars(v.value)}" name="value" disabled tabindex="1"></td>
 				<td class="text-center">
@@ -30,6 +30,15 @@ async function format(d) {
 		tr_operating_list += `
 			<tr class="align-middle" data-id="${v.id}" data-user_group="${d.DT_RowData.user_group}">
 			<td><input class="form-control text-center datepicker" value="${v.service_date_format}" name="service_date" disabled></td>
+			<td>
+				<select class="form-select" name="type_service_id" disabled>
+					<option value="">Оберіть тип обслуговування</option>
+					<option value="1" ${v.type_service_id == 1 ? "selected" : ""}>КР</option>
+					<option value="2" ${v.type_service_id == 2 ? "selected" : ""}>ПР</option>
+					<option value="3" ${v.type_service_id == 3 ? "selected" : ""}>ТО</option>
+					<option value="4" ${v.type_service_id == 4 ? "selected" : ""}>АВР</option>
+				</select>
+			</td>
 			<td><input class="form-control" placeholder="Введіть дані з експлуатації" value="${htmlspecialchars(v.service_data)}" name="service_data" disabled></td>
 			<td><input class="form-control" placeholder="Введіть виконавця" value="${htmlspecialchars(v.executor)}" name="executor" disabled></td>
 			<td class="text-center">
@@ -43,41 +52,42 @@ async function format(d) {
 
 	html = `
 		<div class="card">
-		<div class="card-header"><h5>Більше інформації</h5></div>
-		<div class="card-body">
-		<div class="row">
-		<div class="col-md-5">
-		<h4 class="text-center">Технічні характеристики</h4>
-		<table class="table table-bordered table-striped more-info">
-		<thead>
-		<tr>
-		<th class="text-center" style="width:5%">#</th>
-		<th class="text-center" style="width:50%">Характеристика</th>
-		<th class="text-center" style="width:35%">Значення</th>
-		<th class="text-center" style="width:10%">Дія</th>
-		</tr>
-		</thead>
-		<tbody>
-		${tr_passport_properties}
-		<tr class="text-center align-middle d-none">
-		<td>
-		<select class="form-select" disabled>
-		<option value="">Оберіть характеристику</option>
-		</select>
-		</td>
-		<td>
-		<input class="form-control" disabled>
-		</td>
-		<td>
-		<a href="javascript:void(0);" onclick="alert('Функція в розробці')">
-		<i class="bi bi-plus-square text-success" style="font-size: 24px"></i>
-		</a>
-		</td>
-		</tr>
-		</tbody>
-		</table>
-		<a href="/passports/gen_passport_pdf/${d.id}" class="btn btn-danger my-1" target="_blank"><i class="bi bi-file-earmark-pdf"></i> Друкувати</a>
-	`;
+			<div class="card-header"><h5>Більше інформації</h5></div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-5">
+						<h4 class="text-center">Технічні характеристики</h4>
+						<table class="table table-bordered table-striped more-info">
+							<thead>
+								<tr>
+								<th class="text-center" style="width:5%">#</th>
+								<th class="text-center" style="width:50%">Характеристика</th>
+								<th class="text-center" style="width:35%">Значення</th>
+								<th class="text-center" style="width:10%">Дія</th>
+								</tr>
+							</thead>
+							<tbody>
+								${tr_passport_properties}
+								<tr class="text-center align-middle">
+								<td class="text-center">#</td>
+								<td>
+								<select class="form-select" disabled>
+								<option value="" selected>Оберіть характеристику</option>
+								</select>
+								</td>
+								<td>
+								<input class="form-control" disabled>
+								</td>
+								<td>
+								<a href="javascript:void(0);" onclick="alert('Функція в розробці')">
+								<i class="bi bi-plus-square text-success" style="font-size: 24px"></i>
+								</a>
+								</td>
+								</tr>
+							</tbody>
+						</table>
+						<a href="/passports/gen_passport_pdf/${d.id}" class="btn btn-danger my-1" target="_blank"><i class="bi bi-file-earmark-pdf"></i> Друкувати</a>
+		`;
 	if (
 		d.DT_RowData.user_group == "admin" || d.DT_RowData.user_group == "master" || d.DT_RowData.user_group == "engineer"
 	) {
@@ -86,24 +96,25 @@ async function format(d) {
 
 	html += `</div>
 		<div class="col-md-7">
-		<h4 class="text-center">Експлуатаційні дані</h4>
-		<table class="table table-bordered table-striped more-info">
-		<thead>
-		<tr>
-		<th class="text-center" style="width:12%">Дата</th>
-		<th class="text-center" style="width:58%">Експлуатаційні дані</th>
-		<th class="text-center" style="width:15%">Викованець</th>
-		<th class="text-center" style="width:15%">Дія</th>
-		</tr>
-		</thead>
-		<tbody>
-		${tr_operating_list}
-		</tbody>
-		</table>
+			<h4 class="text-center">Експлуатаційні дані</h4>
+			<table class="table table-bordered table-striped more-info">
+				<thead>
+					<tr>
+						<th class="text-center" style="width:13%">Дата</th>
+						<th class="text-center" style="width:10%">#</th>
+						<th class="text-center" style="width:52%">Експлуатаційні дані</th>
+						<th class="text-center" style="width:15%">Викованець</th>
+						<th class="text-center" style="width:10%">Дія</th>
+					</tr>
+				</thead>
+				<tbody>
+					${tr_operating_list}
+				</tbody>
+			</table>
 		</div>
-		<hr class="mt-5" />
-		</div>
-		</div>
+			<hr class="mt-5" />
+			</div>
+			</div>
 		</div>
 	`;
 	return html;
@@ -269,6 +280,14 @@ $(document).ready(function () {
 							$("#FilterIsPhoto").addClass("text-success");
 						}
 					}
+					if (settings.aoColumns[i].name === "is_astor") {
+						const value = settings.aoPreSearchCols[i].sSearch;
+						$("#FilterIsAstor").val(value.substring(1, value.length - 1));
+
+						if (value !== "") {
+							$("#FilterIsAstor").addClass("text-success");
+						}
+					}
 					if (settings.aoColumns[i].name === "updated_at") {
 						if (settings.aaSorting[0][0] == settings.aoColumns[i].idx) {
 							const value = settings.aLastSort[0].dir;
@@ -287,8 +306,9 @@ $(document).ready(function () {
 				"<'row'<'table-responsive'<'col-sm-12'tr>>>" +
 				"<'row'<'col-sm-12 col-md-5 my-1'i><'col-sm-12 col-md-7 my-1'p>>",
 			lengthMenu: [
-				[3, 6, 12, 27, 51, 102],
+				[2, 3, 6, 12, 27, 51, 102],
 				[
+					"Показати 2 записи",
 					"Показати 3 записи",
 					"Показати 6 записів",
 					"Показати 12 записів",
@@ -318,7 +338,7 @@ $(document).ready(function () {
 					orderable: true,
 					searchable: true,
 					visible: true,
-					width: "22%",
+					width: "23%",
 					className: "stantion",
 				},
 				{
@@ -328,7 +348,7 @@ $(document).ready(function () {
 					orderable: true,
 					searchable: true,
 					visible: true,
-					width: "21%",
+					width: "19%",
 					className: "equipment",
 				},
 				{
@@ -351,7 +371,7 @@ $(document).ready(function () {
 					orderable: true,
 					searchable: true,
 					visible: true,
-					width: "9%",
+					width: "8%",
 					className: "place",
 				},
 				{
@@ -361,7 +381,7 @@ $(document).ready(function () {
 					orderable: true,
 					searchable: true,
 					visible: true,
-					width: "16%",
+					width: "17%",
 					className: "type",
 				},
 				{
@@ -381,7 +401,7 @@ $(document).ready(function () {
 					orderable: true,
 					searchable: true,
 					visible: true,
-					width: "8.5%",
+					width: "9%",
 					className: "number text-center",
 				},
 				{
@@ -410,8 +430,7 @@ $(document).ready(function () {
 					width: "0.5%",
 					className: "add-properties text-center",
 					render: function (data, type, row, meta) {
-						return `
-<a href="javascript:void(0);" tabindex="${meta.col}" onclick="fillAddPropertiesModal(event);" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Додати властивості"><i class="bi bi-plus-square text-primary"></i></a>`;
+						return `<a href="javascript:void(0);" tabindex="${meta.col}" onclick="fillAddPropertiesModal(event);" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Додати властивості"><i class="bi bi-plus-square text-primary"></i></a>`;
 					},
 				},
 				{
@@ -437,8 +456,7 @@ $(document).ready(function () {
 					width: "0.5%",
 					className: "move-passport text-center",
 					render: function (data, type, row, meta) {
-						return `
-<a href="javascript:void(0);" tabindex="${meta.col}" onclick="getDataPassportForMove(event);" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Перемістити паспорт"><i class="bi bi-arrow-left-right text-warning"></i></a>`;
+						return `<a href="javascript:void(0);" tabindex="${meta.col}" onclick="getDataPassportForMove(event);" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Перемістити паспорт"><i class="bi bi-arrow-left-right text-warning"></i></a>`;
 					},
 				},
 				{
@@ -451,8 +469,7 @@ $(document).ready(function () {
 					width: "0.5%",
 					className: "passport-pdf text-center",
 					render: function (data, type, row, meta) {
-						return `
-<a href="javascript:void(0);" tabindex="${meta.col}" onclick="printPassport(event);" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Сгенерувати паспорт"><i class="bi bi-file-earmark-pdf text-danger"></i></a>`;
+						return `<a href="javascript:void(0);" tabindex="${meta.col}" onclick="printPassport(event);" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Сгенерувати паспорт"><i class="bi bi-file-earmark-pdf text-danger"></i></a>`;
 					},
 				},
 				{
@@ -465,8 +482,7 @@ $(document).ready(function () {
 					width: "0.5%",
 					className: "more-info text-center",
 					render: function (data, type, row, meta) {
-						return `
-<a href="javascript:void(0);" tabindex="${meta.col}" class="mx-1 dt-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Більше інформації"><i class="bi bi-eye text-info"></i></a>`;
+						return `<a href="javascript:void(0);" tabindex="${meta.col}" class="mx-1 dt-control" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Більше інформації"><i class="bi bi-eye text-info"></i></a>`;
 					},
 				},
 				{
@@ -479,8 +495,7 @@ $(document).ready(function () {
 					width: "0.5%",
 					className: "add-operation text-center",
 					render: function (data, type, row, meta) {
-						return `
-<a href="javascript:void(0);" tabindex="${meta.col}" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Додати експлуатаційні дані" onclick="openAddOperatingListModal(event)"><i class="bi bi-journal-plus text-success"></i></a>`;
+						return `<a href="javascript:void(0);" tabindex="${meta.col}" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Додати експлуатаційні дані" onclick="openAddOperatingListModal(event)"><i class="bi bi-journal-plus text-success"></i></a>`;
 					},
 				},
 				{
@@ -494,8 +509,7 @@ $(document).ready(function () {
 					className: "is-block text-center",
 					render: function (data, type, row, meta) {
 						if (data.DT_RowData.user_group == "admin") {
-							return `
-<input class="form-check-input" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Деблокувати/Блокувати" tabindex="${meta.col}" type="checkbox" name="is_block[]" ${data.DT_RowData.user_group == "admin" ? 'onclick="changeIsBlock(event);' : ''}" ${data.is_block == 1 ? 'checked' : ''} ${data.DT_RowData.user_group != "admin" ? 'disabled' : ''} value="${data.id}">`;
+							return `<input class="form-check-input" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Деблокувати/Блокувати" tabindex="${meta.col}" type="checkbox" name="is_block[]" ${data.DT_RowData.user_group == "admin" ? 'onclick="changeIsBlock(event);' : ''}" ${data.is_block == 1 ? 'checked' : ''} ${data.DT_RowData.user_group != "admin" ? 'disabled' : ''} value="${data.id}">`;
 						}
 						else {
 							return `${data.is_block == 1 ? '<i class="bi bi-lock text-secondary" title="Заблоковано"></i>' : '<i class="bi bi-unlock text-primary" title="Розблоковано"></i>'}`;
@@ -513,11 +527,28 @@ $(document).ready(function () {
 					className: "is-photo text-center",
 					render: function (data, type, row, meta) {
 						if (data.DT_RowData.user_group == "admin") {
-							return `
-<input class="form-check-input" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Нема фото/Є фото" tabindex="${meta.col}" type="checkbox" name="is_photo[]" ${data.DT_RowData.user_group == "admin" ? 'onclick="changeIsPhoto(event);' : ''}" ${data.is_photo == 1 ? 'checked' : ''} ${data.DT_RowData.user_group != "admin" ? 'disabled' : ''} value="${data.id}">`;
+							return `<input class="form-check-input" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Нема фото/Є фото" tabindex="${meta.col}" type="checkbox" name="is_photo[]" ${data.DT_RowData.user_group == "admin" ? 'onclick="changeIsPhoto(event);' : ''}" ${data.is_photo == 1 ? 'checked' : ''} ${data.DT_RowData.user_group != "admin" ? 'disabled' : ''} value="${data.id}">`;
 						}
 						else {
 							return `${data.is_photo == 1 ? '<i class="bi bi-file-image text-primary" title="Є фото таблички"></i>' : '<i class="bi bi-file-earmark-image text-secondary" title="Нема фото таблички"></i>'}`;
+						}
+					},
+				},
+				{
+					data: null,
+					title: '<i class="bi bi-database-fill text-secondary"></i>',
+					name: "is_astor",
+					orderable: false,
+					searchable: false,
+					visible: true,
+					width: "0.5%",
+					className: "is-astor text-center",
+					render: function (data, type, row, meta) {
+						if (data.DT_RowData.user_group == "admin" || data.DT_RowData.user_group == "engineer") {
+							return `<input class="form-check-input" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Не в Асторі/В Асторі" tabindex="${meta.col}" type="checkbox" name="is_astor[]" ${(data.DT_RowData.user_group == "admin" || data.DT_RowData.user_group == "engineer") ? 'onclick="changeIsAstor(event);' : ''}" ${data.is_astor == 1 ? 'checked' : ''} ${(data.DT_RowData.user_group == "admin" || data.DT_RowData.user_group == "engineer") ? '' : 'disabled'} value="${data.id}">`;
+						}
+						else {
+							return `${data.is_astor == 1 ? '<i class="bi bi-database-fill text-success" title="В Асторі"></i>' : '<i class="bi bi-database text-secondary" title="Не в Асторі"></i>'}`;
 						}
 					},
 				},
@@ -531,8 +562,7 @@ $(document).ready(function () {
 					width: "0.5%",
 					className: "delete-passport text-center",
 					render: function (data, type, row, meta) {
-						return `
-<a href="javascript:void(0);" tabindex="${meta.col}" ${data.DT_RowData.user_group == "admin" ? 'onclick="deletePassport(event);' : null}" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Видалити паспорт"><i class="bi bi-trash ${data.DT_RowData.user_group == "admin" ? 'text-danger' : 'text-secondary'}"></i></a>`;
+						return `<a href="javascript:void(0);" tabindex="${meta.col}" ${data.DT_RowData.user_group == "admin" ? 'onclick="deletePassport(event);' : null}" class="mx-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover manual" title="Видалити паспорт"><i class="bi bi-trash ${data.DT_RowData.user_group == "admin" ? 'text-danger' : 'text-secondary'}"></i></a>`;
 					},
 				},
 				{
@@ -679,7 +709,7 @@ $(document).ready(function () {
 			// if (data.status === 'ERROR') {
 			// 	throw new Error(data.message);
 			// }
-			console.log("localStorage.getItem('passports_stantion_id')", localStorage.getItem('passports_stantion_id'));
+
 			let options = `<option value="">Всі підстанції</option>`;
 			if (data.complete_renovation_objects) {
 				data.complete_renovation_objects.forEach(el => {
@@ -792,6 +822,19 @@ $(document).ready(function () {
 		}
 	});
 
+	$("#FilterIsAstor").on("change", function () {
+		table
+			.columns(".is-astor")
+			.search(this.value ? "^" + this.value + "$" : "", true, false)
+			.draw();
+
+		if (this.value === "") {
+			$(this).removeClass("text-success");
+		} else {
+			$(this).addClass("text-success");
+		}
+	});
+
 	$("#OrderUpdateAt").on("change", function () {
 		table
 			.columns(".updated-at")
@@ -800,7 +843,7 @@ $(document).ready(function () {
 	});
 
 	$("#clearLocalStorage").on("click", function () {
-		localStorage.removeItem('passports_subdivision_id');
+		// localStorage.removeItem('passports_subdivision_id');
 		localStorage.removeItem('passports_stantion_id');
 		table.state.clear();
 		window.location.reload();
@@ -890,7 +933,7 @@ function addPassport(event) {
 				form[0].reset();
 				const table = $("#datatables").DataTable();
 				table.ajax.reload(null, false);
-				table.order([0, "desc"]).draw();
+				// table.order([0, "desc"]).draw();
 			}, 1000);
 		} else {
 			if (data.errors.complete_renovation_object_id) {
@@ -1559,10 +1602,15 @@ function editOperatingList(event) {
 	$(event.currentTarget).find("i").toggleClass("bi-toggle-on");
 	$(event.currentTarget)
 		.closest("tr")
-		.find("input")
+		.find("input, select")
 		.attr("disabled", function (index, attr) {
+			console.log(attr);
 			if (typeof attr === "undefined" && index == 0) {
 				let id = $(event.currentTarget).closest("tr").data("id");
+				let type_service_id = $(event.currentTarget)
+					.closest("tr")
+					.find('[name="type_service_id"]')
+					.val();
 				let service_date = $(event.currentTarget)
 					.closest("tr")
 					.find('[name="service_date"]')
@@ -1578,7 +1626,7 @@ function editOperatingList(event) {
 				$.ajax({
 					method: "POST",
 					url: "/passports/edit_operating_list",
-					data: { id, service_date, service_data, executor },
+					data: { id, type_service_id, service_date, service_data, executor },
 				}).done(function (data) {
 					if (data.status === "SUCCESS") {
 						toastr.success(data.message, "Успіх");
@@ -1662,6 +1710,27 @@ function changeIsPhoto(event) {
 	$.ajax({
 		method: "POST",
 		url: "/passports/change_is_photo_ajax",
+		data: { id, value },
+	}).done(function (data) {
+		if (data.status === "SUCCESS") {
+			toastr.success(data.message, "Успіх");
+		} else {
+			toastr.error(data.message, "Помилка");
+		}
+	});
+}
+
+function changeIsAstor(event) {
+	const id = $(event.target).parents("tr").data("id");
+	let value;
+	if ($(event.target).prop("checked")) {
+		value = 1;
+	} else {
+		value = 0;
+	}
+	$.ajax({
+		method: "POST",
+		url: "/passports/change_is_astor_ajax",
 		data: { id, value },
 	}).done(function (data) {
 		if (data.status === "SUCCESS") {

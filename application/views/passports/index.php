@@ -105,12 +105,13 @@
 									<th class="align-middle text-center" style="width:8%;">ДНО</th>
 									<th class="align-middle text-center" style="width:9%;">Місце</th>
 									<th class="align-middle text-center" style="width:13%;">Тип обладнання</th>
-									<th class="align-middle text-center" style="width:10%;">Короткий тип</th>
-									<th class="align-middle text-center" style="width:11%;">Зав. №</th>
-									<th class="align-middle text-center" style="width:10%;">Дата виготовлення</th>
+									<th class="align-middle text-center" style="width:8%;">Короткий тип</th>
+									<th class="align-middle text-center" style="width:9%;">Зав. №</th>
+									<th class="align-middle text-center" style="width:9%;">Дата виготовлення</th>
 									<th class="align-middle text-center" style="width:9%;">Рік вводу</th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="isBlock">IsBlock?</th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="isPhoto">IsPhoto?</th>
+									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="isPhoto">IsAstor?</th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="more"><i class="fas fa-eye text-secondary"></i></th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="properties"><i class="fas fa-search-plus text-secondary"></i></th>
 									<th class="align-middle text-center" style="width:5%;" data-orderable="false" data-class-name="delete"><i class="fas fa-trash text-secondary"></i></th>
@@ -169,6 +170,12 @@
 											<div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
 												<input type="checkbox" class="custom-control-input" data-field_name="is_photo" data-field_title="Нема фото/Є фото" id="switch_is_photo_<?php echo $item->id; ?>" <?php echo $item->is_photo ? 'checked' : NULL; ?> value="<?php echo $item->is_photo; ?>" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
 												<label class="custom-control-label" for="switch_is_photo_<?php echo $item->id; ?>" title="Нема фото/Є фото" style="cursor: pointer;"></label>
+											</div>
+										</td>
+										<td class="align-middle text-center" data-field_name="is_astor" data-field_title="Астор">
+											<div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-warning">
+												<input type="checkbox" class="custom-control-input" data-field_name="is_astor" data-field_title="Не в Асторі/В Асторі" id="switch_is_astor_<?php echo $item->id; ?>" <?php echo $item->is_astor ? 'checked' : NULL; ?> value="<?php echo $item->is_astor; ?>" onChange="updateFieldAjax(event, 'passports', 'update_field_ajax');" disabled />
+												<label class="custom-control-label" for="switch_is_astor_<?php echo $item->id; ?>" title="Не в Асторі/В Асторі" style="cursor: pointer;"></label>
 											</div>
 										</td>
 										<td class="align-middle text-center">

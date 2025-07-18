@@ -39,6 +39,18 @@ class Document_Model extends CI_Model
 		return $query->result();
 	}
 
+	public function get_documents()
+	{
+		$this->db->select('documents.*');
+		$this->db->select('complete_renovation_objects.name as station');
+		$this->db->select('specific_renovation_objects.name as disp');
+		$this->db->where('documents.complete_renovation_object_id = complete_renovation_objects.id');
+		$this->db->where('documents.specific_renovation_object_id = specific_renovation_objects.id');
+		$this->db->from('documents, complete_renovation_objects, specific_renovation_objects');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	public function get_value($field)
 	{
 		$this->db->select($field);

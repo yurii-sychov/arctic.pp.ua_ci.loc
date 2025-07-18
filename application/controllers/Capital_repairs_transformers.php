@@ -466,6 +466,45 @@ class Capital_repairs_transformers extends CI_Controller
 		return;
 	}
 
+	public function get_audit_reports()
+	{
+		$this->load->library('zip');
+
+		$documents = $this->document_model->get_documents();
+
+		// $data = [];
+		// foreach ($documents as $doc) {
+		// $name = str_replace(['-', '/', '"'], [' ', '_', ''], $doc->station) . ' ' . $doc->disp . '.pdf';
+		// $data = $this->zip->read_file('/uploads/documents/' . $doc->document_scan, str_replace(['-', '/', '"'], [' ', '_', ''], $doc->station) . ' ' . $doc->disp . '.pdf');
+		// $data = $doc->document_scan;
+
+		// array_push($data, $array);
+
+		// $this->zip->add_data($name, $data);
+		// }
+
+		// $name = '0cb71369c4bcf8d33e0ae225bf13d61c.pdf';
+		$path = '/uploads/documents/0cb71369c4bcf8d33e0ae225bf13d61c.pdf';
+		// $new_path = '/new/path/some_photo.pdf';
+
+		$this->zip->read_dir('/uploads/documents');
+		//
+		// Download ZIP archive containing /new/path/some_photo.jpg
+		$this->zip->download('my_archive.zip');
+
+		// echo "<pre>";
+		// print_r($data);
+		// echo "</pre>";
+
+		// $this->zip->add_data($name, $data);
+
+		// Write the zip file to a folder on your server. Name it "my_backup.zip"
+		// $this->zip->archive('/uploads/my_backup.zip');
+
+		// Download the file to your desktop. Name it "my_backup.zip"
+		$this->zip->download('my_backup.zip');
+	}
+
 	private function resize_photo($photos)
 	{
 		$this->load->library('image_lib');

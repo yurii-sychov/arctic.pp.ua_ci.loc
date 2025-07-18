@@ -150,7 +150,7 @@ class Passports extends CI_Controller
 						$passports[$key]->updated_by = $user->name . ' ' . mb_strtoupper($user->surname);
 					}
 				}
-				$passports_group[$passport->specific_renovation_object_id][] = $passport;
+				// $passports_group[$passport->specific_renovation_object_id][] = $passport;
 			}
 
 			// if ($equipment_id) {
@@ -159,18 +159,13 @@ class Passports extends CI_Controller
 			// 	});
 			// }
 
-			// echo "<pre>";
-			// print_r(count($passports_group));
-			// print_r($passports_group);
-			// echo "</pre>";
-			// exit;
-
 			$data['results'] = $passports;
-			// echo "<pre>";
-			// print_r(count($passports_group));
-			// print_r($passports[0]);
-			// echo "</pre>";
 		}
+
+		// echo "<pre>";
+		// print_r($passports);
+		// echo "</pre>";
+		// exit;
 
 		$this->load->view('layout_lte', $data);
 	}
@@ -255,6 +250,9 @@ class Passports extends CI_Controller
 			$rules = 'required';
 		}
 		if ($this->input->post('field') === 'is_photo') {
+			$rules = 'required';
+		}
+		if ($this->input->post('field') === 'is_astor') {
 			$rules = 'required';
 		}
 		if ($this->input->post('field') === 'production_date') {
@@ -948,6 +946,7 @@ class Passports extends CI_Controller
 
 		$this->load->library('form_validation');
 
+		$this->form_validation->set_rules('type_service_id', 'Тип обслуговування', 'required');
 		$this->form_validation->set_rules('service_date', 'Дата обслуговування', 'required|trim');
 		$this->form_validation->set_rules('service_data', 'Дані з експлуатації', 'required|trim');
 		$this->form_validation->set_rules('executor', 'Виконавець', 'required|trim');
@@ -1394,6 +1393,30 @@ class Passports extends CI_Controller
 		return;
 	}
 
+	public function change_is_astor_ajax()
+	{
+		$this->output->set_content_type('application/json');
+
+		if (!$this->input->is_ajax_request()) {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не Ajax запрос!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		if (!$this->input->post()) {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не POST запрос!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		if ($this->session->user->group !== 'admin' && $this->session->user->group !== 'engineer') {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Вам не дозволена ця операція!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		$this->passport_model->change_value('is_astor', $this->input->post('value'), $this->input->post('id'));
+		$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!'], JSON_UNESCAPED_UNICODE));
+		return;
+	}
+
 	public function change_is_block_property_ajax()
 	{
 		$this->output->set_content_type('application/json');
@@ -1488,7 +1511,7 @@ class Passports extends CI_Controller
 			$group_passports[$group]['short_type']['place_' . $row->place_id] = $row->short_type;
 			$group_passports[$group]['number']['place_' . $row->place_id] = $row->number;
 			$group_passports[$group]['insulation_type']['place_' . $row->place_id] = $row->insulation_type;
-			$group_passports[$group]['production_date']['place_' . $row->place_id] = date('Y', strtotime($row->production_date));
+			$group_passports[$group]['production_date']['place_' . $row->place_id] = $row->production_date ? date('Y', strtotime($row->production_date)) : NULL;
 			$group_passports[$group]['commissioning_year']['place_' . $row->place_id] = $row->commissioning_year;
 			$group_passports[$group]['properties'][] = implode("\n", explode("|", $row->properties ?? ""));
 		}
@@ -1654,9 +1677,9 @@ class Passports extends CI_Controller
 
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		if ($complete_renovation_object_id) {
-			header('Content-Disposition: attachment;filename="Паспортні дані по ' . $complete_renovation_object . '.xlsx"');
+			header('Content-Disposition: attachment;filename="Паспортні дані по ' . $complete_renovation_object . '_' . date("Y-m-d_H-i-s") . '.xlsx"');
 		} else {
-			header('Content-Disposition: attachment;filename="Паспортні дані по ' . $subdivision . '.xlsx"');
+			header('Content-Disposition: attachment;filename="Паспортні дані по ' . $subdivision . '_' . date("Y-m-d_H-i-s") . '.xlsx"');
 		}
 
 		header('Cache-Control: max-age=0');
@@ -1858,6 +1881,7 @@ class Passports extends CI_Controller
 		$data = [];
 
 		$data['service_date'] = date('Y-m-d', strtotime($post['service_date']));
+		$data['type_service_id'] = $post['type_service_id'];
 		$data['service_data'] = $post['service_data'];
 		$data['executor'] = $post['executor'];
 		$data['updated_by'] = $this->session->user->id;

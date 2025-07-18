@@ -175,6 +175,9 @@ class Passport_Model extends CI_Model
 		if ($filter['is_photo']) {
 			$this->db->where('passports.is_photo', rtrim(ltrim($filter['is_photo'], "^"), "$"));
 		}
+		if ($filter['is_astor']) {
+			$this->db->where('passports.is_astor', rtrim(ltrim($filter['is_astor'], "^"), "$"));
+		}
 		if ($post['search']['value']) {
 			$this->db->like('specific_renovation_objects.name', $post['search']['value']);
 		}

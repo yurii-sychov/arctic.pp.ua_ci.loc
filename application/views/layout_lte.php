@@ -23,6 +23,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		<!-- Select2 -->
 		<link rel="stylesheet" href="/vendor/almasaeed2010/adminlte/plugins/select2/css/select2.min.css">
 		<link rel="stylesheet" href="/vendor/almasaeed2010/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+		<!-- Date-range-picker -->
+		<link rel="stylesheet" href="/vendor/almasaeed2010/adminlte/plugins/daterangepicker/daterangepicker.css">
 		<!-- Tempusdominus Bootstrap 4 -->
 		<link rel="stylesheet" href="/vendor/almasaeed2010/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 	<?php endif; ?>
@@ -346,6 +348,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 								</p>
 							</a>
 						</li>
+						<li class="nav-item">
+							<a href="/duty_schedule" class="nav-link <?php if ($page === 'duty_schedule') echo 'active'; ?>">
+								<i class="nav-icon fas fa-mitten"></i>
+								<p>
+									Графіки чергувань
+									<span class="right badge badge-secondary">New</span>
+								</p>
+							</a>
+						</li>
 					</ul>
 				</nav>
 				<!-- /.sidebar-menu -->
@@ -439,8 +450,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		<!-- InputMask -->
 		<script src="/vendor/almasaeed2010/adminlte/plugins/moment/moment.min.js"></script>
 		<script src="/vendor/almasaeed2010/adminlte/plugins/inputmask/jquery.inputmask.min.js"></script>
+		<!-- Date-range-picker -->
+		<script src="/vendor/almasaeed2010/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
 		<!-- Tempusdominus Bootstrap 4 -->
 		<script src="/vendor/almasaeed2010/adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+		<!-- Bootstrap Switch -->
+		<script src="/vendor/almasaeed2010/adminlte/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+		<!-- BS-Stepper -->
+		<script src="/vendor/almasaeed2010/adminlte/plugins/bs-stepper/js/bs-stepper.min.js"></script>
+		<!-- dropzonejs -->
+		<script src="/vendor/almasaeed2010/adminlte/plugins/dropzone/min/dropzone.min.js"></script>
+
 		<!-- jquery-validation -->
 		<script src="/vendor/almasaeed2010/adminlte/plugins/jquery-validation/jquery.validate.min.js"></script>
 		<script src="/vendor/almasaeed2010/adminlte/plugins/jquery-validation/additional-methods.min.js"></script>

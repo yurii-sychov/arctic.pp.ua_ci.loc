@@ -30,6 +30,14 @@
 			</div>
 		</div>
 
+		<div class="row my-2">
+			<div class="col-lg-12">
+				<div class="d-grid gap-2 d-sm-block">
+					<a class="btn btn-warning my-1" href="/capital_repairs_transformers/get_audit_reports">Завантажити акти ревізії</a>
+				</div>
+			</div>
+		</div>
+
 		<div class="table-responsive">
 			<table class="table" id="collapseParent">
 				<thead>
