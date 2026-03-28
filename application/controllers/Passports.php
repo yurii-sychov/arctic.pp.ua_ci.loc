@@ -1514,6 +1514,9 @@ class Passports extends CI_Controller
 			$group_passports[$group]['production_date']['place_' . $row->place_id] = $row->production_date ? date('Y', strtotime($row->production_date)) : NULL;
 			$group_passports[$group]['commissioning_year']['place_' . $row->place_id] = $row->commissioning_year;
 			$group_passports[$group]['properties'][] = implode("\n", explode("|", $row->properties ?? ""));
+			$group_passports[$group]['is_block'] = $row->is_block;
+			$group_passports[$group]['is_photo'] = $row->is_photo;
+			$group_passports[$group]['is_astor'] = $row->is_astor;
 		}
 
 		// echo "<pre>";
@@ -1532,7 +1535,7 @@ class Passports extends CI_Controller
 		$spreadsheet->getActiveSheet()->getPageMargins()->setBottom(0.392);
 
 		$spreadsheet->getDefaultStyle()->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-		$spreadsheet->getActiveSheet()->getSheetView()->setZoomScale(52);
+		$spreadsheet->getActiveSheet()->getSheetView()->setZoomScale(45);
 		$spreadsheet->getDefaultStyle()->getFont()->setName('Times New Roman');
 		$spreadsheet->getDefaultStyle()->getFont()->setSize(12);
 
@@ -1551,6 +1554,9 @@ class Passports extends CI_Controller
 			'L' => 20,
 			'M' => 20,
 			'N' => 135,
+			'O' => 20,
+			'P' => 20,
+			'Q' => 20,
 		];
 		foreach ($array_width as $column => $width) {
 			$spreadsheet->getActiveSheet()->getColumnDimension($column)->setWidth($width);
@@ -1578,7 +1584,10 @@ class Passports extends CI_Controller
 			'number' => 'Заводський номер',
 			'production_date' => 'Рік виготовлення',
 			'commissioning_year' => 'Рік вводу',
-			'properties' => 'Технічні характеристики'
+			'properties' => 'Технічні характеристики',
+			'is_block' => 'Заблоковано',
+			'is_photo' => 'Є фото',
+			'is_astor' => 'Є в Асторі'
 		];
 
 		$col = 'A';
@@ -1656,8 +1665,9 @@ class Passports extends CI_Controller
 			$sheet->getStyle('G' . $r . ':K' . $r)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
 			$sheet->getStyle('L' . $r . ':M' . $r)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 			$sheet->getStyle('N' . $r)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+			$sheet->getStyle('O' . $r . ':Q' . $r)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
-			$sheet->getStyle('A' . $r . ':N' . $r)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
+			$sheet->getStyle('A' . $r . ':Q' . $r)->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM);
 			if (count($row['place']) == 2) {
 				$sheet->getRowDimension($r)->setRowHeight(40);
 			} else if (count($row['place']) == 3) {

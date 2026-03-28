@@ -63,7 +63,7 @@ function addRowMaterial(event) {
 				<input type="hidden" name="schedule_id[]" value="${schedule_id}" />
 				<select class="form-select form-select-sm" name="material_id[]">
 					<option value="">Оберіть матеріал</option>
-				<select/>
+				</select>
 			</td>
 			<td class="unit"></td>
 			<td class="text-center price">???</td>

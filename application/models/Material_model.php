@@ -20,6 +20,17 @@ class Material_Model extends CI_Model
 		return $query->result();
 	}
 
+	public function get_data_for_year()
+	{
+		$this->db->select('materials.*');
+		$this->db->where('materials.id = materials_prices.material_id');
+		$this->db->where('materials_prices.price_year', (date('Y') + 1));
+		$this->db->from('materials, materials_prices');
+		$this->db->order_by('name', 'ASC');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	public function insert($data)
 	{
 		$this->db->insert('materials', $data);

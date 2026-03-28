@@ -59,10 +59,10 @@
 						<a class="btn btn-outline-secondary" href="/schedules/genarate_defect_list_excel/<?php echo $this->input->get('stantion_id'); ?>"><i class="bi bi-file-earmark-excel"></i> Відомість дефектів та витрат на <strong><?php echo (date('Y') + 1); ?></strong> рік</a>
 					</div>
 					<div class="col-sm-12 col-md-6 col-lg-3 d-grid gap-2 mb-1">
-						<a class="btn btn-outline-warning" href="/schedules/genarate_year_schedule_complex_excel/<?php echo $this->input->get('stantion_id'); ?>"><i class="bi bi-file-earmark-excel"></i> Річний план-графік на <strong><?php echo (date('Y') + 1); ?></strong> рік</a>
+						<a class="btn btn-outline-warning" href="/schedules/genarate_year_schedule_complex_excel/<?php echo $this->input->get('stantion_id'); ?>/<?php echo (date('Y') + 1); ?>"><i class="bi bi-file-earmark-excel"></i> Річний план-графік на <strong><?php echo (date('Y') + 1); ?></strong> рік</a>
 					</div>
 					<div class="col-sm-12 col-md-6 col-lg-3 d-grid gap-2 mb-1">
-						<a class="btn btn-outline-success" href="/schedules/genarate_year_schedule_simple_excel/<?php echo $this->input->get('stantion_id'); ?>"><i class="bi bi-file-earmark-excel"></i> Річний план-графік для майстрів на <strong><?php echo (date('Y') + 1); ?></strong> рік</a>
+						<a class="btn btn-outline-success" href="/schedules/genarate_year_schedule_simple_excel/<?php echo $this->input->get('stantion_id'); ?>/<?php echo (date('Y') + 1); ?>"><i class="bi bi-file-earmark-excel"></i> Річний план-графік для майстрів на <strong><?php echo (date('Y') + 1); ?></strong> рік</a>
 					</div>
 					<div class="col-sm-12 col-md-6 col-lg-3 d-grid gap-2 mb-1">
 						<a class="btn btn-outline-dark" href="javascript:void(0)" disabled><i class="bi bi-file-earmark-excel"></i> FREE BUTTON</a>

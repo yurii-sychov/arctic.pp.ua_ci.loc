@@ -12,11 +12,11 @@ class Schedule_Model extends CI_Model
 {
 	public function get_rows_current_year_sp()
 	{
-		$this->db->select('complete_renovation_objects.name as station, specific_renovation_objects.name as disp, equipments.name as equipment, schedules_years.schedule_id, schedules_years.month_service, schedules_years.year_service, schedules.type_service_id, schedules.year_last_service');
+		$this->db->select('complete_renovation_objects.name as station, specific_renovation_objects.name as disp, equipments.name as equipment, schedules_years.schedule_id, schedules_years.month_service, schedules_years.year_service, schedules.type_service_id, schedules_years.date_service_actual');
 		$this->db->from('schedules_years, schedules, specific_renovation_objects, complete_renovation_objects, equipments');
 		$this->db->where('schedules_years.year_service', date('Y'));
 		$this->db->where('schedules_years.month_service <=', date('n'));
-		$this->db->where('schedules.year_last_service <', date('Y'));
+		$this->db->where('schedules_years.date_service_actual', 0000 - 00 - 00);
 		$this->db->where('schedules_years.schedule_id = schedules.id');
 		$this->db->where('specific_renovation_objects.subdivision_id', 1);
 		$this->db->where('schedules.specific_renovation_object_id = specific_renovation_objects.id');

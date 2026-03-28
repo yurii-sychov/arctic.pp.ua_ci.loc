@@ -47,7 +47,7 @@ class Materials extends CI_Controller
 		// 	return;
 		// }
 
-		$materials = $this->material_model->get_data();
+		$materials = $this->material_model->get_data_for_year();
 
 		if (!$materials) {
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Не вдалося отримати дані з реєстру!'], JSON_UNESCAPED_UNICODE));

@@ -216,7 +216,6 @@ $(document).ready(function () {
 				});
 
 				let popoverEl = $('[data-bs-toggle="popover"]');
-
 				if (popoverEl) {
 					for (let i = 0; i < popoverEl.length; i++) {
 						let popover = new bootstrap.Popover(popoverEl[i]);
@@ -851,22 +850,22 @@ $(document).ready(function () {
 });
 
 // function getDataPassportForEdit_OLD(event) {
-// 	let id = $(event.currentTarget).closest("tr").data("id");
-// 	$.ajax({
-// 		method: "POST",
-// 		url: "/passports/get_data_passport",
-// 		data: { id },
-// 	}).done(function (data) {
-// 		if (data.status === "SUCCESS") {
-// 			let modal = $("#editPassportModal");
-// 			modal.modal("show");
-// 			console.log(data);
-// 			toastr.success(data.message, "OK");
-// 			fillFormEditPassport(data.passport, data.disp);
-// 		} else {
-// 			toastr.error(data.message, "Помилка");
-// 		}
-// 	});
+// let id = $(event.currentTarget).closest("tr").data("id");
+// $.ajax({
+// 	method: "POST",
+// 	url: "/passports/get_data_passport",
+// 	data: { id },
+// }).done(function (data) {
+// 	if (data.status === "SUCCESS") {
+// 		let modal = $("#editPassportModal");
+// 		modal.modal("show");
+// 		console.log(data);
+// 		toastr.success(data.message, "OK");
+// 		fillFormEditPassport(data.passport, data.disp);
+// 	} else {
+// 		toastr.error(data.message, "Помилка");
+// 	}
+// });
 // }
 
 async function getDataPassportForEdit(event) {
@@ -881,7 +880,7 @@ async function getDataPassportForEdit(event) {
 			},
 		});
 		const data = await response.json();
-		console.table(data.passport);
+		// console.table(data.passport);
 		if (data.status === 'ERROR') {
 			throw new Error(data.message);
 		}
@@ -1847,23 +1846,25 @@ function deleteRow(event) {
 	}
 }
 
-//**************************************************** */
-
-let tooltipEl = $('[data-bs-toggle="tooltip"]');
-if (tooltipEl) {
-	for (let i = 0; i < tooltipEl.length; i++) {
-		let tooltip = new bootstrap.Tooltip(tooltipEl[i]);
-	}
-}
-
-let popoverEl = $('[data-bs-toggle="popover"]');
-if (popoverEl) {
-	for (let i = 0; i < popoverEl.length; i++) {
-		let popover = new bootstrap.Popover(popoverEl[i]);
-	}
-}
-
 $(".datepicker").datepicker({
 	format: "dd.mm.yyyy",
 	autoclose: true,
 });
+
+// **************************************************** */
+
+// let tooltipEl = $('[data-bs-toggle="tooltip"]');
+// if (tooltipEl) {
+// 	for (let i = 0; i < tooltipEl.length; i++) {
+// 		let tooltip = new bootstrap.Tooltip(tooltipEl[i]);
+// 	}
+// }
+
+// let popoverEl = $('[data-bs-toggle="popover"]');
+// if (popoverEl) {
+// 	for (let i = 0; i < popoverEl.length; i++) {
+// 		let popover = new bootstrap.Popover(popoverEl[i]);
+// 	}
+// }
+
+// **************************************************** */

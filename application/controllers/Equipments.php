@@ -54,13 +54,13 @@ class Equipments extends CI_Controller
 		// echo "<pre>";
 		// print_r($passports);
 		// echo "</pre>";
-		$data['title'] = 'Обладнання ('.$equipment->plural_name.')';
-		$data['content'] = file_exists(APPPATH.'/views/equipments/'.$equipment->id.'.php') ? 'equipments/'.$equipment->id : 'equipments/index';
-		$data['page'] = 'equipments/index/'.$equipment->id;
+		$data['title'] = 'Обладнання (' . $equipment->plural_name . ')';
+		$data['content'] = file_exists(APPPATH . '/views/equipments/' . $equipment->id . '.php') ? 'equipments/' . $equipment->id : 'equipments/index';
+		$data['page'] = 'equipments/index/' . $equipment->id;
 		$data['page_js'] = 'equipments';
 		$data['datatables'] = FALSE;
 		$data['title_heading'] = $equipment->plural_name;
-		$data['title_heading_card'] = $equipment->plural_name. ' ('.count($passports).' од.)';
+		$data['title_heading_card'] = $equipment->plural_name . ' (' . count($passports) . ' од.)';
 		$data['equipment'] = $equipment;
 		$data['passports'] = $passports;
 		$data['properties'] = $properties;
@@ -68,7 +68,8 @@ class Equipments extends CI_Controller
 		$this->load->view('layout', $data);
 	}
 
-	public function upload_photo($equipment_id = NULL) {
+	public function upload_photo($equipment_id = NULL)
+	{
 		if (!is_numeric($equipment_id) || !$equipment_id) {
 			show_404();
 		}

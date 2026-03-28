@@ -144,11 +144,11 @@
 										<?php endif; ?>
 									</p>
 								</td>
-								<td class="align-middle text-sm">
+								<td class="align-middle text-sm" data-order="<?php echo $item->document_date_start; ?>">
 									<p class="text-xs font-weight-bold mb-0"><?php echo $item->approval_document; ?></p>
 									<p class="text-xs text-secondary mb-0">від <?php echo $item->date_start_doc; ?> року</p>
 								</td>
-								<td class="align-middle text-center text-sm">
+								<td class="align-middle text-center text-sm" data-order="<?php echo $item->document_date_finish; ?>">
 									<span class="text-secondary text-xs font-weight-bold"><?php echo $item->date_finish_doc; ?></span>
 								</td>
 								<td class="align-middle text-center text-uppercase">

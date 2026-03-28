@@ -1211,11 +1211,13 @@ class Schedules extends CI_Controller
 		$writer->save('php://output');
 	}
 
-	public function genarate_year_schedule_simple_excel($stantion_id)
+	public function genarate_year_schedule_simple_excel($stantion_id, $year = NULL)
 	{
+		$year = $year ? (date('Y') + 1) : date('Y');
+
 		$stantion = $this->complete_renovation_object_model->get_row($stantion_id);
 
-		$data = $this->schedule_year_model->get_data_for_simple_year($stantion_id, date('Y'));
+		$data = $this->schedule_year_model->get_data_for_simple_year($stantion_id, $year);
 
 		// echo "<pre>";
 		// print_r($data);
@@ -1223,7 +1225,7 @@ class Schedules extends CI_Controller
 		// exit;
 
 		header('Content-Type: application/vnd.ms-excel');
-		header('Content-Disposition: attachment;filename="Річний план-графік для майстрів на ' . date('Y') . ' для ' . $stantion->name . '.xlsx"');
+		header('Content-Disposition: attachment;filename="Річний план-графік для майстрів на ' . $year . ' для ' . $stantion->name . '.xlsx"');
 		header('Cache-Control: max-age=0');
 
 		$spreadsheet = new Spreadsheet();
@@ -1275,11 +1277,8 @@ class Schedules extends CI_Controller
 		$active_sheet->mergeCells('A7:G7')->setCellValue('A7', $stantion->name)->getStyle('A7')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 		$active_sheet->getStyle('A7:G7')->getFont()->setSize(14)->setBold(false);
 
-		// $year = $current_year ? date('Y') : (date('Y') + 1);
-		$year = date('Y');
 		$active_sheet->mergeCells('A8:G8')->setCellValue('A8', 'на ' . $year . ' рік')->getStyle('A8')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 		$active_sheet->getStyle('A8:G8')->getFont()->setSize(14)->setBold(false);
-
 
 		$active_sheet->getStyle('A9:G10')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 		$active_sheet->getStyle('A9:G10')->getFont()->setSize(12)->setBold(true);
@@ -1328,8 +1327,8 @@ class Schedules extends CI_Controller
 			$row++;
 		}
 
-		$active_sheet->mergeCells('A' . ($row + 3) . ':Y' . ($row + 3))->setCellValue('A' . ($row + 3), '                        Начальник СП ________________ Юрій СИЧОВ');
-		// $active_sheet->mergeCells('A' . ($row + 3 + 3) . ':Y' . ($row + 3 + 3))->setCellValue('A' . ($row + 3 + 3), 'План склав ______________');
+		$active_sheet->mergeCells('A' . ($row + 3) . ':G' . ($row + 3))->setCellValue('A' . ($row + 3), '                        Начальник СП ________________ Юрій СИЧОВ');
+		// $active_sheet->mergeCells('A' . ($row + 3 + 3) . ':Y' . ($row + 3 + 3))->setCellValue('A' . ($row + 3 + 3), 'Графік склав ______________');
 		// $active_sheet->mergeCells('A' . ($row + 3 + 3 + 3) . ':Y' . ($row + 3 + 3 + 3))->setCellValue('A' . ($row + 3 + 3 + 3), 'Файл створено за допомогою АПроСТОР v1.0');
 
 		$active_sheet->getStyle('A6');
@@ -1484,7 +1483,7 @@ class Schedules extends CI_Controller
 
 			$active_sheet->mergeCells('A' . ($row + 3) . ':Q' . ($row + 3))->setCellValue('A' . ($row + 3), 'Начальник СП ________________ Юрій СИЧОВ');
 			$active_sheet->mergeCells('A' . ($row + 3 + 3) . ':Q' . ($row + 3 + 3))->setCellValue('A' . ($row + 3 + 3), 'Графік склав ______________');
-			$active_sheet->mergeCells('A' . ($row + 3 + 3 + 3) . ':Q' . ($row + 3 + 3 + 3))->setCellValue('A' . ($row + 3 + 3 + 3), 'Файл створено за допомогою АПроСТОР v1.0');
+			// $active_sheet->mergeCells('A' . ($row + 3 + 3 + 3) . ':Q' . ($row + 3 + 3 + 3))->setCellValue('A' . ($row + 3 + 3 + 3), 'Файл створено за допомогою АПроСТОР v1.0');
 
 			$active_sheet->getStyle('A1');
 		}
@@ -2076,7 +2075,7 @@ class Schedules extends CI_Controller
 
 		$sheet->mergeCells('A' . ($r + 6) . ':Y' . ($r + 6))->setCellValue('A' . ($r + 6), 'Начальник СП ________________ Юрій СИЧОВ');
 		$sheet->mergeCells('A' . ($r + 6 + 3) . ':Y' . ($r + 6 + 3))->setCellValue('A' . ($r + 6 + 3), 'План склав ______________');
-		$sheet->mergeCells('A' . ($r + 6 + 3 + 3) . ':Y' . ($r + 6 + 3 + 3))->setCellValue('A' . ($r + 6 + 3 + 3), 'Файл створено за допомогою АПроСТОР v1.0');
+		// $sheet->mergeCells('A' . ($r + 6 + 3 + 3) . ':Y' . ($r + 6 + 3 + 3))->setCellValue('A' . ($r + 6 + 3 + 3), 'Файл створено за допомогою АПроСТОР v1.0');
 
 		// Додаємо нові зміни в шаблон
 		// $spreadsheet->getActiveSheet()->insertNewColumnBefore('G', 1);
@@ -2854,6 +2853,9 @@ class Schedules extends CI_Controller
 			return;
 		}
 
+		// echo "<pre>";
+		// print_r($data);
+		// echo "<pre>";
 
 		$start_month_to_array = [
 			1 => (date('Y') + 1) . '-01-01',
@@ -2947,7 +2949,9 @@ class Schedules extends CI_Controller
 			if (!isset($new_array[$group][$row['stantion']]['quantity_materials_month_plan_01'])) {
 				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_01'] = 0;
 			}
-			$new_array[$group][$row['stantion']]['quantity_materials_month_plan_01'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_01'] / $new_array[$group][$row['stantion']]['price_total'];
+			if ($new_array[$group][$row['stantion']]['price_total'] != 0) {
+				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_01'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_01'] / $new_array[$group][$row['stantion']]['price_total'];
+			}
 
 			// Column P
 			if (!isset($new_array[$group][$row['stantion']]['price_materials_month_plan_02'])) {
@@ -2959,7 +2963,9 @@ class Schedules extends CI_Controller
 			if (!isset($new_array[$group][$row['stantion']]['quantity_materials_month_plan_02'])) {
 				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_02'] = 0;
 			}
-			$new_array[$group][$row['stantion']]['quantity_materials_month_plan_02'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_02'] / $new_array[$group][$row['stantion']]['price_total'];
+			if ($new_array[$group][$row['stantion']]['price_total'] != 0) {
+				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_02'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_02'] / $new_array[$group][$row['stantion']]['price_total'];
+			}
 
 			// Column T
 			if (!isset($new_array[$group][$row['stantion']]['price_materials_month_plan_03'])) {
@@ -2971,7 +2977,9 @@ class Schedules extends CI_Controller
 			if (!isset($new_array[$group][$row['stantion']]['quantity_materials_month_plan_03'])) {
 				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_03'] = 0;
 			}
-			$new_array[$group][$row['stantion']]['quantity_materials_month_plan_03'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_03'] / $new_array[$group][$row['stantion']]['price_total'];
+			if ($new_array[$group][$row['stantion']]['price_total'] != 0) {
+				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_03'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_03'] / $new_array[$group][$row['stantion']]['price_total'];
+			}
 
 			// Column X
 			if (!isset($new_array[$group][$row['stantion']]['price_materials_quarter_plan_01'])) {
@@ -2983,7 +2991,9 @@ class Schedules extends CI_Controller
 			if (!isset($new_array[$group][$row['stantion']]['quantity_materials_quarter_plan_01'])) {
 				$new_array[$group][$row['stantion']]['quantity_materials_quarter_plan_01'] = 0;
 			}
-			$new_array[$group][$row['stantion']]['quantity_materials_quarter_plan_01'] = $new_array[$group][$row['stantion']]['price_materials_quarter_plan_01'] / $new_array[$group][$row['stantion']]['price_total'];
+			if ($new_array[$group][$row['stantion']]['price_total'] != 0) {
+				$new_array[$group][$row['stantion']]['quantity_materials_quarter_plan_01'] = $new_array[$group][$row['stantion']]['price_materials_quarter_plan_01'] / $new_array[$group][$row['stantion']]['price_total'];
+			}
 
 			// Column AB
 			if (!isset($new_array[$group][$row['stantion']]['price_materials_month_plan_04'])) {
@@ -2995,7 +3005,9 @@ class Schedules extends CI_Controller
 			if (!isset($new_array[$group][$row['stantion']]['quantity_materials_month_plan_04'])) {
 				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_04'] = 0;
 			}
-			$new_array[$group][$row['stantion']]['quantity_materials_month_plan_04'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_04'] / $new_array[$group][$row['stantion']]['price_total'];
+			if ($new_array[$group][$row['stantion']]['price_total'] != 0) {
+				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_04'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_04'] / $new_array[$group][$row['stantion']]['price_total'];
+			}
 
 			// Column AF
 			if (!isset($new_array[$group][$row['stantion']]['price_materials_month_plan_05'])) {
@@ -3007,7 +3019,9 @@ class Schedules extends CI_Controller
 			if (!isset($new_array[$group][$row['stantion']]['quantity_materials_month_plan_05'])) {
 				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_05'] = 0;
 			}
-			$new_array[$group][$row['stantion']]['quantity_materials_month_plan_05'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_05'] / $new_array[$group][$row['stantion']]['price_total'];
+			if ($new_array[$group][$row['stantion']]['price_total'] != 0) {
+				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_05'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_05'] / $new_array[$group][$row['stantion']]['price_total'];
+			}
 
 			// Column AJ
 			if (!isset($new_array[$group][$row['stantion']]['price_materials_month_plan_06'])) {
@@ -3019,7 +3033,9 @@ class Schedules extends CI_Controller
 			if (!isset($new_array[$group][$row['stantion']]['quantity_materials_month_plan_06'])) {
 				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_06'] = 0;
 			}
-			$new_array[$group][$row['stantion']]['quantity_materials_month_plan_06'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_06'] / $new_array[$group][$row['stantion']]['price_total'];
+			if ($new_array[$group][$row['stantion']]['price_total'] != 0) {
+				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_06'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_06'] / $new_array[$group][$row['stantion']]['price_total'];
+			}
 
 			// Column AN
 			if (!isset($new_array[$group][$row['stantion']]['price_materials_quarter_plan_02'])) {
@@ -3031,7 +3047,9 @@ class Schedules extends CI_Controller
 			if (!isset($new_array[$group][$row['stantion']]['quantity_materials_quarter_plan_02'])) {
 				$new_array[$group][$row['stantion']]['quantity_materials_quarter_plan_02'] = 0;
 			}
-			$new_array[$group][$row['stantion']]['quantity_materials_quarter_plan_02'] = $new_array[$group][$row['stantion']]['price_materials_quarter_plan_02'] / $new_array[$group][$row['stantion']]['price_total'];
+			if ($new_array[$group][$row['stantion']]['price_total'] != 0) {
+				$new_array[$group][$row['stantion']]['quantity_materials_quarter_plan_02'] = $new_array[$group][$row['stantion']]['price_materials_quarter_plan_02'] / $new_array[$group][$row['stantion']]['price_total'];
+			}
 
 			// Column AR
 			if (!isset($new_array[$group][$row['stantion']]['price_materials_month_plan_07'])) {
@@ -3043,7 +3061,9 @@ class Schedules extends CI_Controller
 			if (!isset($new_array[$group][$row['stantion']]['quantity_materials_month_plan_07'])) {
 				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_07'] = 0;
 			}
-			$new_array[$group][$row['stantion']]['quantity_materials_month_plan_07'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_07'] / $new_array[$group][$row['stantion']]['price_total'];
+			if ($new_array[$group][$row['stantion']]['price_total'] != 0) {
+				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_07'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_07'] / $new_array[$group][$row['stantion']]['price_total'];
+			}
 
 			// Column AV
 			if (!isset($new_array[$group][$row['stantion']]['price_materials_month_plan_08'])) {
@@ -3055,7 +3075,9 @@ class Schedules extends CI_Controller
 			if (!isset($new_array[$group][$row['stantion']]['quantity_materials_month_plan_08'])) {
 				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_08'] = 0;
 			}
-			$new_array[$group][$row['stantion']]['quantity_materials_month_plan_08'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_08'] / $new_array[$group][$row['stantion']]['price_total'];
+			if ($new_array[$group][$row['stantion']]['price_total'] != 0) {
+				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_08'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_08'] / $new_array[$group][$row['stantion']]['price_total'];
+			}
 
 			// Column AZ
 			if (!isset($new_array[$group][$row['stantion']]['price_materials_month_plan_09'])) {
@@ -3067,7 +3089,9 @@ class Schedules extends CI_Controller
 			if (!isset($new_array[$group][$row['stantion']]['quantity_materials_month_plan_09'])) {
 				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_09'] = 0;
 			}
-			$new_array[$group][$row['stantion']]['quantity_materials_month_plan_09'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_09'] / $new_array[$group][$row['stantion']]['price_total'];
+			if ($new_array[$group][$row['stantion']]['price_total'] != 0) {
+				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_09'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_09'] / $new_array[$group][$row['stantion']]['price_total'];
+			}
 
 			// Column BD
 			if (!isset($new_array[$group][$row['stantion']]['price_materials_quarter_plan_03'])) {
@@ -3079,7 +3103,9 @@ class Schedules extends CI_Controller
 			if (!isset($new_array[$group][$row['stantion']]['quantity_materials_quarter_plan_03'])) {
 				$new_array[$group][$row['stantion']]['quantity_materials_quarter_plan_03'] = 0;
 			}
-			$new_array[$group][$row['stantion']]['quantity_materials_quarter_plan_03'] = $new_array[$group][$row['stantion']]['price_materials_quarter_plan_03'] / $new_array[$group][$row['stantion']]['price_total'];
+			if ($new_array[$group][$row['stantion']]['price_total'] != 0) {
+				$new_array[$group][$row['stantion']]['quantity_materials_quarter_plan_03'] = $new_array[$group][$row['stantion']]['price_materials_quarter_plan_03'] / $new_array[$group][$row['stantion']]['price_total'];
+			}
 
 			// Column BH
 			if (!isset($new_array[$group][$row['stantion']]['price_materials_month_plan_10'])) {
@@ -3091,7 +3117,9 @@ class Schedules extends CI_Controller
 			if (!isset($new_array[$group][$row['stantion']]['quantity_materials_month_plan_10'])) {
 				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_10'] = 0;
 			}
-			$new_array[$group][$row['stantion']]['quantity_materials_month_plan_10'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_10'] / $new_array[$group][$row['stantion']]['price_total'];
+			if ($new_array[$group][$row['stantion']]['price_total'] != 0) {
+				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_10'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_10'] / $new_array[$group][$row['stantion']]['price_total'];
+			}
 
 			// Column BL
 			if (!isset($new_array[$group][$row['stantion']]['price_materials_month_plan_11'])) {
@@ -3103,7 +3131,9 @@ class Schedules extends CI_Controller
 			if (!isset($new_array[$group][$row['stantion']]['quantity_materials_month_plan_11'])) {
 				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_11'] = 0;
 			}
-			$new_array[$group][$row['stantion']]['quantity_materials_month_plan_11'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_11'] / $new_array[$group][$row['stantion']]['price_total'];
+			if ($new_array[$group][$row['stantion']]['price_total'] != 0) {
+				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_11'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_11'] / $new_array[$group][$row['stantion']]['price_total'];
+			}
 
 			// Column BP
 			if (!isset($new_array[$group][$row['stantion']]['price_materials_month_plan_12'])) {
@@ -3115,7 +3145,9 @@ class Schedules extends CI_Controller
 			if (!isset($new_array[$group][$row['stantion']]['quantity_materials_month_plan_12'])) {
 				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_12'] = 0;
 			}
-			$new_array[$group][$row['stantion']]['quantity_materials_month_plan_12'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_12'] / $new_array[$group][$row['stantion']]['price_total'];
+			if ($new_array[$group][$row['stantion']]['price_total'] != 0) {
+				$new_array[$group][$row['stantion']]['quantity_materials_month_plan_12'] = $new_array[$group][$row['stantion']]['price_materials_month_plan_12'] / $new_array[$group][$row['stantion']]['price_total'];
+			}
 
 			// Column BT
 			if (!isset($new_array[$group][$row['stantion']]['price_materials_quarter_plan_04'])) {
@@ -3127,7 +3159,9 @@ class Schedules extends CI_Controller
 			if (!isset($new_array[$group][$row['stantion']]['quantity_materials_quarter_plan_04'])) {
 				$new_array[$group][$row['stantion']]['quantity_materials_quarter_plan_04'] = 0;
 			}
-			$new_array[$group][$row['stantion']]['quantity_materials_quarter_plan_04'] = $new_array[$group][$row['stantion']]['price_materials_quarter_plan_04'] / $new_array[$group][$row['stantion']]['price_total'];
+			if ($new_array[$group][$row['stantion']]['price_total'] != 0) {
+				$new_array[$group][$row['stantion']]['quantity_materials_quarter_plan_04'] = $new_array[$group][$row['stantion']]['price_materials_quarter_plan_04'] / $new_array[$group][$row['stantion']]['price_total'];
+			}
 
 			// Column BX
 			if (!isset($new_array[$group][$row['stantion']]['price_total_program'])) {

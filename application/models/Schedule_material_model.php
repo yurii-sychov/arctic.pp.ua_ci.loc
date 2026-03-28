@@ -40,7 +40,7 @@ class Schedule_material_Model extends CI_Model
 	{
 		// $this->db->select('(SELECT `materials`.`name` FROM `materials` WHERE materials.id = schedules_materials.material_id ORDER BY `materials`.`name` ASC) as name');
 		// $this->db->select('(SELECT `materials`.`unit` FROM `materials` WHERE materials.id = schedules_materials.material_id) as unit');
-		$this->db->select('schedules_material.*');
+		$this->db->select('schedules_materials.*');
 		$this->db->select('materials.name');
 		$this->db->select('materials.unit');
 		$this->db->where('schedules_materials.material_id = materials.id');
