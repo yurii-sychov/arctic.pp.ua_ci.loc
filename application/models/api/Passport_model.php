@@ -19,7 +19,7 @@ class Passport_Model extends CI_Model
 		$this->db->where('passports.specific_renovation_object_id=specific_renovation_objects.id');
 		$this->db->where('passports.place_id=places.id');
 		$this->db->order_by('passports.id', 'ASC');
-		// $this->db->limit(10);
+		$this->db->limit(10);
 		$query = $this->db->get();
 		return $query->result();
 	}

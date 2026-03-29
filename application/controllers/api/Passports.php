@@ -37,6 +37,36 @@ class Passports extends CI_Controller
 			);
 		}
 
+		// Отримання даних
+		$data = $this->passport_model->get_rows();
+
+		if (!$data) {
+			return $this->json_response(
+				['status' => 'ERROR', 'message' => 'Дані не знайдено'],
+				404
+			);
+		}
+
+		return $this->json_response([
+			'status' => 'SUCCESS',
+			'data'  => $data,
+			'message' => 'Дані знайдено'
+		]);
+	}
+
+	public function view()
+	{
+		$apiKey = $this->input->get('key', true);
+		$id   = $this->input->get('id', true);
+
+		// Перевірка API ключа
+		if ($apiKey !== $this->key) {
+			return $this->json_response(
+				['status' => 'ERROR', 'message' => 'Невірний Api Key'],
+				403
+			);
+		}
+
 		// Валідація ID
 		$id = filter_var($id, FILTER_VALIDATE_INT);
 		if (!$id) {
