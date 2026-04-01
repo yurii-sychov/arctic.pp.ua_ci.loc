@@ -62,7 +62,7 @@ class Users extends CI_Controller
 		if (!$id) {
 			return $this->json_response([
 				'status' => false,
-				'message' => 'Incorrect ID',
+				'message' => 'Incorrect or missing ID',
 				'data' => []
 			], 401);
 		}
