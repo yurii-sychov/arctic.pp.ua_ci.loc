@@ -28,7 +28,8 @@ class Users extends CI_Controller
 		if (!isset($headers['Api-Key']) || $headers['Api-Key'] !== $this->api_key) {
 			return $this->json_response([
 				'status' => false,
-				'message' => 'Unauthorized'
+				'message' => 'Unauthorized',
+				'data' => []
 			], 401);
 		}
 
@@ -37,6 +38,7 @@ class Users extends CI_Controller
 
 		return $this->json_response([
 			'status' => true,
+			'message' => 'Data found',
 			'data' => $users
 		]);
 	}
@@ -50,7 +52,8 @@ class Users extends CI_Controller
 		if (!isset($headers['Api-Key']) || $headers['Api-Key'] !== $this->api_key) {
 			return $this->json_response([
 				'status' => false,
-				'message' => 'Unauthorized'
+				'message' => 'Unauthorized',
+				'data' => []
 			], 401);
 		}
 
@@ -59,7 +62,8 @@ class Users extends CI_Controller
 		if (!$id) {
 			return $this->json_response([
 				'status' => false,
-				'message' => 'Некоректний ID'
+				'message' => 'Incorrect ID',
+				'data' => []
 			], 401);
 		}
 
@@ -69,12 +73,14 @@ class Users extends CI_Controller
 		if (!$user) {
 			return $this->json_response([
 				'status' => false,
-				'message' => 'Дані не знайдено'
+				'message' => 'No data found',
+				'data' => []
 			], 404);
 		}
 
 		return $this->json_response([
 			'status' => true,
+			'message' => 'Data found',
 			'data' => $user
 		]);
 	}
