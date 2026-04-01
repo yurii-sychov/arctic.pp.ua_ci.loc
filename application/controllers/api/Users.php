@@ -26,63 +26,57 @@ class Users extends CI_Controller
 
 		// Перевірка API ключа
 		if (!isset($headers['Api-Key']) || $headers['Api-Key'] !== $this->api_key) {
-			return $this->output
-				->set_status_header(401)
-				->set_content_type('application/json')
-				->set_output(json_encode([
-					'status' => false,
-					'message' => 'Unauthorized'
-				]));
+			return $this->json_response([
+				'status' => false,
+				'message' => 'Unauthorized'
+			], 401);
 		}
 
 		// Отримання користувачів
 		$users = $this->user_model->get_rows();
 
-		return $this->output
-			->set_content_type('application/json')
-			->set_output(json_encode([
-				'status' => true,
-				'data' => $users
-			]));
+		return $this->json_response([
+			'status' => true,
+			'data' => $users
+		]);
 	}
 
-	public function user($id = NULL)
+	public function view($id = NULL)
 	{
 		// Отримуємо заголовки
 		$headers = $this->input->request_headers();
 
 		// Перевірка API ключа
 		if (!isset($headers['Api-Key']) || $headers['Api-Key'] !== $this->api_key) {
-			return $this->output
-				->set_status_header(401)
-				->set_content_type('application/json')
-				->set_output(json_encode([
-					'status' => false,
-					'message' => 'Unauthorized'
-				]));
+			return $this->json_response([
+				'status' => false,
+				'message' => 'Unauthorized'
+			], 401);
 		}
 
 		// Валідація ID
 		$id = filter_var($id, FILTER_VALIDATE_INT);
 		if (!$id) {
-			return $this->output
-				->set_status_header(401)
-				->set_content_type('application/json')
-				->set_output(json_encode([
-					'status' => false,
-					'message' => 'Некоректний ID'
-				]));
+			return $this->json_response([
+				'status' => false,
+				'message' => 'Некоректний ID'
+			], 401);
 		}
 
 		// Отримання користувачів
 		$user = $this->user_model->get_row($id);
 
-		return $this->output
-			->set_content_type('application/json')
-			->set_output(json_encode([
-				'status' => true,
-				'data' => $user
-			]));
+		if (!$user) {
+			return $this->json_response([
+				'status' => false,
+				'message' => 'Дані не знайдено'
+			], 404);
+		}
+
+		return $this->json_response([
+			'status' => true,
+			'data' => $user
+		]);
 	}
 
 	private function json_response(array $data, int $statusCode = 200)
