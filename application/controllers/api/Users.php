@@ -10,86 +10,77 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Users extends CI_Controller
 {
-	private $api_key;
+	private string $api_key;
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->load->model('api/user_model');
-		// Отримуємо ключ з config
-		$this->api_key = $this->config->item('api_key');
+		$this->api_key = (string) $this->config->item('api_key');
 	}
+
 	public function index()
 	{
-		// Отримуємо заголовки
-		$headers = $this->input->request_headers();
-
-		// Перевірка API ключа
-		if (!isset($headers['Api-Key']) || $headers['Api-Key'] !== $this->api_key) {
-			return $this->json_response([
-				'status' => false,
-				'message' => 'Unauthorized',
-				'data' => []
-			], 401);
+		if (!$this->authorize()) {
+			return $this->unauthorized();
 		}
 
-		// Отримання користувачів
 		$users = $this->user_model->get_rows();
 
-		return $this->json_response([
-			'status' => true,
-			'message' => 'Data found',
-			'data' => $users
-		]);
+		return $this->json_response(true, 'Data found', $users);
 	}
 
-	public function view($id = NULL)
+	public function view($id = null)
 	{
-		// Отримуємо заголовки
-		$headers = $this->input->request_headers();
-
-		// Перевірка API ключа
-		if (!isset($headers['Api-Key']) || $headers['Api-Key'] !== $this->api_key) {
-			return $this->json_response([
-				'status' => false,
-				'message' => 'Unauthorized',
-				'data' => []
-			], 401);
+		if (!$this->authorize()) {
+			return $this->unauthorized();
 		}
 
-		// Валідація ID
 		$id = filter_var($id, FILTER_VALIDATE_INT);
 		if (!$id) {
-			return $this->json_response([
-				'status' => false,
-				'message' => 'Incorrect or missing ID',
-				'data' => []
-			], 401);
+			return $this->json_response(false, 'Incorrect or missing ID', null, 400);
 		}
 
-		// Отримання користувачів
 		$user = $this->user_model->get_row($id);
 
 		if (!$user) {
-			return $this->json_response([
-				'status' => false,
-				'message' => 'No data found',
-				'data' => []
-			], 404);
+			return $this->json_response(false, 'No data found', null, 404);
 		}
 
-		return $this->json_response([
-			'status' => true,
-			'message' => 'Data found',
-			'data' => $user
-		]);
+		return $this->json_response(true, 'Data found', $user);
 	}
 
-	private function json_response(array $data, int $statusCode = 200)
+	/**
+	 * Перевірка API ключа
+	 */
+	private function authorize(): bool
+	{
+		$headers = $this->input->request_headers();
+
+		return isset($headers['Api-Key']) &&
+			hash_equals($this->api_key, $headers['Api-Key']); // захист від timing attack
+	}
+
+	/**
+	 * Стандартна відповідь 401
+	 */
+	private function unauthorized()
+	{
+		return $this->json_response(false, 'Unauthorized', null, 401);
+	}
+
+	/**
+	 * Уніфікована JSON відповідь
+	 */
+	private function json_response(bool $status, string $message, $data = null, int $statusCode = 200)
 	{
 		return $this->output
 			->set_status_header($statusCode)
 			->set_content_type('application/json', 'utf-8')
-			->set_output(json_encode($data, JSON_UNESCAPED_UNICODE));
+			->set_output(json_encode([
+				'status'  => $status,
+				'message' => $message,
+				'data'    => $data
+			], JSON_UNESCAPED_UNICODE));
 	}
 }
