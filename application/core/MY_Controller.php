@@ -24,8 +24,7 @@ class Api_Controller extends CI_Controller
 	{
 		$headers = $this->input->request_headers();
 
-		return isset($headers['Api-Key']) &&
-			hash_equals($this->api_key, $headers['Api-Key']); // захист від timing attack
+		return isset($headers['Api-Key']) && hash_equals($this->api_key, $headers['Api-Key']); // захист від timing attack
 	}
 
 	// Стандартна відповідь 401
