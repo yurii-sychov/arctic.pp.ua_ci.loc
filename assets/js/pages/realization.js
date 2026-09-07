@@ -54,6 +54,7 @@ function generateMaterialsExcel(event) {
 
 function activeFormRow(event) {
 	event.target.closest('tr').querySelector('td.date-service-actual input').toggleAttribute("disabled");
+	event.target.closest('tr').querySelector('td.year-service-actual input').toggleAttribute("disabled");
 	event.target.classList.toggle('bi-pencil');
 	event.target.classList.toggle('text-success');
 	event.target.classList.toggle('bi-check-lg');
@@ -77,6 +78,28 @@ function editDateServiceActual(event) {
 			toastr.error(data.message, "Помилка");
 		}
 	});
+}
+
+function editYearServiceActual(event) {
+	const schedule_id = $(event.target).closest("tr").data("schedule_id");
+	const value = event.target.value;
+	console.log("schedule_id: " + schedule_id + " value: " + value);
+
+	$.ajax({
+		method: "POST",
+		url: "/realization/edit_year_service_actual_ajax",
+		data: { schedule_id, value },
+	}).done(function (data) {
+		if (data.status === "SUCCESS") {
+			toastr.success(data.message, "Успіх");
+		} else {
+			toastr.error(data.message, "Помилка");
+		}
+	});
+}
+
+function exportToExcel() {
+	toastr.info("exportToExcel()", "Info");
 }
 
 $(".datepicker").datepicker({

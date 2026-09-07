@@ -19,6 +19,14 @@ class Schedule_Model extends CI_Model
 		return $query->result();
 	}
 
+	public function change_year_service_actual($value, $id)
+	{
+		$this->db->set('year_last_service', $value === '' ? '0000' : $value);
+		$this->db->where('id', $id);
+		$query = $this->db->update('schedules');
+		return $query;
+	}
+
 	public function get_records_filtered($post, $filter)
 	{
 		$this->db->select('schedules.id');

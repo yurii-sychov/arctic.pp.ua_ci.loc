@@ -183,6 +183,9 @@ $(document).ready(function () {
 					},
 				],
 			},
+			search: {
+				smart: false
+			},
 			// DataTables - Callbacks
 			preDrawCallback: function (settings) {
 				$(".dataTables_wrapper").find('input[type="search"]').attr("name", "search");

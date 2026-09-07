@@ -904,7 +904,7 @@ async function format(d) {
 					<div>
 				</div>
 				<div class="row my-1">
-					<div class="col-md-11">
+					<div class="col-md-12">
 						<input type="text" class="form-control placeholder="Додайте примітку" onchange="addNote(event);" data-schedule_id="${d.schedule_id}" value="${note.data.note ? note.data.note : ''}">
 					</div>
 				</div>

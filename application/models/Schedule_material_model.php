@@ -205,6 +205,30 @@ class Schedule_material_Model extends CI_Model
 		return $query->result();
 	}
 
+	public function get_additional_materials_for_next_year()
+	{
+		$this->db->select('specific_renovation_objects.subdivision_id');
+		$this->db->select('complete_renovation_objects.name as stantion');
+		$this->db->select('specific_renovation_objects.name as disp');
+		$this->db->select('materials.name');
+		$this->db->select('materials.r3_id as r3');
+		$this->db->select('materials.unit');
+		$this->db->select('schedules_materials.quantity');
+		$this->db->select('(CASE WHEN `schedules`.`type_service_id` = 1 THEN \'КР\' WHEN `schedules`.`type_service_id` = 2 THEN \'ПР\' WHEN `schedules`.`type_service_id` = 3 THEN \'ТО\' END) as type_service');
+		$this->db->where('schedules_materials.year_service', (date('Y') + 1));
+		$this->db->where('schedules_materials.is_extra', 1);
+		$this->db->where('schedules_materials.material_id = materials.id');
+		$this->db->where('schedules_materials.schedule_id = schedules.id');
+		$this->db->where('schedules.specific_renovation_object_id = specific_renovation_objects.id');
+		$this->db->where('specific_renovation_objects.complete_renovation_object_id = complete_renovation_objects.id');
+		$this->db->order_by('complete_renovation_objects.name', 'ASC');
+		$this->db->order_by('specific_renovation_objects.name', 'ASC');
+		$this->db->order_by('materials.name', 'ASC');
+		$this->db->from('schedules_materials, materials, schedules, specific_renovation_objects, complete_renovation_objects');
+		$query = $this->db->get();
+		return $query->result();
+	}
+
 	public function get_materials_for_specific_add($material_id)
 	{
 		$this->db->select('schedules_materials.schedule_id');

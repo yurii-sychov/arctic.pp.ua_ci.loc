@@ -66,13 +66,14 @@
 						<thead class="table-dark">
 							<tr class="align-middle text-center">
 								<th class="text-center" style="width:5%;" data-orderable="false">№ п/п</th>
-								<th class="text-center" style="width:10%;" data-data="dno">Дисп. назва</th>
-								<th class="text-center" style="width:22%;" data-data="equipment">Вид обладнання</th>
-								<th class="text-center" style="width:21%;">Тип обладнання</th>
-								<th class="text-center" style="width:10%;">Спосіб обслуговування</th>
-								<th class="text-center" style="width:10%;">Тип обслуговування</th>
-								<th class="text-center" style="width:10%;">План, м.</th>
-								<th class="text-center" style="width:10%;">Факт, д.м.р</th>
+								<th class="text-center" style="width:9%;" data-data="dno">Дисп. назва</th>
+								<th class="text-center" style="width:20%;" data-data="equipment">Вид обладнання</th>
+								<th class="text-center" style="width:19%;">Тип обладнання</th>
+								<th class="text-center" style="width:9%;">Спосіб обслуговування</th>
+								<th class="text-center" style="width:9%;">Тип обслуговування</th>
+								<th class="text-center" style="width:9%;">План, м.</th>
+								<th class="text-center" style="width:9%;">Факт, д.м.р</th>
+								<th class="text-center" style="width:9%;">Останній рік обслуговування</th>
 								<th class="text-center" style="width:1%;" data-orderable="false"><i class="bi bi-eye"></i></th>
 								<th class="text-center" style="width:1%;" data-orderable="false"><i class="bi bi-pencil"></i></th>
 							</tr>
@@ -93,6 +94,13 @@
 											<input type="date" class="form-control form-control-sm text-center" onchange="editDateServiceActual(event);" value="<?php echo $row->date_service_actual == '0000-00-00' ? '' : $row->date_service_actual; ?>" name="date_service_actual[]" disabled>
 										<?php else : ?>
 											<?php echo $row->date_service_actual; ?>
+										<?php endif; ?>
+									</td>
+									<td class="text-center year-service-actual" data-search="<?php echo $row->year_service_actual; ?>" data-order="<?php echo $row->year_service_actual; ?>">
+										<?php if ($this->session->user->group === 'admin' or $this->session->user->group === 'engineer') : ?>
+											<input type="number" id="year" name="year" placeholder="гггг" min="1965" max="2030" step="1" class="form-control form-control-sm text-center" onchange="editYearServiceActual(event);" value="<?php echo $row->year_service_actual == '0000' ? '' : $row->year_service_actual; ?>" name="year_service_actual[]" disabled>
+										<?php else : ?>
+											<?php echo $row->year_service_actual; ?>
 										<?php endif; ?>
 									</td>
 									<td class="text-center">

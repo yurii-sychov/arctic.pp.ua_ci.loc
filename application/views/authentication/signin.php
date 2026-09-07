@@ -4,7 +4,7 @@
 			<div class="icon d-flex align-items-center justify-content-center">
 				<span class="fa fa-user-o"></span>
 			</div>
-			<h3 class="text-center mb-4">Маєш обліковий запис!</h3>
+			<h3 class="text-center mb-4">Вхід до системи</h3>
 			<form method="POST" class="login-form" id="formSignin">
 				<input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
 				<div class="form-group">

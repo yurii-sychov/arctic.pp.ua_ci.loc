@@ -19,7 +19,7 @@ class Users extends Api_Controller
 	public function index()
 	{
 		if (!$this->authorize()) {
-			// return $this->unauthorized();
+			return $this->unauthorized();
 		}
 
 		$users = $this->user_model->get_rows();
@@ -28,9 +28,6 @@ class Users extends Api_Controller
 			unset($user->password);
 			unset($user->remember_token);
 		}
-		echo "<pre>";
-		print_r($users);
-		echo "</pre>";
 
 		if (empty($users)) {
 			return $this->json_response(false, 'No data found', [], 404);

@@ -54,6 +54,7 @@ class Schedule_year_Model extends CI_Model
 	public function get_data($complete_renovation_object_id)
 	{
 		$this->db->select('schedules_years.*');
+		$this->db->select('schedules.type_service_id, schedules.year_last_service as year_service_actual');
 		$this->db->select('(CASE WHEN `schedules`.`type_service_id` = 1 THEN "КР" WHEN `schedules`.`type_service_id` = 2 THEN "ПР" WHEN `schedules`.`type_service_id` = 3 THEN "ТО" END) as type_service');
 		$this->db->select('specific_renovation_objects.name as disp');
 		$this->db->select('equipments.name as equipment');

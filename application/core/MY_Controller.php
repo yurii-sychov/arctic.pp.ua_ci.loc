@@ -11,7 +11,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Api_Controller extends CI_Controller
 {
 
-	protected string $api_key;
+	protected $api_key;
 
 	public function __construct()
 	{
@@ -40,9 +40,10 @@ class Api_Controller extends CI_Controller
 			->set_status_header($statusCode)
 			->set_content_type('application/json', 'utf-8')
 			->set_output(json_encode([
-				'status'  => $status,
+				'status' => $status,
 				'message' => $message,
-				'data'    => $data
+				'data'  => $data,
+				'timestamp' => date("Y-m-d H:i:s", time())
 			], JSON_UNESCAPED_UNICODE));
 	}
 }

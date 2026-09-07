@@ -26,7 +26,7 @@ class Realization extends CI_Controller
 		$this->load->model('complete_renovation_object_model');
 		// $this->load->model('specific_renovation_object_model');
 		$this->load->model('subdivision_model');
-		// $this->load->model('schedule_model');
+		$this->load->model('schedule_model');
 		// $this->load->model('schedule_note_model');
 		$this->load->model('schedule_year_model');
 		$this->load->model('schedule_material_model');
@@ -47,6 +47,7 @@ class Realization extends CI_Controller
 		if ($this->input->get('subdivision_id') && $this->input->get('stantion_id')) {
 			$data['custom_button'][] = ['action' => 'generateScheduleExcel(event)', 'title' => 'Згенерувати графік', 'class' => 'btn-success', 'icon' => 'bi bi-file-earmark-excel'];
 		}
+		$data['export_to_excel'] = ($this->session->user->group == 'admin') ? TRUE : FALSE;
 		$data['title'] = 'Виконання плану ремонтів поточного року';
 		$data['content'] = 'realization/index_dt';
 		$data['page'] = 'realization';
@@ -71,7 +72,7 @@ class Realization extends CI_Controller
 		}
 
 		// echo "<pre>";
-		// print_r($data);
+		// print_r($data['equipments']);
 		// echo "</pre>";
 		$this->load->view('layout', $data);
 	}
@@ -90,7 +91,7 @@ class Realization extends CI_Controller
 			return;
 		}
 
-		if ($this->session->user->group !== 'admin' && $this->session->user->group !== 'engineer' && $this->session->user->group !== 'master') {
+		if ($this->session->user->group !== 'admin' && $this->session->user->group !== 'engineer') {
 			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Вам не дозволена ця операція!'], JSON_UNESCAPED_UNICODE));
 			return;
 		}
@@ -98,6 +99,32 @@ class Realization extends CI_Controller
 		$value = !$this->input->post('value') ? '0000-00-00' :  date('Y-m-d', strtotime($this->input->post('value')));
 
 		$this->schedule_year_model->change_date_service_actual('date_service_actual', $value, $this->input->post('schedule_id'), $this->input->post('year_service'), $this->input->post('is_contract_method'));
+		$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!'], JSON_UNESCAPED_UNICODE));
+		return;
+	}
+
+	public function edit_year_service_actual_ajax()
+	{
+		$this->output->set_content_type('application/json');
+
+		if (!$this->input->is_ajax_request()) {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не Ajax запрос!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		if (!$this->input->post()) {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Це не POST запрос!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		if ($this->session->user->group !== 'admin' && $this->session->user->group !== 'engineer') {
+			$this->output->set_output(json_encode(['status' => 'ERROR', 'message' => 'Вам не дозволена ця операція!'], JSON_UNESCAPED_UNICODE));
+			return;
+		}
+
+		$value = !$this->input->post('value') ? '0000' :  $this->input->post('value');
+
+		$this->schedule_model->change_year_service_actual($value, $this->input->post('schedule_id'));
 		$this->output->set_output(json_encode(['status' => 'SUCCESS', 'message' => 'Дані змінено!'], JSON_UNESCAPED_UNICODE));
 		return;
 	}
