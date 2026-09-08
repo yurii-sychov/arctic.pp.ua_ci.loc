@@ -102,12 +102,12 @@ class Additional_materials extends CI_Controller
 	private function buildGroupKey(
 		string $stantion,
 		string $disp,
-		string $typeService
+		string $typeService,
 	): string {
 		return implode('_', [
 			$stantion,
 			$disp,
-			$typeService,
+			$typeService
 		]);
 	}
 }
